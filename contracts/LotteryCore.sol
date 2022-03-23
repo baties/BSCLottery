@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.4.22 <0.9.0;
+pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
-import "@chainlink/contracts/src/v0.6/VRFConsumerBase.sol";
-
+import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 
 contract LotteryCore is Ownable, VRFConsumerBase {
 
@@ -28,16 +27,20 @@ contract LotteryCore is Ownable, VRFConsumerBase {
   }
 
   modifier ownerOnly() {
-    require(msg.sender == lottoryOwner);
+    require(msg.sender == lottoryOwner, "Owner Only! . You have not the right Access.");
     _;
   }
 
-  function () public payable {
+  fallback() external payable {
         // player name will be unknown
   }
 
+  function balanceInPot() public view returns(uint){
+    return address(this).balance;
+  }
+
   function play() public payable {
-    require(msg.value >= 0.01 ether && msg.value < 100 ether);
+    require(msg.value >= 0.01 ether && msg.value < 100 ether, "Value should be between 0.01 & 100 BNB");
     potPlayers.push(msg.sender);
   }
 
@@ -45,17 +48,18 @@ contract LotteryCore is Ownable, VRFConsumerBase {
     return uint(
       keccak256(
         abi.encodePacked(
-          block.difficulty, now, potPlayers )));
+          block.difficulty, block.timestamp, potPlayers )));
   }
 
-  function sendWinnerPrize() public ownerOnly {
+  function select_Send_WinnerPrize() public ownerOnly {
     uint winnerIndex = randomGenerator() % potPlayers.length;
-    potPlayers[winnerIndex].transfer(address(this).balance);
-
+    address payable potWinner = payable(potPlayers[winnerIndex]);
     potPlayers = new address[](0);
+    potWinner.transfer(address(this).balance);
+    // potPlayers[winnerIndex].transfer(address(this).balance);
   }
 
-  function listPlayers() public view returns (address[]){
+  function listPlayers() public view returns (address[] memory){
     return potPlayers;
   }
 
