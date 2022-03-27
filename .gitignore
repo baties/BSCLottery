@@ -63,5 +63,5 @@ dist
 .serverless/
 
 # VSCode Cache Directory
-# .vscode
+.vscode
 
