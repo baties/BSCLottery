@@ -1,10 +1,14 @@
 
-require("dotenv").config();
+// require("dotenv").config();
+
+const dotenv = require('dotenv');
+dotenv.config();
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 //
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
+const mnemonic = process.env.MNEMONIC;
 
 module.exports = {
 
@@ -43,7 +47,7 @@ module.exports = {
       confirmations: 2, // # of confs to wait between deployments. (default: 0)
       timeoutBlocks: 200, // # of blocks before a deployment times out (minimum/default: 50)
       skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
-      // gasPrice: 10000000000
+      gasPrice: 10000000000
     },
     // main ethereum network(mainnet)
     main: {
