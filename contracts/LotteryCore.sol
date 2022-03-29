@@ -27,6 +27,10 @@ contract LotteryCore is VRFv2SubscriptionManager {
 
   event SelectWinner(address potWinner, uint potBalance);
 
+  constructor() {
+    lottoryOwner = msg.sender;
+  }
+
   modifier ownerOnly() {
     require(msg.sender == lottoryOwner, "Owner Only! . You have not the right Access.");
     _;
