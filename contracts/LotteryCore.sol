@@ -2,12 +2,12 @@
 pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
-// import './VRFv2Consumer.sol' ;
-import './VRFv2SubscriptionManager.sol';
+import './VRFv2Consumer.sol' ;
+// import './VRFv2SubscriptionManager.sol';
 // import "truffle/Console.sol";
 
 
-contract LotteryCore is VRFv2SubscriptionManager {
+contract LotteryCore {
 
   address public lottoryOwner;
   address[] public potPlayers;
@@ -25,10 +25,13 @@ contract LotteryCore is VRFv2SubscriptionManager {
     // mapping(address => PotPlayer) players;
   }
 
+  address private _VRF;
+
   event SelectWinner(address potWinner, uint potBalance);
 
-  constructor() {
+  constructor(address VRF) {
     lottoryOwner = msg.sender;
+    _VRF = VRF;
   }
 
   modifier ownerOnly() {
@@ -56,9 +59,14 @@ contract LotteryCore is VRFv2SubscriptionManager {
           block.difficulty, block.timestamp, potPlayers )));
   }
 
+  function getRandomValue(address _VRFv2) public view returns (uint256 randomWords) {
+    randomWords = VRFv2Consumer(_VRFv2).getlRandomWords() ;
+  }
+
   function select_Send_WinnerPrize() public ownerOnly {
     // uint winnerIndex = randomGenerator() % potPlayers.length;
-    uint winnerIndex = s_randomWords[0] % potPlayers.length;
+    uint256 l_randomWords = getRandomValue(_VRF);
+    uint winnerIndex = l_randomWords % potPlayers.length;
     address payable potWinner = payable(potPlayers[winnerIndex]);
     potPlayers = new address[](0);
     emit SelectWinner(potWinner, address(this).balance);
