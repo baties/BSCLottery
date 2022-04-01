@@ -52,16 +52,20 @@ contract LotteryCore {
     potPlayers.push(msg.sender);
   }
 
-  function randomGenerator() private view returns (uint) {
-    return uint(
-      keccak256(
-        abi.encodePacked(
-          block.difficulty, block.timestamp, potPlayers )));
-  }
+  // function randomGenerator() private view returns (uint) {
+  //   return uint(
+  //     keccak256(
+  //       abi.encodePacked(
+  //         block.difficulty, block.timestamp, potPlayers )));
+  // }
+
+  // function lrequestRandomWords(address _VRFv2) public {
+  //   VRFv2Consumer(_VRFv2).requestRandomWords(lottoryOwner) ;
+  // }
 
   function getRandomValue(address _VRFv2) public view returns (uint256 randomWords) {
-    uint8 zeroOne = uint8(randomGenerator() % 2);
-    randomWords = VRFv2Consumer(_VRFv2).getlRandomWords(zeroOne) ;
+    // uint8 zeroOne = uint8(randomGenerator() % 2);
+    randomWords = VRFv2Consumer(_VRFv2).getlRandomWords() ;
   }
 
   function select_Send_WinnerPrize() public ownerOnly {
@@ -72,7 +76,6 @@ contract LotteryCore {
     emit SelectWinner(potWinner, address(this).balance);
     potWinner.transfer(address(this).balance);
     // potPlayers[winnerIndex].transfer(address(this).balance);
-    // console.log(potWinner);
   }
 
   function listPlayers() public view returns (address[] memory){
