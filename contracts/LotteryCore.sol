@@ -60,11 +60,11 @@ contract LotteryCore {
   }
 
   function getRandomValue(address _VRFv2) public view returns (uint256 randomWords) {
-    randomWords = VRFv2Consumer(_VRFv2).getlRandomWords() ;
+    uint8 zeroOne = uint8(randomGenerator() % 2);
+    randomWords = VRFv2Consumer(_VRFv2).getlRandomWords(zeroOne) ;
   }
 
   function select_Send_WinnerPrize() public ownerOnly {
-    // uint winnerIndex = randomGenerator() % potPlayers.length;
     uint256 l_randomWords = getRandomValue(_VRF);
     uint winnerIndex = l_randomWords % potPlayers.length;
     address payable potWinner = payable(potPlayers[winnerIndex]);

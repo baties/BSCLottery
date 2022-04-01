@@ -76,8 +76,8 @@ contract VRFv2Consumer is VRFConsumerBaseV2 {
     _;
   }
   
-  function getlRandomWords() public view returns (uint256) {
-    uint256 randomWords1 = s_randomWords[0];
+  function getlRandomWords(uint8 zeroOne) public view returns (uint256) {
+    uint256 randomWords1 = s_randomWords[zeroOne];
     return randomWords1; 
   }
 
