@@ -193,6 +193,11 @@ contract LotteryCore {
 
   }
 
+  function set_LottoryAddress(address _LottoryAddress) external ownerOnly {
+    require(_LottoryAddress != address(0) );
+    LottoryAddress = _LottoryAddress ;
+  }
+
   function listPlayers() external view returns (address[] memory){   // PotPlayerStr    (address[] memory   
     return potPlayersArray ;  // potPlayersArr      potPlayers;
   }
