@@ -3,14 +3,16 @@ pragma solidity ^0.8.0;
 // pragma experimental ABIEncoderV2;
 
 /* ToDo : Use Ownable OpenZeppelin */
-import '@openzeppelin/contracts/access/Ownable.sol';
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+
 
 import './VRFv2Consumer.sol' ;
-// import './VRFv2SubscriptionManager.sol';
+import './VRFv2SubscriptionManager.sol';
 
 // import "truffle/Console.sol";
 
-contract LotteryCore {
+contract LotteryCore is Ownable {
 
   address public lottoryOwner;
 
@@ -60,10 +62,10 @@ contract LotteryCore {
     _VRF = VRF ;
   }
 
-  modifier ownerOnly() {
-    require(msg.sender == lottoryOwner, "Owner Only! . You have not the right Access.") ;
-    _;
-  }
+  // modifier ownerOnly() {
+  //   require(msg.sender == lottoryOwner, "Owner Only! . You have not the right Access.") ;
+  //   _;
+  // }
 
   /* ToDo : Add & Complete Fallback routine */
   // fallback() external payable {
@@ -130,12 +132,12 @@ contract LotteryCore {
   //   VRFv2Consumer(_VRFv2).requestRandomWords(lottoryOwner) ;
   // }
 
-  function getRandomValue(address _VRFv2) public view ownerOnly returns (uint256 randomWords) {
+  function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
     // uint8 zeroOne = uint8(randomGenerator() % 2) ;
     randomWords = VRFv2Consumer(_VRFv2).getlRandomWords() ;
   }
 
-  function select_Winner() public ownerOnly {
+  function select_Winner() public onlyOwner {  
 
     uint256 l_randomWords = getRandomValue(_VRF) ;
     uint winnerIndex = l_randomWords % potTickets.length ;  // potPlayersArray   potPlayers.length ;
@@ -182,18 +184,19 @@ contract LotteryCore {
 
   }
 
-  function FinalPayment() internal ownerOnly {
+  function FinalPayment() internal onlyOwner {
 
     address payable receiver = payable(LottoryAddress) ;
     uint TrxValue = address(this).balance ;
 
+    /* ToDo: Complete Final Payment to Cover Transmission remaining into the Liquidity Pool and Profits of Stake Holders */
     receiver.transfer(TrxValue) ;
 
     emit TotalPayment(receiver, TrxValue) ;
 
   }
 
-  function set_LottoryAddress(address _LottoryAddress) external ownerOnly {
+  function set_LottoryAddress(address _LottoryAddress) external onlyOwner {
     require(_LottoryAddress != address(0) );
     LottoryAddress = _LottoryAddress ;
   }
@@ -202,8 +205,13 @@ contract LotteryCore {
     return potPlayersArray ;  // potPlayersArr      potPlayers;
   }
 
-  function withdraw() external ownerOnly {
+  function withdraw() external onlyOwner {
     payable(msg.sender).transfer(address(this).balance) ;
   }
+
+  function getLotteryTickets() public view returns(uint[] memory) {
+    return potTickets;
+  }
+
 
 }
