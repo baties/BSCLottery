@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import './LotteryCore.sol' ;
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "./LotteryCore.sol";
 
-contract LotteryGenerator {
+
+contract LotteryGenerator is Ownable {
 
     address[] public lotteries;
     struct lottery{
@@ -12,6 +14,15 @@ contract LotteryGenerator {
     }
     mapping(address => lottery) lotteryStructs;
 
+    struct LotteryPlayerStr{
+        uint PaymentCount;
+        uint paymentValue;
+        uint TicketNumbers;
+        uint[] PlayersId;
+    }
+    mapping (address => LotteryPlayerStr) public LotteryPlayersMap;
+    address[] public LotteryPlayersArray;
+
     // event
     event LotteryCreated(address newLottery);
 
@@ -19,12 +30,11 @@ contract LotteryGenerator {
 
         // require(bytes(name).length > 0);
         address newLottery = address(new LotteryCore(_VRF));
-        lotteries.push(newLottery) ;
+        lotteries.push(newLottery);
         lotteryStructs[newLottery].index = lotteries.length - 1;
         lotteryStructs[newLottery].creator = msg.sender;
 
-        emit LotteryCreated( newLottery ) ;
-
+        emit LotteryCreated( newLottery );
     }
 
     // function getLotteries() public view returns(address[]) {
