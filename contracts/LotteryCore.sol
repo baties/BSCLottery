@@ -26,7 +26,7 @@ import "./VRFv2SubscriptionManager.sol";
 */
 contract LotteryCore is Ownable {
 
-  uint constant TICKET_PRICE = 10 * 1e15;  // finney
+  uint constant TICKET_PRICE = 10 * 1e15; // finney (0.01 Ether)
 
   address public lottoryOwner; // Contract Owner or Parent Contract ?
   /* ToDo: Boolean Controler for Open & Close Lottory  */ 
@@ -43,8 +43,8 @@ contract LotteryCore is Ownable {
     uint[] PlayersId;
   }
 
-  mapping (address => PotPlayerStr) public PotPlayersMap;  // ToDo : Being Private
-  address[] public potPlayersArray;  // ToDo : Being Private
+  mapping (address => PotPlayerStr) private PotPlayersMap;  // ToDo : Being private - public
+  address[] private potPlayersArray;  // ToDo : Being private - public
   uint[] private potTickets;
   uint[3][] private potTicketIds;
    
@@ -180,17 +180,22 @@ contract LotteryCore is Ownable {
     uint winnerIndex = l_randomWords % potTickets.length;  
     winnerIndex = potTickets[winnerIndex];
     uint winnerPrize = Calculation(winnerIndex);
-
     emit SelectWinnerIndex(winnerIndex, address(this).balance, winnerPrize);
-
     WinnerPrizePayment(winnerIndex, winnerPrize); 
     FinalPayment();
 
     /* ToDo : Clear The Map Data and RElease the Memory !? */  
-    // for (uint256 index = 0; index < potPlayersArray.length - 1; index++) {
-    //     address 
-    // }
-
+    address playerAddress;
+    for (uint256 index = 0; index < potPlayersArray.length - 1; index++) {
+        playerAddress = potPlayersArray[index];
+        if (PotPlayersMap[msg.sender].PaymentCount > 0) {
+            PotPlayersMap[msg.sender].PaymentCount = 0;
+            PotPlayersMap[msg.sender].paymentValue = 0;
+            PotPlayersMap[msg.sender].TicketNumbers = 0;
+            delete PotPlayersMap[msg.sender].PlayersId;
+            delete PotPlayersMap[msg.sender].TicketsId;
+        }
+    }
     // potPlayersArr = new PotPlayerStr[](0); 
     delete potPlayersArray;
     delete potTickets;
@@ -268,27 +273,27 @@ contract LotteryCore is Ownable {
 **/
 contract WeeklyLottery is Ownable {
 
-  address private _VRF ;
+  address private _VRF;
 
-  event SelectWinnerIndex(uint winnerIndex, uint potBalance, uint winnerPrize) ;
-  event SelectWinnerAddress(address potWinner, uint winnerPrize) ;
-  event TotalPayment(address receiver, uint TrxValue) ;
+  event SelectWinnerIndex(uint winnerIndex, uint potBalance, uint winnerPrize);
+  event SelectWinnerAddress(address potWinner, uint winnerPrize);
+  event TotalPayment(address receiver, uint TrxValue);
 
   constructor(address VRF) {   // , address lOwner
-    _VRF = VRF ;
+    _VRF = VRF;
   }
 
   function balanceInPot() public view returns(uint){
-    return address(this).balance ;
+    return address(this).balance;
   }
 
   function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
-    // uint8 zeroOne = uint8(randomGenerator() % 2) ;
-    randomWords = VRFv2Consumer(_VRFv2).getlRandomWords() ;
+    // uint8 zeroOne = uint8(randomGenerator() % 2);
+    randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
   }
 
   function withdraw() external onlyOwner {
-    payable(msg.sender).transfer(address(this).balance) ;
+    payable(msg.sender).transfer(address(this).balance);
   }
 
   function select_Winner() public onlyOwner {  
@@ -312,7 +317,6 @@ contract WeeklyLottery is Ownable {
   function Calculation(uint winnerIndex) internal view returns (uint winnerPrize){
 
     uint totalPot = address(this).balance ;
-
     /* ToDo : Complete Winner Prize Calculation */
     address WinnerAddress = LotteryGenerator.LotteryPlayersArray[winnerIndex] ;
     uint WinnerPotAmount = LotteryGenerator.LotteryPlayersMap[WinnerAddress].paymentValue ;
@@ -324,7 +328,6 @@ contract WeeklyLottery is Ownable {
 
     address payable LotteryWinner = payable(LotteryGenerator.LotteryPlayersArray[winnerIndex]) ;  
     LotteryWinner.transfer(winnerPrize) ;
-
     emit SelectWinnerAddress(LotteryWinner, winnerPrize) ;
 
   }

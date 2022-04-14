@@ -5,6 +5,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./LotteryCore.sol";
 
 
+/**
+  * @title Lottery Generator Smart Contract.
+  * @author Batis 
+  * @notice This SmartContract is responsible for Lottery Generation.
+  * @dev Lottery Generator SmartContract - Parent of Core Lottery
+*/
 contract LotteryGenerator is Ownable {
 
     address[] public lotteries;
