@@ -23,14 +23,54 @@ contract LotteryGenerator is Ownable {
     mapping(address => lottery) lotteryStructs;
 
     struct LotteryWinnerStr{
-        uint PlayersId;
-        uint winnerCont;
+        uint playersId;
+        uint winnerCount;
     }
     mapping (address => LotteryWinnerStr) public LotteryWinnersMap;
     address[] public LotteryWinnersArray;
 
+    struct WeeklyWinnerStr{
+        uint playersId;
+        uint winnerCount;
+    }
+    mapping (address => WeeklyWinnerStr) public WeeklyWinnersMap;
+    address[] public WeeklyWinnersArray;
+
     // event
     event LotteryCreated(address newLottery);
+
+    function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress) external returns (bool) {
+        lotteryStructs[_lotteryAddress].totalBalance = _totalBalance;
+        lotteryStructs[_lotteryAddress].winnerAddress = _winnerAddress;
+        return true;
+    }
+
+    function setlotteryWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint) {
+        LotteryWinnersArray.push(_winnerAddress);
+        LotteryWinnersMap[_winnerAddress].playersId = LotteryWinnersArray.length;  // -1
+        LotteryWinnersMap[_winnerAddress].winnerCount++;
+        return LotteryWinnersArray.length - 1;
+    }
+
+    function setWeeklyWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint) {
+        WeeklyWinnersArray.push(_winnerAddress);
+        WeeklyWinnersMap[_winnerAddress].playersId = WeeklyWinnersArray.length;  // -1
+        WeeklyWinnersMap[_winnerAddress].winnerCount++;
+        return WeeklyWinnersArray.length - 1;
+    }
+
+    function clearlotteryWinnersArrayMap(address _lotteryAddress) external returns (bool) {
+        address _lotteryWAddress;
+        for (uint256 index = 0; index < LotteryWinnersArray.length - 1; index++) {
+            _lotteryWAddress = LotteryWinnersArray[index];
+            if (LotteryWinnersMap[_lotteryWAddress].playersId > 0) {
+                LotteryWinnersMap[_lotteryWAddress].playersId = 0;
+                LotteryWinnersMap[_lotteryWAddress].winnerCount = 0;
+            }
+        }
+        delete LotteryWinnersArray;
+        return true;
+    }
 
     function createLottery(address _VRF) public onlyOwner {
 
