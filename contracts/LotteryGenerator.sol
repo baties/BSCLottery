@@ -17,28 +17,30 @@ contract LotteryGenerator is Ownable {
     struct lottery{
         uint index;
         address creator;
+        uint totalBalance;
+        address winnerAddress; 
     }
     mapping(address => lottery) lotteryStructs;
 
-    struct LotteryPlayerStr{
-        uint PaymentCount;
-        uint paymentValue;
-        uint TicketNumbers;
-        uint[] PlayersId;
+    struct LotteryWinnerStr{
+        uint PlayersId;
+        uint winnerCont;
     }
-    mapping (address => LotteryPlayerStr) public LotteryPlayersMap;
-    address[] public LotteryPlayersArray;
+    mapping (address => LotteryWinnerStr) public LotteryWinnersMap;
+    address[] public LotteryWinnersArray;
 
     // event
     event LotteryCreated(address newLottery);
 
-    function createLottery(address _VRF) public {
+    function createLottery(address _VRF) public onlyOwner {
 
         // require(bytes(name).length > 0);
         address newLottery = address(new LotteryCore(_VRF));
         lotteries.push(newLottery);
         lotteryStructs[newLottery].index = lotteries.length - 1;
         lotteryStructs[newLottery].creator = msg.sender;
+        lotteryStructs[newLottery].totalBalance = 0;
+        lotteryStructs[newLottery].winnerAddress = address(0);
 
         emit LotteryCreated( newLottery );
     }
@@ -47,7 +49,7 @@ contract LotteryGenerator is Ownable {
     //     return lotteries;
     // }
 
-    function deleteLottery(address lotteryAddress) public {
+    function deleteLottery(address lotteryAddress) public  onlyOwner {
         require(msg.sender == lotteryStructs[lotteryAddress].creator);
         uint indexToDelete = lotteryStructs[lotteryAddress].index;
         address lastAddress = lotteries[lotteries.length - 1];

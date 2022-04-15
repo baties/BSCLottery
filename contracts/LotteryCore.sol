@@ -28,11 +28,9 @@ contract LotteryCore is Ownable {
 
   uint constant TICKET_PRICE = 10 * 1e15; // finney (0.01 Ether)
 
-  address public lottoryOwner; // Contract Owner or Parent Contract ?
-  /* ToDo: Boolean Controler for Open & Close Lottory  */ 
-  bool private lPotActive; // Should be controled by main Functions and Operations
-  /* ToDo: White List Addresses for Liquidity Pool And Withdraw */
-  address public LottoryAddress;  // Address for receiving remaining money 
+  address public LotteryOwner; 
+  bool private lPotActive;  /* ToDo: Boolean Controler for Open & Close Lottery  */
+  address public WeeklyPotAddress;   
 
   /* ToDo: Save Start and End of Tickets for each Address (ID) and Change Search routine */
   struct PotPlayerStr{
@@ -43,16 +41,12 @@ contract LotteryCore is Ownable {
     uint[] PlayersId;
   }
 
-  mapping (address => PotPlayerStr) private PotPlayersMap;  // ToDo : Being private - public
-  address[] private potPlayersArray;  // ToDo : Being private - public
+  mapping (address => PotPlayerStr) private PotPlayersMap;  
+  address[] private potPlayersArray;  
   uint[] private potTickets;
   uint[3][] private potTicketIds;
    
-  // PotPlayerStr[] public potPlayersArr;
-  // mapping (uint => address) public PotPlayersToAddress;
-  // mapping (address => uint) public PotPlayersToPotRate;
-
-  /* ToDo : Generate Lottery Pot Structure as a Wrapper for Lottory Core */
+  /* ToDo : Lottery Pot Generator Structure as a Wrapper for Lottery Core */
   // struct LotteryPot{
   //   string potLabel;
   //   uint entryCount;
@@ -70,12 +64,12 @@ contract LotteryCore is Ownable {
   event TotalPayment(address receiver, uint TrxValue);
 
   constructor(address VRF) {   // , address lOwner
-    lottoryOwner = msg.sender;
+    LotteryOwner = msg.sender;
     _VRF = VRF;
   }
 
   // modifier onlyOwner() {
-  //   require(msg.sender == lottoryOwner, "Owner Only! . You have not the right Access.");
+  //   require(msg.sender == LotteryOwner, "Owner Only! . You have not the right Access.");
   //   _;
   // }
 
@@ -121,11 +115,6 @@ contract LotteryCore is Ownable {
     (uint ticketNumber, uint remainder ) = getDivided(msg.value, TICKET_PRICE); // 10000000000000000
     require(remainder == 0, "Value should be an Integer mutiple of 0.01 BNB");
 
-    // potPlayersArr.push( PotPlayerStr(1, msg.value, ticketNumber) );
-    // uint id = potPlayersArr.length - 1;
-    // PotPlayersToAddress[id] = msg.sender;
-    // PotPlayersToPotRate[msg.sender] = ticketNumber;
-
     potPlayersArray.push( msg.sender );
     uint id = potPlayersArray.length - 1; 
 
@@ -158,7 +147,7 @@ contract LotteryCore is Ownable {
   // }
 
   // function lrequestRandomWords(address _VRFv2) public {
-  //   VRFv2Consumer(_VRFv2).requestRandomWords(lottoryOwner) ;
+  //   VRFv2Consumer(_VRFv2).requestRandomWords(LotteryOwner) ;
   // }
 
   /**
@@ -184,16 +173,16 @@ contract LotteryCore is Ownable {
     WinnerPrizePayment(winnerIndex, winnerPrize); 
     FinalPayment();
 
-    /* ToDo : Clear The Map Data and RElease the Memory !? */  
+    /* ToDo : Clear The Map Data and RElease the Memory */  
     address playerAddress;
     for (uint256 index = 0; index < potPlayersArray.length - 1; index++) {
         playerAddress = potPlayersArray[index];
-        if (PotPlayersMap[msg.sender].PaymentCount > 0) {
-            PotPlayersMap[msg.sender].PaymentCount = 0;
-            PotPlayersMap[msg.sender].paymentValue = 0;
-            PotPlayersMap[msg.sender].TicketNumbers = 0;
-            delete PotPlayersMap[msg.sender].PlayersId;
-            delete PotPlayersMap[msg.sender].TicketsId;
+        if (PotPlayersMap[playerAddress].PaymentCount > 0) {
+            PotPlayersMap[playerAddress].PaymentCount = 0;
+            PotPlayersMap[playerAddress].paymentValue = 0;
+            PotPlayersMap[playerAddress].TicketNumbers = 0;
+            delete PotPlayersMap[playerAddress].PlayersId;
+            delete PotPlayersMap[playerAddress].TicketsId;
         }
     }
     // potPlayersArr = new PotPlayerStr[](0); 
@@ -209,7 +198,6 @@ contract LotteryCore is Ownable {
   function Calculation(uint winnerIndex) internal view returns (uint winnerPrize){
 
     uint totalPot = address(this).balance;
-    /* ToDo : Complete Winner Prize Calculation */
     address WinnerAddress = potPlayersArray[winnerIndex];
     uint WinnerPotAmount = PotPlayersMap[WinnerAddress].paymentValue;
     winnerPrize = totalPot - WinnerPotAmount;
@@ -228,8 +216,7 @@ contract LotteryCore is Ownable {
     address payable potWinner = payable(potPlayersArray[winnerIndex]);  
     potWinner.transfer(winnerPrize);
     emit SelectWinnerAddress(potWinner, winnerPrize);
-    // potWinner.transfer(address(this).balance);
-    //// potPlayers[winnerIndex].transfer(address(this).balance);
+    // potPlayers[winnerIndex].transfer(address(this).balance);
 
   }
 
@@ -239,17 +226,16 @@ contract LotteryCore is Ownable {
   */
   function FinalPayment() internal onlyOwner {
 
-    address payable receiver = payable(LottoryAddress);
+    address payable receiver = payable(WeeklyPotAddress);
     uint TrxValue = address(this).balance;
-    /* ToDo: Complete Final Payment to Cover Transmission remaining into the Liquidity Pool and Profits of Stake Holders */
     receiver.transfer(TrxValue);
     emit TotalPayment(receiver, TrxValue);
 
   }
 
-  function set_LottoryAddress(address _LottoryAddress) external onlyOwner {
-    require(_LottoryAddress != address(0) );
-    LottoryAddress = _LottoryAddress;
+  function set_WeeklyPotAddress(address _WeeklyPotAddress) external onlyOwner {
+    require(_WeeklyPotAddress != address(0) );
+    WeeklyPotAddress = _WeeklyPotAddress;
   }
 
   function listPlayers() external view returns (address[] memory){  
@@ -334,7 +320,7 @@ contract WeeklyLottery is Ownable {
 
   function FinalPayment() internal onlyOwner {
 
-    // address payable receiver = payable(LottoryAddress) ;
+    // address payable receiver = payable(WeeklyPotAddress) ;
     // uint TrxValue = address(this).balance ;
 
     /* ToDo: Complete Final Payment to Cover Transmission remaining into the Liquidity Pool and Profits of Stake Holders */
