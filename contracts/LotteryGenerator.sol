@@ -13,35 +13,44 @@ import "./LotteryCore.sol";
 */
 contract LotteryGenerator is Ownable {
 
+    enum LType {
+        Hourly,
+        Daily,
+        Weekly,
+        Monthly
+    }
+
     address[] public lotteries;
     struct lottery{
         uint index;
         address creator;
         uint totalBalance;
         address winnerAddress; 
+        LType lotteryType;
     }
     mapping(address => lottery) lotteryStructs;
 
+    address[] public LotteryWinnersArray;
     struct LotteryWinnerStr{
         uint playersId;
         uint winnerCount;
     }
     mapping (address => LotteryWinnerStr) public LotteryWinnersMap;
-    address[] public LotteryWinnersArray;
 
+    address[] public WeeklyWinnersArray;
     struct WeeklyWinnerStr{
         uint playersId;
         uint winnerCount;
     }
     mapping (address => WeeklyWinnerStr) public WeeklyWinnersMap;
-    address[] public WeeklyWinnersArray;
 
     // event
     event LotteryCreated(address newLottery);
 
-    function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress) external returns (bool) {
+    function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool) {
         lotteryStructs[_lotteryAddress].totalBalance = _totalBalance;
         lotteryStructs[_lotteryAddress].winnerAddress = _winnerAddress;
+        lotteryStructs[_lotteryAddress].lotteryType = LType(_lotteryType);
         return true;
     }
 
@@ -49,26 +58,41 @@ contract LotteryGenerator is Ownable {
         LotteryWinnersArray.push(_winnerAddress);
         LotteryWinnersMap[_winnerAddress].playersId = LotteryWinnersArray.length;  // -1
         LotteryWinnersMap[_winnerAddress].winnerCount++;
-        return LotteryWinnersArray.length - 1;
+        return LotteryWinnersArray.length ;  // -1
     }
 
     function setWeeklyWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint) {
         WeeklyWinnersArray.push(_winnerAddress);
         WeeklyWinnersMap[_winnerAddress].playersId = WeeklyWinnersArray.length;  // -1
         WeeklyWinnersMap[_winnerAddress].winnerCount++;
-        return WeeklyWinnersArray.length - 1;
+        return WeeklyWinnersArray.length ;  // -1
     }
 
     function clearlotteryWinnersArrayMap(address _lotteryAddress) external returns (bool) {
-        address _lotteryWAddress;
+        address _lotteryWinAddress;
         for (uint256 index = 0; index < LotteryWinnersArray.length - 1; index++) {
-            _lotteryWAddress = LotteryWinnersArray[index];
-            if (LotteryWinnersMap[_lotteryWAddress].playersId > 0) {
-                LotteryWinnersMap[_lotteryWAddress].playersId = 0;
-                LotteryWinnersMap[_lotteryWAddress].winnerCount = 0;
+            _lotteryWinAddress = LotteryWinnersArray[index];
+            if (LotteryWinnersMap[_lotteryWinAddress].playersId > 0) {
+                LotteryWinnersMap[_lotteryWinAddress].playersId = 0;
+                LotteryWinnersMap[_lotteryWinAddress].winnerCount = 0;
             }
+            // delete LotteryWinnersMap[_lotteryWinAddress];
         }
         delete LotteryWinnersArray;
+        return true;
+    }
+
+    function clearWeeklyWinnersArrayMap(address _lotteryAddress) external returns (bool) {
+        address _lotteryWinAddress;
+        for (uint256 index = 0; index < WeeklyWinnersArray.length - 1; index++) {
+            _lotteryWinAddress = WeeklyWinnersArray[index];
+            if (WeeklyWinnersMap[_lotteryWinAddress].playersId > 0) {
+                WeeklyWinnersMap[_lotteryWinAddress].playersId = 0;
+                WeeklyWinnersMap[_lotteryWinAddress].winnerCount = 0;
+            }
+            // delete WeeklyWinnersMap[_lotteryWinAddress];
+        }
+        delete WeeklyWinnersArray;
         return true;
     }
 

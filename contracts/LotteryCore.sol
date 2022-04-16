@@ -16,9 +16,11 @@ import "./VRFv2SubscriptionManager.sol";
 interface IlotteryGenerator {
     function LotteryWinnersArray() external view returns (address[] memory);
     function WeeklyWinnersArray() external view returns (address[] memory);
-    function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress) external returns (bool);
+    function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool);
     function setlotteryWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint);
+    function setWeeklyWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint);
     function clearlotteryWinnersArrayMap(address _lotteryAddress) external returns (bool);
+    function clearWeeklyWinnersArrayMap(address _lotteryAddress) external returns (bool);
 }
 
 
@@ -179,7 +181,9 @@ contract LotteryCore is Ownable {
     uint winnerIndex = l_randomWords % potTickets.length;  
     winnerIndex = potTickets[winnerIndex];
     uint winnerPrize = Calculation(winnerIndex);
+    
     emit SelectWinnerIndex(winnerIndex, address(this).balance, winnerPrize);
+
     UpdateLotteryData(winnerIndex, address(this).balance);
     WinnerPrizePayment(winnerIndex, winnerPrize); 
     FinalPayment();
@@ -203,6 +207,7 @@ contract LotteryCore is Ownable {
             delete PotPlayersMap[playerAddress].PlayersId;
             delete PotPlayersMap[playerAddress].TicketsId;
         }
+        // delete PotPlayersMap[playerAddress];
     }
     delete potPlayersArray;
     delete potTickets;
@@ -276,7 +281,7 @@ contract LotteryCore is Ownable {
     bool _success;
     uint _winnerId;
     address _winnerAddress = potPlayersArray[_winnerIndex];
-    _success = IlotteryGenerator(generatorLotteryAddr).setlotteryStructs(address(this), _balance, _winnerAddress);
+    _success = IlotteryGenerator(generatorLotteryAddr).setlotteryStructs(address(this), _balance, _winnerAddress, 0);
     _winnerId = IlotteryGenerator(generatorLotteryAddr).setlotteryWinnersArrayMap(address(this), _winnerAddress);
     return true;
   }
@@ -350,8 +355,10 @@ contract WeeklyLottery is Ownable {
     _LotteryWinnersArray = getLotteryWinnersArray();  
     uint256 l_randomWords = getRandomValue(_VRF);
     uint winnerIndex = l_randomWords % _LotteryWinnersArray.length;
-    uint winnerPrize = Calculation(winnerIndex);
+    uint winnerPrize = Calculation();
+    
     emit SelectWinnerIndex(winnerIndex, address(this).balance, winnerPrize);
+    
     UpdateLotteryData(winnerIndex, address(this).balance);
     WinnerPrizePayment(winnerIndex, winnerPrize); 
     FinalPayment();
@@ -373,13 +380,13 @@ contract WeeklyLottery is Ownable {
     * @notice Calculation of Pot Winner Prize.
     * @dev Findout the 5% of the Total Pot and The Winner payment.
   */
-  function Calculation(uint _winnerIndex) internal view returns (uint winnerPrize){
+  function Calculation() internal view returns (uint winnerPrize){
 
     uint totalPot = address(this).balance;
     // _LotteryWinnersArray = getLotteryWinnersArray();  
-    address WinnerAddress = _LotteryWinnersArray[_winnerIndex];
+    // address WinnerAddress = _LotteryWinnersArray[_winnerIndex];
     /* ToDo : Replace Calculation Parts with OpenZeppelin SafeMath ) */
-    (winnerPrize, ) = getDivided(winnerPrize, 20);
+    (winnerPrize, ) = getDivided(totalPot, 20);  // winnerPrize
 
   }
 
@@ -424,8 +431,8 @@ contract WeeklyLottery is Ownable {
     uint _winnerId ;
     // _LotteryWinnersArray = getLotteryWinnersArray();  
     address _winnerAddress = _LotteryWinnersArray[_winnerIndex];
-    _success = IlotteryGenerator(generatorLotteryAddr).setlotteryStructs(address(this), _balance, _winnerAddress);
-    _winnerId = IlotteryGenerator(generatorLotteryAddr).setlotteryWinnersArrayMap(address(this), _winnerAddress);
+    _success = IlotteryGenerator(generatorLotteryAddr).setlotteryStructs(address(this), _balance, _winnerAddress, 2);
+    _winnerId = IlotteryGenerator(generatorLotteryAddr).setWeeklyWinnersArrayMap(address(this), _winnerAddress);
     return true ;
   }
 
