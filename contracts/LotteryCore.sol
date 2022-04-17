@@ -286,7 +286,7 @@ contract LotteryCore is Ownable {
     return true;
   }
 
-  function generatorLotteryAddress(address _contractAddr) public payable onlyOwner {
+  function generatorLotteryAddress(address _contractAddr) public onlyOwner {
     generatorLotteryAddr = _contractAddr;
   }
 
@@ -427,16 +427,16 @@ contract WeeklyLottery is Ownable {
     * @dev Update Generator Smart Contract For Saving Hourly Winner Address
   */
   function UpdateLotteryData(uint _winnerIndex, uint _balance) internal returns(bool) {
-    bool _success ;
-    uint _winnerId ;
+    bool _success;
+    uint _winnerId;
     // _LotteryWinnersArray = getLotteryWinnersArray();  
     address _winnerAddress = _LotteryWinnersArray[_winnerIndex];
     _success = IlotteryGenerator(generatorLotteryAddr).setlotteryStructs(address(this), _balance, _winnerAddress, 2);
     _winnerId = IlotteryGenerator(generatorLotteryAddr).setWeeklyWinnersArrayMap(address(this), _winnerAddress);
-    return true ;
+    return true;
   }
 
-  function generatorLotteryAddress(address _contractAddr) public payable onlyOwner {
+  function generatorLotteryAddress(address _contractAddr) public onlyOwner {
     generatorLotteryAddr = _contractAddr;
   }
 
@@ -570,16 +570,16 @@ contract MonthlyLottery is Ownable {
     * @dev Update Generator Smart Contract For Saving Hourly Winner Address
   */
   function UpdateLotteryData(uint _winnerIndex, uint _balance) internal returns(bool) {
-    bool _success ;
-    uint _winnerId ;
+    bool _success;
+    // uint _winnerId;
     // _LotteryWinnersArray = getLotteryWinnersArray();  
     address _winnerAddress = _WeeklyWinnersArray[_winnerIndex];
     _success = IlotteryGenerator(generatorLotteryAddr).setlotteryStructs(address(this), _balance, _winnerAddress, 3);
     // _winnerId = IlotteryGenerator(generatorLotteryAddr).setWeeklyWinnersArrayMap(address(this), _winnerAddress);
-    return true ;
+    return true;
   }
 
-  function generatorLotteryAddress(address _contractAddr) public payable onlyOwner {
+  function generatorLotteryAddress(address _contractAddr) public onlyOwner {
     generatorLotteryAddr = _contractAddr;
   }
 
