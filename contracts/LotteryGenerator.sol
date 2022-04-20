@@ -47,6 +47,12 @@ contract LotteryGenerator is Ownable {
     // event
     event LotteryCreated(address newLottery);
 
+  /* ToDo : Add & Complete Fallback routine */
+    fallback() external payable {
+    }
+    receive() external payable {
+    }
+
     function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool) {
         lotteryStructs[_lotteryAddress].totalBalance = _totalBalance;
         lotteryStructs[_lotteryAddress].winnerAddress = _winnerAddress;

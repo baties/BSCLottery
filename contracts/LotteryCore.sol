@@ -11,6 +11,7 @@ import "./VRFv2Consumer.sol";
 import "./VRFv2SubscriptionManager.sol";
 
 // import "truffle/Console.sol";
+// import "hardhat/console.sol";
 
 
 interface IlotteryGenerator {
@@ -86,9 +87,10 @@ contract LotteryCore is Ownable {
   // }
 
   /* ToDo : Add & Complete Fallback routine */
-  // fallback() external payable {
-  //       // player name will be unknown
-  // }
+  fallback() external payable {
+  }
+  receive() external payable {
+  }
 
   /**
     * @notice Show the total Balance of this Pot. 
@@ -151,16 +153,20 @@ contract LotteryCore is Ownable {
 
   }
 
-  // function randomGenerator() private view returns (uint) {
-  //   return uint(
-  //     keccak256(
-  //       abi.encodePacked(
-  //         block.difficulty, block.timestamp, potPlayers ))) ;
-  // }
+  /*
+  function randomGenerator() private view returns (uint) {
+    return uint(
+      keccak256(
+        abi.encodePacked(
+          block.difficulty, block.timestamp, potTickets ))) ;
+  }
+  */
 
-  // function lrequestRandomWords(address _VRFv2) public {
-  //   VRFv2Consumer(_VRFv2).requestRandomWords(LotteryOwner) ;
-  // }
+  /*
+  function lrequestRandomWords(address _VRFv2) public {
+    VRFv2Consumer(_VRFv2).requestRandomWords(LotteryOwner) ;
+  }
+  */
 
   /**
     * @notice Generating Random Number for Finding the Hourly Winner.
@@ -177,6 +183,7 @@ contract LotteryCore is Ownable {
   */
   function select_Winner() public onlyOwner {  
 
+    // uint256 l_randomWords = randomGenerator();
     uint256 l_randomWords = getRandomValue(_VRF);
     uint winnerIndex = l_randomWords % potTickets.length;  
     winnerIndex = potTickets[winnerIndex];
@@ -188,6 +195,7 @@ contract LotteryCore is Ownable {
     WinnerPrizePayment(winnerIndex, winnerPrize); 
     FinalPayment();
     ClearDataBase();
+    // console.log("Select Winner Done !");
 
   }
 
@@ -247,7 +255,7 @@ contract LotteryCore is Ownable {
     * @notice Remaining Pot Money Transfer.
     * @dev Transfer remaining Money to the Liquidity Pool.
   */
-  function FinalPayment() internal onlyOwner {
+  function FinalPayment() internal {   // onlyOwner 
 
     address payable receiver = payable(WeeklyPotAddress);
     uint TrxValue = address(this).balance;
@@ -286,7 +294,7 @@ contract LotteryCore is Ownable {
     return true;
   }
 
-  function generatorLotteryAddress(address _contractAddr) public onlyOwner {
+  function generatorLotteryAddress(address _contractAddr) external onlyOwner {
     generatorLotteryAddr = _contractAddr;
   }
 
@@ -316,6 +324,11 @@ contract WeeklyLottery is Ownable {
 
   constructor(address VRF) {   // , address lOwner
     _VRF = VRF;
+  }
+
+  fallback() external payable {
+  }
+  receive() external payable {
   }
 
   function balanceInPot() public view returns(uint){
@@ -408,7 +421,7 @@ contract WeeklyLottery is Ownable {
     * @notice Remaining Pot Money Transfer.
     * @dev Transfer remaining Money to the Liquidity Pool.
   */
-  function FinalPayment() internal onlyOwner {
+  function FinalPayment() internal {   //  onlyOwner
 
     address payable receiver = payable(MonthlyPotAddress);
     uint TrxValue = address(this).balance;
@@ -436,7 +449,7 @@ contract WeeklyLottery is Ownable {
     return true;
   }
 
-  function generatorLotteryAddress(address _contractAddr) public onlyOwner {
+  function generatorLotteryAddress(address _contractAddr) external onlyOwner {
     generatorLotteryAddr = _contractAddr;
   }
 
@@ -459,6 +472,11 @@ contract MonthlyLottery is Ownable {
 
   constructor(address VRF) {   // , address lOwner
     _VRF = VRF;
+  }
+
+  fallback() external payable {
+  }
+  receive() external payable {
   }
 
   function balanceInPot() public view returns(uint){
@@ -551,7 +569,7 @@ contract MonthlyLottery is Ownable {
     * @notice Remaining Pot Money Transfer.
     * @dev Transfer remaining Money to the Liquidity Pool.
   */
-  function FinalPayment() internal onlyOwner {
+  function FinalPayment() internal {   // onlyOwner 
 
     address payable receiver = payable(LiquidityPoolAddress);
     uint TrxValue = address(this).balance;
@@ -579,7 +597,7 @@ contract MonthlyLottery is Ownable {
     return true;
   }
 
-  function generatorLotteryAddress(address _contractAddr) public onlyOwner {
+  function generatorLotteryAddress(address _contractAddr) external onlyOwner {
     generatorLotteryAddr = _contractAddr;
   }
 
