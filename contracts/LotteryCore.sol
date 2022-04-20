@@ -6,7 +6,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-import "./LotteryGenerator.sol";
+// import "./LotteryGenerator.sol";
 import "./VRFv2Consumer.sol";
 import "./VRFv2SubscriptionManager.sol";
 
@@ -100,6 +100,11 @@ contract LotteryCore is Ownable {
   function balanceInPot() public view returns(uint){
     return address(this).balance;
   }
+
+  function withdraw() external onlyOwner {
+    payable(msg.sender).transfer(address(this).balance);
+  }
+
 
   /* ToDo : Replace This function with OpenZeppelin SafeMath */
   /**
@@ -208,14 +213,14 @@ contract LotteryCore is Ownable {
     address playerAddress;
     for (uint256 index = 0; index < potPlayersArray.length - 1; index++) {
         playerAddress = potPlayersArray[index];
-        if (PotPlayersMap[playerAddress].PaymentCount > 0) {
-            PotPlayersMap[playerAddress].PaymentCount = 0;
-            PotPlayersMap[playerAddress].paymentValue = 0;
-            PotPlayersMap[playerAddress].TicketNumbers = 0;
-            delete PotPlayersMap[playerAddress].PlayersId;
-            delete PotPlayersMap[playerAddress].TicketsId;
-        }
-        // delete PotPlayersMap[playerAddress];
+        // if (PotPlayersMap[playerAddress].PaymentCount > 0) {
+        //     PotPlayersMap[playerAddress].PaymentCount = 0;
+        //     PotPlayersMap[playerAddress].paymentValue = 0;
+        //     PotPlayersMap[playerAddress].TicketNumbers = 0;
+        //     delete PotPlayersMap[playerAddress].PlayersId;
+        //     delete PotPlayersMap[playerAddress].TicketsId;
+        // }
+        delete PotPlayersMap[playerAddress];
     }
     delete potPlayersArray;
     delete potTickets;
@@ -271,10 +276,6 @@ contract LotteryCore is Ownable {
 
   function listPlayers() external view returns (address[] memory){  
     return potPlayersArray;  
-  }
-
-  function withdraw() external onlyOwner {
-    payable(msg.sender).transfer(address(this).balance);
   }
 
   function getLotteryTickets() public view returns(uint[] memory) {
@@ -335,13 +336,13 @@ contract WeeklyLottery is Ownable {
     return address(this).balance;
   }
 
+  function withdraw() external onlyOwner {
+    payable(msg.sender).transfer(address(this).balance);
+  }
+
   function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
     // uint8 zeroOne = uint8(randomGenerator() % 2);
     randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
-  }
-
-  function withdraw() external onlyOwner {
-    payable(msg.sender).transfer(address(this).balance);
   }
 
   /* ToDo : Replace This function with OpenZeppelin SafeMath */
@@ -483,13 +484,13 @@ contract MonthlyLottery is Ownable {
     return address(this).balance;
   }
 
+  function withdraw() external onlyOwner {
+    payable(msg.sender).transfer(address(this).balance);
+  }
+
   function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
     // uint8 zeroOne = uint8(randomGenerator() % 2);
     randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
-  }
-
-  function withdraw() external onlyOwner {
-    payable(msg.sender).transfer(address(this).balance);
   }
 
   /* ToDo : Replace This function with OpenZeppelin SafeMath */

@@ -53,6 +53,14 @@ contract LotteryGenerator is Ownable {
     receive() external payable {
     }
 
+    function balanceInPot() public view returns(uint){
+        return address(this).balance;
+    }
+
+    function withdraw() external onlyOwner {
+        payable(msg.sender).transfer(address(this).balance);
+    }
+
     function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool) {
         lotteryStructs[_lotteryAddress].totalBalance = _totalBalance;
         lotteryStructs[_lotteryAddress].winnerAddress = _winnerAddress;
@@ -78,11 +86,11 @@ contract LotteryGenerator is Ownable {
         address _lotteryWinAddress;
         for (uint256 index = 0; index < LotteryWinnersArray.length - 1; index++) {
             _lotteryWinAddress = LotteryWinnersArray[index];
-            if (LotteryWinnersMap[_lotteryWinAddress].playersId > 0) {
-                LotteryWinnersMap[_lotteryWinAddress].playersId = 0;
-                LotteryWinnersMap[_lotteryWinAddress].winnerCount = 0;
-            }
-            // delete LotteryWinnersMap[_lotteryWinAddress];
+            // if (LotteryWinnersMap[_lotteryWinAddress].playersId > 0) {
+            //     LotteryWinnersMap[_lotteryWinAddress].playersId = 0;
+            //     LotteryWinnersMap[_lotteryWinAddress].winnerCount = 0;
+            // }
+            delete LotteryWinnersMap[_lotteryWinAddress];
         }
         delete LotteryWinnersArray;
         return true;
@@ -92,11 +100,11 @@ contract LotteryGenerator is Ownable {
         address _lotteryWinAddress;
         for (uint256 index = 0; index < WeeklyWinnersArray.length - 1; index++) {
             _lotteryWinAddress = WeeklyWinnersArray[index];
-            if (WeeklyWinnersMap[_lotteryWinAddress].playersId > 0) {
-                WeeklyWinnersMap[_lotteryWinAddress].playersId = 0;
-                WeeklyWinnersMap[_lotteryWinAddress].winnerCount = 0;
-            }
-            // delete WeeklyWinnersMap[_lotteryWinAddress];
+            // if (WeeklyWinnersMap[_lotteryWinAddress].playersId > 0) {
+            //     WeeklyWinnersMap[_lotteryWinAddress].playersId = 0;
+            //     WeeklyWinnersMap[_lotteryWinAddress].winnerCount = 0;
+            // }
+            delete WeeklyWinnersMap[_lotteryWinAddress];
         }
         delete WeeklyWinnersArray;
         return true;
