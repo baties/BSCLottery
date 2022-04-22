@@ -1,98 +1,111 @@
-import React, { Component } from "react";
+import React, {Component, useLayoutEffect} from 'react';
 import { Container, Row, Col, FormControl, InputGroup, Button } from 'react-bootstrap';
-import Web3 from "web3";
-
-import { LotteryCore } from './ABI/LotteryCore'
-
-const web3 = new Web3(Web3.givenProvider);
-
-const contractAddress = "0x7dF37cb452fF9eda678ff666189742194B19612E"
-const weeklyContractAddress = "0x7D20FFdb9be85530885e0de29a7fA9033F266E35"
-const monthlyContractAddress = "0x60E61BfB3a06940962E0FBa179e92eD39B437707"
-const ContractGeneratorAddress = "0x1D237c0181A1f62B106043c0B6c787Cfad6E562D"
-
-const LotteryContract = new web3.eth.Contract(LotteryCore, contractAddress);
+import './App.css';
+import web3 from './web3';
+// import web3 from "web3";
+import lottery from './lottery';
+// import { LotteryCore } from './ABI/LotteryCore';
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      potValue: 0,
-      account: null
-    };
-    this.value = React.createRef();
-  }
-
-  componentDidMount = async (t) => {
-    const accounts = await window.ethereum.enable();
-    const account = accounts[0];
-    this.setState({ account: account });
-  }
-
-  getValue = async (t) => {
-    const accounts = await window.ethereum.enable();
-    const account = accounts[0];    
-    const result = await LotteryContract.methods.balanceInPot().call({
-      from: account, // this.state.account,
-    });
-    this.setState({ potValue: result });
-  }
-
-  setValue = async (t) => {
-    const accounts = await window.ethereum.enable();
-    const account = accounts[0];    
-    const address = contractAddress;
-    const gas = await LotteryContract.methods.generatorLotteryAddress(address).estimateGas();
-    const result = await LotteryContract.methods.generatorLotteryAddress(address).send({
-      from: account,   // this.state.account,
-      gas,
-    });
-  }
+  state = {
+    owner: '',
+    players: [],
+    balance: '',
+    value: '',
+    message: '...'
+  };
 
   render() {
     return (
-      <div className="LotteryContract">
-
-        <h2> Lottery SmartContract  </h2>
-        <h2> ---------------------  </h2>
-        <div class="form-row">
-          <div class="col xs = {12}">
-            <h7> My Account: {this.state.account} </h7>
+      <div>
+        <h2>Lottery Contract</h2>
+        <p>
+          This lottery is managed by {this.state.owner}.<br /> There are currently{' '}
+          {this.state.players.length} players, competing to win{' '}
+          {web3.fromWei(this.state.balance, 'ether')} ether!
+        </p>
+        <form onSubmit={this.onSubmit}>
+          <h4>Want to try your luck?</h4>
+          <div>
+            <label>Amount of ether to enter</label>
+            <input
+              value={this.state.value}
+              onChange={event => this.setState({ value: event.target.value })}
+            />
           </div>
-        </div>
-        <>
-
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <Container>
-
-            <Row>
-              <InputGroup className="mb-3">
-                <FormControl
-                  ref={this.value}
-                  placeholder="Address to Set"
-                  aria-label="Address to Set"
-                  aria-describedby="basic-addon2"
-                />
-                <Button variant="secondary" id="button-addon2" onClick={this.setValue}>
-                  Set Address</Button>
-              </InputGroup>
-            </Row>
-
-            <Row>
-              <Col><Button variant="success" onClick={this.getValue}>Retrieve</Button>{' '}</Col>
-              <Col>The Lottery Pot Value is: {this.state.potValue}
-              </Col>
-            </Row>
-
-          </Container>
-        </>
+          <button>Enter</button>
+        </form>
+        <h4>Ready to pick a Winner?</h4>
+        <button onClick={this.onClick}>Pick a Winner!</button>
+        <h1>{this.state.message}</h1>
       </div>
-    )
+    );
   }
+
+  componentDidMount(){
+
+    // lottery.manager.call((error, result) => {
+    //   if(!error){
+    //     this.setState({ manager: result });
+    //   } else{
+    //       console.log(error);
+    //   }
+    // });
+  
+    web3.eth.getBalance(lottery.address, (error, result) => {
+      if(!error){
+        this.setState({ balance: result.toNumber()});
+      } else {
+          console.log(error);
+        }
+    });
+  
+    lottery.listPlayers.call((error, result) => {
+      if(!error){
+        this.setState({ players: result });
+      } else {
+          console.log(error);
+        }
+    });
+  
+  };
+  
+  onSubmit = event => {
+    event.preventDefault();
+    const account = web3.eth.accounts[0];
+
+    this.setState({ message: 'Waiting on transaction success...'});
+    lottery.play({
+      from: account,
+      value: web3.toWei(this.state.value, 'ether')
+    }, (error, result) => { 
+      if(!error) {
+        this.setState({ message: 'You have been entered!' });
+      } else {
+          this.setState({ message: String(error) });
+      }    
+    })
+
+  };
+
+  onClick = () => {
+    const account = web3.eth.accounts[0];
+
+    this.setState({ message: 'Waiting for transaction success...'});
+    lottery.select_Winner({
+      from: account
+    }, (error, result) => {
+      if(!error) {
+        this.setState({ message: 'A winner has been picked!' });
+      } else {
+          this.setState({ message: String(error)});
+        }
+    })
+
+  };
+
 }
+
 export default App;
 
