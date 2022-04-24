@@ -99,3 +99,12 @@ npm run dev
 * The Lottery Smart-Contract starts Lottery Process and choses the Winner of current Pot.   
 * The Winner Prize will be transfered to the Winner Wallet.
 * The result will be shown to the all users.
+
+## Smart Contract Addresses on Rinkeby TestNet :
+
+- **LotteryCore** : [0x6e6D6E924A1900E3033476058F4d8F98aC8f55A9](https://rinkeby.etherscan.io/address/0x6e6D6E924A1900E3033476058F4d8F98aC8f55A9)
+- **LotteryGenerator** : [0x96B2ac11088178E492A0981F22FcF424DfF43C1d](https://rinkeby.etherscan.io/address/0x96B2ac11088178E492A0981F22FcF424DfF43C1d)
+- **WeeklyLottery** : [0x4e2F0e8dce12ba79871740db3a077206b976d814](https://rinkeby.etherscan.io/address/0x4e2F0e8dce12ba79871740db3a077206b976d814)
+- **MonthlyLottery** : [0x5b5d4140302778F704Dd77eb0c6B17C93B2aAeAC](https://rinkeby.etherscan.io/address/0x5b5d4140302778F704Dd77eb0c6B17C93B2aAeAC)
+
+
