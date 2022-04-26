@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@metamask/detect-provider": "^1.2.0",
+    "@metamask/eslint-config": "^9.0.0",
+    "@metamask/onboarding": "^1.0.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
@@ -48,6 +51,7 @@
     "react-app-rewired": "^2.2.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
+    "dotenv": "^16.0.0",
     "url": "^0.11.0"
   }
 }
