@@ -15,8 +15,10 @@ const MyContract = new web3.eth.Contract(abi, contractAddress);  // , {from: con
 console.log("Lottery Contract Address is : " + contractAddress);
 
 MyContract.setProvider(`wss://rinkeby.infura.io/ws/v3/${process.env.REACT_APP_INFURA_PROJECT_ID}`);
+// MyContract.setProvider(new web3.providers.HttpProvider('http://localhost:7545'));
 
 // const provider = detectEthereumProvider();
+// const provider = web3.provider;
 // MyContract.setProvider(provider);
 
 // export default web3.eth.contract(abi).at(address);

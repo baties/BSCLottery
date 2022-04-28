@@ -291,15 +291,15 @@ class App extends Component {
     // const accounts = await window.ethereum.enable();
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     const account = accounts[0];
-    // console.log("Player Account is : " + account);
-    // console.log("Value is : " + this.state.value.toString());
+    console.log("Player Account is : " + account);
+    console.log("Value is : " + this.state.value.toString());
     this.setState({ message: 'Waiting on transaction success...'});
     const gas = await LotteryContract.methods.play().estimateGas({
       from: account,
       value: web3.utils.toBN(this.state.value * 1e18)   // web3.utils.toWei(this.state.value, 'ether')
     });
-    // console.log("gas is : " + gas);
-    // console.log("real value is : " + (web3.utils.toBN(this.state.value * 1e18)))
+    console.log("gas is : " + gas);
+    console.log("real value is : " + (web3.utils.toBN(this.state.value * 1e18)))
 
     LotteryContract.methods.play().send({
       from: account,
