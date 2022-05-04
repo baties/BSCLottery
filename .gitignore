@@ -67,3 +67,5 @@ dist
 # VSCode Cache Directory
 .vscode
 
+# Pycharm Cache Directory
+.idea
