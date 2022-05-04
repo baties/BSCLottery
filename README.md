@@ -102,9 +102,9 @@ npm run dev
 
 ## Smart Contract Addresses on Rinkeby TestNet :
 
-- **LotteryCore** : [0x6e6D6E924A1900E3033476058F4d8F98aC8f55A9](https://rinkeby.etherscan.io/address/0x6e6D6E924A1900E3033476058F4d8F98aC8f55A9)
-- **LotteryGenerator** : [0x96B2ac11088178E492A0981F22FcF424DfF43C1d](https://rinkeby.etherscan.io/address/0x96B2ac11088178E492A0981F22FcF424DfF43C1d)
-- **WeeklyLottery** : [0x4e2F0e8dce12ba79871740db3a077206b976d814](https://rinkeby.etherscan.io/address/0x4e2F0e8dce12ba79871740db3a077206b976d814)
-- **MonthlyLottery** : [0x5b5d4140302778F704Dd77eb0c6B17C93B2aAeAC](https://rinkeby.etherscan.io/address/0x5b5d4140302778F704Dd77eb0c6B17C93B2aAeAC)
+- **LotteryCore** : [0xD166681c76AADdc703dF06216159F8035B149d22](https://rinkeby.etherscan.io/address/0xD166681c76AADdc703dF06216159F8035B149d22)
+- **LotteryGenerator** : [0xd44e2Beb657cF17a298C1bF2bdDb3e4f1722949A](https://rinkeby.etherscan.io/address/0xd44e2Beb657cF17a298C1bF2bdDb3e4f1722949A)
+- **WeeklyLottery** : [0x09df50dC330e4C539864661D2692b835c6eC2070](https://rinkeby.etherscan.io/address/0x09df50dC330e4C539864661D2692b835c6eC2070)
+- **MonthlyLottery** : [0x8e613B525B183576fE13C939115BAf073fd3b73A](https://rinkeby.etherscan.io/address/0x8e613B525B183576fE13C939115BAf073fd3b73A)
 
 
