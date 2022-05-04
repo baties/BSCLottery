@@ -5,4 +5,18 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract LotteryLiquidityPool is Ownable {
 
+  fallback() external payable {
+  }
+  receive() external payable {
+  }
+
+  function balanceInPot() public view returns(uint){
+    return address(this).balance;
+  }
+
+  function withdraw() external onlyOwner {
+    payable(msg.sender).transfer(address(this).balance);
+  }
+
+
 }

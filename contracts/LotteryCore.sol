@@ -13,11 +13,12 @@ import "./VRFv2SubscriptionManager.sol";
 // import "truffle/Console.sol";
 // import "hardhat/console.sol";
 
+import "./LotteryInterface.sol";
 
-interface IlotteryGenerator {
-    function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool);
-    function setlotteryWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint);
-}
+// interface IlotteryGenerator {
+//     function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool);
+//     function setlotteryWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint);
+// }
   // function LotteryWinnersArray() external view returns (address[] memory);
   // function WeeklyWinnersArray() external view returns (address[] memory);
   // function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool);
@@ -40,12 +41,17 @@ interface IlotteryGenerator {
 */
 contract LotteryCore is Ownable {
 
+  address private _VRF;
   address private generatorLotteryAddr;
+  address private LiquidityPoolAddress;
+  // address private MultiSigWalletAddress;
+  address private WeeklyPotAddress;
+  address private MonthlyPotAddress;   
+
   uint constant TICKET_PRICE = 10 * 1e15; // finney (0.01 Ether)
 
   // address public LotteryOwner; 
   bool private lPotActive;  /* ToDo: Boolean Controler for Open & Close Lottery  */
-  address public WeeklyPotAddress;   
 
   /* ToDo: Save Start and End of Tickets for each Address (ID) and Change Search routine */
   struct PotPlayerStr{
@@ -69,8 +75,6 @@ contract LotteryCore is Ownable {
   //   uint potValue;
   //   // mapping(address => PotPlayer) players;
   // }
-
-  address private _VRF;
 
   event SelectWinnerIndex(uint winnerIndex, uint potBalance, uint winnerPrize);
   event SelectWinnerAddress(address potWinner, uint winnerPrize);
@@ -194,13 +198,13 @@ contract LotteryCore is Ownable {
     uint256 l_randomWords = getRandomValue(_VRF);
     uint winnerIndex = l_randomWords % potTickets.length;  
     winnerIndex = potTickets[winnerIndex];
-    uint winnerPrize = Calculation(winnerIndex);
+    (uint winnerPrize, uint weeklyPot, uint monthlyPot, uint liquidityAmount) = Calculation(winnerIndex);
     
     emit SelectWinnerIndex(winnerIndex, address(this).balance, winnerPrize);
 
     UpdateLotteryData(winnerIndex, address(this).balance);
     WinnerPrizePayment(winnerIndex, winnerPrize); 
-    FinalPayment();
+    FinalPayment(weeklyPot, monthlyPot, liquidityAmount);
     ClearDataBase();
     // console.log("Select Winner Done !");
 
@@ -233,15 +237,22 @@ contract LotteryCore is Ownable {
     * @notice Calculation of Pot Winner Prize.
     * @dev Findout the 50% of the Total Pot and The Winner payment.
   */
-  function Calculation(uint _winnerIndex) internal view returns (uint winnerPrize){
+  function Calculation(uint _winnerIndex) internal view returns (uint winnerPrize, uint weeklyPot, uint monthlyPot, uint liquidityAmount){
 
     uint totalPot = address(this).balance;
     address WinnerAddress = potPlayersArray[_winnerIndex];
     uint WinnerPotAmount = PotPlayersMap[WinnerAddress].paymentValue;
+
     winnerPrize = totalPot - WinnerPotAmount;
     /* ToDo : Replace Calculation Parts with OpenZeppelin SafeMath ) */
     (winnerPrize, ) = getDivided(winnerPrize, 2);
     winnerPrize += WinnerPotAmount; 
+
+    uint otherPots = totalPot - winnerPrize;
+    (otherPots, ) = getDivided(otherPots, 20);
+    weeklyPot = otherPots;
+    monthlyPot = otherPots;
+    liquidityAmount = totalPot - 2 * otherPots;
 
   }
 
@@ -262,26 +273,26 @@ contract LotteryCore is Ownable {
     * @notice Remaining Pot Money Transfer.
     * @dev Transfer remaining Money to the Liquidity Pool.
   */
-  function FinalPayment() internal {   // onlyOwner 
+  function FinalPayment(uint weeklyPot, uint monthlyPot, uint liquidityAmount) internal {   // onlyOwner 
+
+    // uint TrxValue = address(this).balance;
+    // address payable receiver = payable(WeeklyPotAddress);
+    // TrxValue = address(this).balance; 
+    // receiver.transfer(TrxValue);
+    // emit TotalPayment(receiver, TrxValue);
 
     address payable receiver = payable(WeeklyPotAddress);
-    uint TrxValue = address(this).balance;
-    receiver.transfer(TrxValue);
-    emit TotalPayment(receiver, TrxValue);
+    receiver.transfer(weeklyPot);
+    emit TotalPayment(receiver, weeklyPot);
 
-  }
+    receiver = payable(MonthlyPotAddress);
+    receiver.transfer(monthlyPot);
+    emit TotalPayment(receiver, monthlyPot);
 
-  function set_WeeklyPotAddress(address _WeeklyPotAddress) external onlyOwner {
-    require(_WeeklyPotAddress != address(0) );
-    WeeklyPotAddress = _WeeklyPotAddress;
-  }
+    receiver = payable(LiquidityPoolAddress);
+    receiver.transfer(liquidityAmount);
+    emit TotalPayment(receiver, liquidityAmount);
 
-  function listPlayers() external view returns (address[] memory){  
-    return potPlayersArray;  
-  }
-
-  function getLotteryTickets() public view returns(uint[] memory) {
-    return potTickets;
   }
 
   /**
@@ -292,13 +303,41 @@ contract LotteryCore is Ownable {
     bool _success;
     uint _winnerId;
     address _winnerAddress = potPlayersArray[_winnerIndex];
-    _success = IlotteryGenerator(generatorLotteryAddr).setlotteryStructs(address(this), _balance, _winnerAddress, 0);
-    _winnerId = IlotteryGenerator(generatorLotteryAddr).setlotteryWinnersArrayMap(address(this), _winnerAddress);
+    _success = LotteryInterface(generatorLotteryAddr).setlotteryStructs(address(this), _balance, _winnerAddress, 0);
+    _winnerId = LotteryInterface(generatorLotteryAddr).setlotteryWinnersArrayMap(address(this), _winnerAddress);
     return true;
+  }
+
+  function set_WeeklyPotAddress(address _WeeklyPotAddress) external onlyOwner {
+    require(_WeeklyPotAddress != address(0) );
+    WeeklyPotAddress = _WeeklyPotAddress;
+  }
+
+  function set_MonthlyPotAddress(address _MonthlyPotAddress) external onlyOwner {
+    require(_MonthlyPotAddress != address(0) );
+    MonthlyPotAddress = _MonthlyPotAddress;
   }
 
   function generatorLotteryAddress(address _contractAddr) external onlyOwner {
     generatorLotteryAddr = _contractAddr;
+  }
+
+  function set_LiquidityPoolAddress(address _LiquidityPoolAddress) external onlyOwner {
+    require(_LiquidityPoolAddress != address(0) );
+    LiquidityPoolAddress = _LiquidityPoolAddress;
+  }
+
+  // function set_MultiSigWalletAddress(address _MultiSigWalletAddress) external onlyOwner {
+  //   require(_MultiSigWalletAddress != address(0) );
+  //   MultiSigWalletAddress = _MultiSigWalletAddress;
+  // }
+
+  function listPlayers() external view returns (address[] memory){  
+    return potPlayersArray;  
+  }
+
+  function getLotteryTickets() public view returns(uint[] memory) {
+    return potTickets;
   }
 
 }

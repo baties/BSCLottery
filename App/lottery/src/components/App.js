@@ -170,10 +170,9 @@ function App() {
           try {
             // var wei_price = ticketPrice * 10 ** 18
             // const buyApp = await lottery.methods.play().send({value: wei_price.toString(), from: account})
-            var wei_price = amount * 10 ** 18
+            var wei_price = amount * price * 10 ** 18
             const buyApp = await lottery.methods.play().send({value: wei_price, from: account})
             await loadContractData()
-            console.log("finish");
           } catch (e) {
             console.log('Error, buy ticket: ', e)
           }
@@ -190,14 +189,20 @@ function App() {
       }
   
       if(lottery && lottery !== 'undefined') {
-        if(pickReady) {
+        // if(pickReady) {
+          // const gas = 0;
+          // web3.eth.getGasPrice().then((result) => {
+          //   console.log(web3.utils.fromWei(result, 'ether'));
+          //   gas = result;
+          //   });
           try {
-            await lottery.methods.select_Winner().send({from: account})
+            // const gas = await lottery.methods.select_Winner().estimateGas({from: account})
+            await lottery.methods.select_Winner().send({from: account})  // gas:gas
             await loadContractData()
           } catch (e) {
             console.log('Error, pick ready : ', e)
           }
-        }
+        // }
       } else {
         alert("contract has not deployed yet.")
       }
@@ -304,11 +309,11 @@ function App() {
           </div>
           
           {
-            owner === account ? 
+            // owner === account ? 
               isGameEnded ?
               <Card style={{marginTop:'50px', marginBottom:'50px'}}>
                 <Card.Body>
-                  <Card.Title>Create the new Lottery</Card.Title>
+                  <Card.Title>Start a Chance in the current Pot</Card.Title>
                   <form 
                     className="form-inline row" 
                     onSubmit={(e) => {
@@ -368,7 +373,7 @@ function App() {
                 </Card.Body>
               </Card>
               : <></>
-            : <></>
+            // : <></>
           }
           
           {/* <ProgressBar max={100} now={progress} label={`${progress}%`} animated srOnly/> */}
@@ -398,7 +403,10 @@ function App() {
                 </div>
                 : <Button variant="primary" onClick={buyTicket}>Buy Ticket</Button>
               } */}
-                <Button variant="success" onClick={pickWinner}>Select Winner</Button>
+              { owner === account ? 
+                  <Button variant="success" onClick={pickWinner}>Select Winner</Button>
+                :<></>
+              }
               </div>
               <div className="col-md-5" style={{ paddingTop: '30px'}}>
                 <img src={COIN3} alt="icon3" className="icon3"/>
