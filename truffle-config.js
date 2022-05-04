@@ -46,8 +46,8 @@ module.exports = {
       gas: 5500000, // Rinkeby has a lower block limit than mainnet
       confirmations: 2, // # of confs to wait between deployments. (default: 0)
       timeoutBlocks: 200, // # of blocks before a deployment times out (minimum/default: 50)
-      skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
-      gasPrice: 10000000000
+      skipDryRun: true, // networkCheckTimeoutnetworkCheckTimeout: 10000
+      networkCheckTimeoutnetworkCheckTimeout: 10000
     },
     // main ethereum network(mainnet)
     main: {
