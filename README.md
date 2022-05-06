@@ -117,4 +117,21 @@ npm run dev
     - **LotteryLiquidityPool** : [](https://rinkeby.etherscan.io/address/)
     - **LOtteryMultiSigWallet** : [](https://rinkeby.etherscan.io/address/)
 
+## Smart Contract Addresses on Binance Smart Chain TestNet :
+
+* *Deploy with Remix :*
+    - **LotteryGenerator** : [0x4490bEAF312ec3948016b8ef43528c5ACDF5FDB7](https://rinkeby.etherscan.io/address/0x4490bEAF312ec3948016b8ef43528c5ACDF5FDB7)
+    - **LotteryCore** : [0xdE2c8B2f097F13161B9501952097Ef6C10655dE4](https://rinkeby.etherscan.io/address/0xdE2c8B2f097F13161B9501952097Ef6C10655dE4)
+    - **WeeklyLottery** : [0xe9F90ff51A50b69c84fF50CC5EE6D08Ce8CFc1bB](https://rinkeby.etherscan.io/address/0xe9F90ff51A50b69c84fF50CC5EE6D08Ce8CFc1bB)
+    - **MonthlyLottery** : [0x1D1F2A6ae3E31Ad016a3E969392fCe130A4E4608](https://rinkeby.etherscan.io/address/0x1D1F2A6ae3E31Ad016a3E969392fCe130A4E4608)
+    - **LotteryLiquidityPool** : [0x393660C3446Fb05ca9Cf4034568450d47d32a076](https://rinkeby.etherscan.io/address/0x393660C3446Fb05ca9Cf4034568450d47d32a076)
+    - **LOtteryMultiSigWallet** : [](https://rinkeby.etherscan.io/address/)
+* *Deploy with Truffle :*
+    - **LotteryGenerator** : [](https://rinkeby.etherscan.io/address/)
+    - **LotteryCore** : [](https://rinkeby.etherscan.io/address/)
+    - **WeeklyLottery** : [](https://rinkeby.etherscan.io/address/)
+    - **MonthlyLottery** : [](https://rinkeby.etherscan.io/address/)
+    - **LotteryLiquidityPool** : [](https://rinkeby.etherscan.io/address/)
+    - **LOtteryMultiSigWallet** : [](https://rinkeby.etherscan.io/address/)
+
 

@@ -41,13 +41,13 @@ module.exports = {
     // production: true    // Treats this network as if it was a public net. (default: false)
     // }
     rinkeby: {
+      networkCheckTimeout: 10000,
       provider: () => new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/" + process.env.INFURA_PROJECT_ID),
       network_id: 4, // Rinkeby's id
       gas: 5500000, // Rinkeby has a lower block limit than mainnet
       confirmations: 2, // # of confs to wait between deployments. (default: 0)
       timeoutBlocks: 200, // # of blocks before a deployment times out (minimum/default: 50)
       skipDryRun: true, // networkCheckTimeoutnetworkCheckTimeout: 10000
-      networkCheckTimeoutnetworkCheckTimeout: 10000
     },
     // main ethereum network(mainnet)
     main: {
@@ -55,7 +55,22 @@ module.exports = {
       network_id: 1,
       gas: 3000000,
       gasPrice: 10000000000
-    }
+    },
+    testnet: {
+      networkCheckTimeout: 10000,
+      provider: () => new HDWalletProvider(mnemonic, `https://data-seed-prebsc-1-s1.binance.org:8545`),
+      network_id: 97,
+      confirmations: 10,
+      timeoutBlocks: 500,
+      skipDryRun: true
+    },
+    bsc: {
+      provider: () => new HDWalletProvider(mnemonic, `https://bsc-dataseed1.binance.org`),
+      network_id: 56,
+      confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
   },
 
   // Set default mocha options here, use special reporters etc.

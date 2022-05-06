@@ -19,13 +19,6 @@ import "./LotteryInterface.sol";
 //     function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool);
 //     function setlotteryWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint);
 // }
-  // function LotteryWinnersArray() external view returns (address[] memory);
-  // function WeeklyWinnersArray() external view returns (address[] memory);
-  // function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool);
-  // function setlotteryWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint);
-  // function setWeeklyWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint);
-  // function clearlotteryWinnersArrayMap(address _lotteryAddress) external returns (bool);
-  // function clearWeeklyWinnersArrayMap(address _lotteryAddress) external returns (bool);
 
 
 /**
@@ -47,11 +40,13 @@ contract LotteryCore is Ownable {
   // address private MultiSigWalletAddress;
   address private WeeklyPotAddress;
   address private MonthlyPotAddress;   
+  address private LotteryOwner;
 
   uint constant TICKET_PRICE = 10 * 1e15; // finney (0.01 Ether)
 
   // address public LotteryOwner; 
   bool private lPotActive;  /* ToDo: Boolean Controler for Open & Close Lottery  */
+  bool private lReadySelectWinner; /* ToDo: Boolean controler for show the Pot is ready for select winner or not */
 
   /* ToDo: Save Start and End of Tickets for each Address (ID) and Change Search routine */
   struct PotPlayerStr{
@@ -66,6 +61,8 @@ contract LotteryCore is Ownable {
   address[] private potPlayersArray;  
   uint[] private potTickets;
   uint[3][] private potTicketIds;
+  address private potWinnerAddress;
+  address private potDirector;  /* ToDo: All Main Action must be controlled only by Owner or Director */
    
   /* ToDo : Lottery Pot Generator Structure as a Wrapper for Lottery Core */
   // struct LotteryPot{
@@ -83,8 +80,10 @@ contract LotteryCore is Ownable {
   event TotalPayment(address receiver, uint TrxValue);
 
   constructor(address VRF) {   // , address lOwner
-    // LotteryOwner = msg.sender;
+    LotteryOwner = msg.sender;
     _VRF = VRF;
+    lPotActive = true;
+    lReadySelectWinner = false;
   }
 
   // modifier onlyOwner() {
@@ -96,6 +95,21 @@ contract LotteryCore is Ownable {
   fallback() external payable {
   }
   receive() external payable {
+  }
+
+  modifier isAllowedManager() {
+      require( msg.sender == potDirector || msg.sender == LotteryOwner , "Permission Denied !!" );
+      _;
+  }
+
+  modifier isGameOn() {
+      require(lPotActive && !lReadySelectWinner , "The Pot has not been Ready to Play yet Or The Game is Over!");
+      _;
+  }
+
+  modifier isPotValuable() {
+      require( (address(this).balance >= 0.1 ether && potPlayersArray.length >= 5) , "The Pot is not Filled Enough !");
+      _;
   }
 
   /**
@@ -127,11 +141,17 @@ contract LotteryCore is Ownable {
     remainder = numerator - denominator * quotient;
   }
 
+  function potInitialize() external isAllowedManager {
+    require(lPotActive == false, "The Pot is started before !");
+    lPotActive = true ;
+    lReadySelectWinner = false;
+  }
+
   /**
     * @notice Players' Operation and Calculation after Sending Transaction to the SmartContract. 
     * @dev Payable Function. 
   */
-  function play() public payable {
+  function play() public payable isGameOn {
 
     /* ToDo: Convert Ether to BNB */
     require(msg.value >= 0.01 ether && msg.value < 100 ether, "Value should be between 0.01 & 100 BNB");
@@ -157,10 +177,14 @@ contract LotteryCore is Ownable {
     PotPlayersMap[msg.sender].PlayersId.push( id );
     PotPlayersMap[msg.sender].TicketsId.push( id2);
 
+    if (address(this).balance >= 0.1 ether && potPlayersArray.length >= 5) {
+      lReadySelectWinner = true;
+    } 
+
     emit PlayerRegister(msg.sender, id, msg.value, ticketNumber) ;
     if (PotPlayersMap[msg.sender].PaymentCount > 1) {
         emit PlayeTotalValue(msg.sender, PotPlayersMap[msg.sender].PlayersId, PotPlayersMap[msg.sender].PaymentCount, PotPlayersMap[msg.sender].paymentValue, PotPlayersMap[msg.sender].TicketNumbers) ;
-    }
+    }    
 
   }
 
@@ -192,7 +216,9 @@ contract LotteryCore is Ownable {
     * @notice Select The Hourly Winner Function.
     * @dev Select The Pot Winner.
   */
-  function select_Winner() public onlyOwner {  
+  function select_Winner() public isAllowedManager {  
+
+    require( lReadySelectWinner == true, "The Pot is not ready for Select the Winner" );
 
     // uint256 l_randomWords = randomGenerator();
     uint256 l_randomWords = getRandomValue(_VRF);
@@ -208,13 +234,16 @@ contract LotteryCore is Ownable {
     ClearDataBase();
     // console.log("Select Winner Done !");
 
+    lPotActive = false;
+    lReadySelectWinner = false;
+
   }
 
   /**
     * @notice Release Smart Contract Memory .
     * @dev Clear All Storages .
   */
-  function ClearDataBase() internal returns (bool) {
+  function ClearDataBase() private returns (bool) {
     /* ToDo : Clear The Map Data and RElease the Memory */  
     address playerAddress;
     for (uint256 index = 0; index < potPlayersArray.length - 1; index++) {
@@ -237,7 +266,7 @@ contract LotteryCore is Ownable {
     * @notice Calculation of Pot Winner Prize.
     * @dev Findout the 50% of the Total Pot and The Winner payment.
   */
-  function Calculation(uint _winnerIndex) internal view returns (uint winnerPrize, uint weeklyPot, uint monthlyPot, uint liquidityAmount){
+  function Calculation(uint _winnerIndex) private view returns (uint winnerPrize, uint weeklyPot, uint monthlyPot, uint liquidityAmount){
 
     uint totalPot = address(this).balance;
     address WinnerAddress = potPlayersArray[_winnerIndex];
@@ -260,7 +289,7 @@ contract LotteryCore is Ownable {
     * @notice Pay Pot Prize to the Winner.
     * @dev Transfer Pot Prize to the Winner.
   */
-  function WinnerPrizePayment(uint _winnerIndex, uint _winnerPrize) internal {
+  function WinnerPrizePayment(uint _winnerIndex, uint _winnerPrize) private {
 
     address payable potWinner = payable(potPlayersArray[_winnerIndex]);  
     potWinner.transfer(_winnerPrize);
@@ -273,7 +302,7 @@ contract LotteryCore is Ownable {
     * @notice Remaining Pot Money Transfer.
     * @dev Transfer remaining Money to the Liquidity Pool.
   */
-  function FinalPayment(uint weeklyPot, uint monthlyPot, uint liquidityAmount) internal {   // onlyOwner 
+  function FinalPayment(uint weeklyPot, uint monthlyPot, uint liquidityAmount) private {   // onlyOwner 
 
     // uint TrxValue = address(this).balance;
     // address payable receiver = payable(WeeklyPotAddress);
@@ -299,12 +328,13 @@ contract LotteryCore is Ownable {
     * @notice Save The Winner Address for Weekly Lottery
     * @dev Update Generator Smart Contract For Saving Hourly Winner Address
   */
-  function UpdateLotteryData(uint _winnerIndex, uint _balance) internal returns(bool) {
+  function UpdateLotteryData(uint _winnerIndex, uint _balance) private returns(bool) {
     bool _success;
     uint _winnerId;
-    address _winnerAddress = potPlayersArray[_winnerIndex];
-    _success = LotteryInterface(generatorLotteryAddr).setlotteryStructs(address(this), _balance, _winnerAddress, 0);
-    _winnerId = LotteryInterface(generatorLotteryAddr).setlotteryWinnersArrayMap(address(this), _winnerAddress);
+    // address _winnerAddress = potPlayersArray[_winnerIndex];
+    potWinnerAddress = potPlayersArray[_winnerIndex];
+    _success = LotteryInterface(generatorLotteryAddr).setlotteryStructs(address(this), _balance, potWinnerAddress, 0);  // _winnerAddress  
+    _winnerId = LotteryInterface(generatorLotteryAddr).setlotteryWinnersArrayMap(address(this), potWinnerAddress);  // _winnerAddress
     return true;
   }
 
@@ -332,12 +362,49 @@ contract LotteryCore is Ownable {
   //   MultiSigWalletAddress = _MultiSigWalletAddress;
   // }
 
-  function listPlayers() external view returns (address[] memory){  
+  function setDirector(address _DirectorAddress) external onlyOwner {
+    require(_DirectorAddress != address(0) );
+    potDirector = _DirectorAddress;
+  }
+
+  function listPlayers() public view returns (address[] memory){  
     return potPlayersArray;  
   }
 
   function getLotteryTickets() public view returns(uint[] memory) {
     return potTickets;
+  }
+
+  function isPotActive() public view returns(bool) {
+    return lPotActive;
+  }
+
+  function getTicketPrice() public pure returns(uint) {
+    return TICKET_PRICE;
+  }
+
+  function getTicketAmount() public view returns(uint) {
+    return potTickets.length;
+  }
+
+  function getPlayersNumber() public view returns(uint) {
+    return potPlayersArray.length;
+  }
+
+  function getWinners() public view returns(address) {
+    return potWinnerAddress;  
+  }  
+
+  function isReadySelectWinner() public view returns(bool) {
+    return lReadySelectWinner;
+  }
+
+  function getStartedTime() public view returns(uint) {
+
+  }
+
+  function getPotDirector() public view returns(address) {
+    return potDirector;
   }
 
 }

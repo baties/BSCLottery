@@ -12,16 +12,21 @@ contract VRFv2SubscriptionManager is VRFConsumerBaseV2 {
 
   // Rinkeby coordinator. For other networks,
   // see https://docs.chain.link/docs/vrf-contracts/#configurations
-  address vrfCoordinator = 0x6168499c0cFfCaCD319c818142124B7A15E857ab;
+  // address vrfCoordinator = 0x6168499c0cFfCaCD319c818142124B7A15E857ab;  // Rinkeby
 
   // Rinkeby LINK token contract. For other networks, see
   // https://docs.chain.link/docs/vrf-contracts/#configurations
-  address link_token_contract = 0x01BE23585060835E02B77ef475b0Cc51aA1e0709;
+  // address link_token_contract = 0x01BE23585060835E02B77ef475b0Cc51aA1e0709;  // Rinkeby
 
   // The gas lane to use, which specifies the maximum gas price to bump to.
   // For a list of available gas lanes on each network,
   // see https://docs.chain.link/docs/vrf-contracts/#configurations
-  bytes32 keyHash = 0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc;
+  // bytes32 keyHash = 0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc;  // Rinkeby
+
+  address vrfCoordinator = 0x6A2AAd07396B36Fe02a22b33cf443582f682c82f;  // BSC TestNet coordinator
+  address link_token_contract = 0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06;  //  BSC TestNet LINK token
+  bytes32 keyHash = 0xd4bb89654db74673a187bd804519e65e3f71a52bc55f11da7601a13dcf505314;  //  BSC TestNet keyhash
+
 
   // A reasonable default is 100000, but this value could be different
   // on other networks.

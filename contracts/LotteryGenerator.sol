@@ -13,6 +13,8 @@ import "./LotteryCore.sol";
 */
 contract LotteryGenerator is Ownable {
 
+    // uint constant TICKET_PRICE = 10 * 1e15; // finney (0.01 Ether)
+
     enum LType {
         Hourly,
         Daily,
@@ -59,6 +61,10 @@ contract LotteryGenerator is Ownable {
 
     function withdraw() external onlyOwner {
         payable(msg.sender).transfer(address(this).balance);
+    }
+
+    function getWinners() public view returns(address[] memory) {
+        return LotteryWinnersArray;
     }
 
     function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool) {

@@ -21,6 +21,9 @@ import Web3 from 'web3' ;
 // console.log("Lottery Contract Address is : " + contractAddress);
 // MyContract.setProvider(`wss://rinkeby.infura.io/ws/v3/${process.env.REACT_APP_INFURA_PROJECT_ID}`);
 import LotteryCore from "./contractx/LotteryCore.json";
+import LotteryGenerator from "./contractx/LotteryGenerator.json";
+import WeeklyLottery from "./contractx/WeeklyLottery.json";
+import MonthlyLottery from "./contractx/MonthlyLottery.json";
 
 const METAMAST_BASE64_URL = "data:image/svg+xml;utf8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMTIiIGhlaWdodD0iMTg5IiB2aWV3Qm94PSIwIDAgMjEyIDE4OSI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cG9seWdvbiBmaWxsPSIjQ0RCREIyIiBwb2ludHM9IjYwLjc1IDE3My4yNSA4OC4zMTMgMTgwLjU2MyA4OC4zMTMgMTcxIDkwLjU2MyAxNjguNzUgMTA2LjMxMyAxNjguNzUgMTA2LjMxMyAxODAgMTA2LjMxMyAxODcuODc1IDg5LjQzOCAxODcuODc1IDY4LjYyNSAxNzguODc1Ii8+PHBvbHlnb24gZmlsbD0iI0NEQkRCMiIgcG9pbnRzPSIxMDUuNzUgMTczLjI1IDEzMi43NSAxODAuNTYzIDEzMi43NSAxNzEgMTM1IDE2OC43NSAxNTAuNzUgMTY4Ljc1IDE1MC43NSAxODAgMTUwLjc1IDE4Ny44NzUgMTMzLjg3NSAxODcuODc1IDExMy4wNjMgMTc4Ljg3NSIgdHJhbnNmb3JtPSJtYXRyaXgoLTEgMCAwIDEgMjU2LjUgMCkiLz48cG9seWdvbiBmaWxsPSIjMzkzOTM5IiBwb2ludHM9IjkwLjU2MyAxNTIuNDM4IDg4LjMxMyAxNzEgOTEuMTI1IDE2OC43NSAxMjAuMzc1IDE2OC43NSAxMjMuNzUgMTcxIDEyMS41IDE1Mi40MzggMTE3IDE0OS42MjUgOTQuNSAxNTAuMTg4Ii8+PHBvbHlnb24gZmlsbD0iI0Y4OUMzNSIgcG9pbnRzPSI3NS4zNzUgMjcgODguODc1IDU4LjUgOTUuMDYzIDE1MC4xODggMTE3IDE1MC4xODggMTIzLjc1IDU4LjUgMTM2LjEyNSAyNyIvPjxwb2x5Z29uIGZpbGw9IiNGODlEMzUiIHBvaW50cz0iMTYuMzEzIDk2LjE4OCAuNTYzIDE0MS43NSAzOS45MzggMTM5LjUgNjUuMjUgMTM5LjUgNjUuMjUgMTE5LjgxMyA2NC4xMjUgNzkuMzEzIDU4LjUgODMuODEzIi8+PHBvbHlnb24gZmlsbD0iI0Q4N0MzMCIgcG9pbnRzPSI0Ni4xMjUgMTAxLjI1IDkyLjI1IDEwMi4zNzUgODcuMTg4IDEyNiA2NS4yNSAxMjAuMzc1Ii8+PHBvbHlnb24gZmlsbD0iI0VBOEQzQSIgcG9pbnRzPSI0Ni4xMjUgMTAxLjgxMyA2NS4yNSAxMTkuODEzIDY1LjI1IDEzNy44MTMiLz48cG9seWdvbiBmaWxsPSIjRjg5RDM1IiBwb2ludHM9IjY1LjI1IDEyMC4zNzUgODcuNzUgMTI2IDk1LjA2MyAxNTAuMTg4IDkwIDE1MyA2NS4yNSAxMzguMzc1Ii8+PHBvbHlnb24gZmlsbD0iI0VCOEYzNSIgcG9pbnRzPSI2NS4yNSAxMzguMzc1IDYwLjc1IDE3My4yNSA5MC41NjMgMTUyLjQzOCIvPjxwb2x5Z29uIGZpbGw9IiNFQThFM0EiIHBvaW50cz0iOTIuMjUgMTAyLjM3NSA5NS4wNjMgMTUwLjE4OCA4Ni42MjUgMTI1LjcxOSIvPjxwb2x5Z29uIGZpbGw9IiNEODdDMzAiIHBvaW50cz0iMzkuMzc1IDEzOC45MzggNjUuMjUgMTM4LjM3NSA2MC43NSAxNzMuMjUiLz48cG9seWdvbiBmaWxsPSIjRUI4RjM1IiBwb2ludHM9IjEyLjkzOCAxODguNDM4IDYwLjc1IDE3My4yNSAzOS4zNzUgMTM4LjkzOCAuNTYzIDE0MS43NSIvPjxwb2x5Z29uIGZpbGw9IiNFODgyMUUiIHBvaW50cz0iODguODc1IDU4LjUgNjQuNjg4IDc4Ljc1IDQ2LjEyNSAxMDEuMjUgOTIuMjUgMTAyLjkzOCIvPjxwb2x5Z29uIGZpbGw9IiNERkNFQzMiIHBvaW50cz0iNjAuNzUgMTczLjI1IDkwLjU2MyAxNTIuNDM4IDg4LjMxMyAxNzAuNDM4IDg4LjMxMyAxODAuNTYzIDY4LjA2MyAxNzYuNjI1Ii8+PHBvbHlnb24gZmlsbD0iI0RGQ0VDMyIgcG9pbnRzPSIxMjEuNSAxNzMuMjUgMTUwLjc1IDE1Mi40MzggMTQ4LjUgMTcwLjQzOCAxNDguNSAxODAuNTYzIDEyOC4yNSAxNzYuNjI1IiB0cmFuc2Zvcm09Im1hdHJpeCgtMSAwIDAgMSAyNzIuMjUgMCkiLz48cG9seWdvbiBmaWxsPSIjMzkzOTM5IiBwb2ludHM9IjcwLjMxMyAxMTIuNSA2NC4xMjUgMTI1LjQzOCA4Ni4wNjMgMTE5LjgxMyIgdHJhbnNmb3JtPSJtYXRyaXgoLTEgMCAwIDEgMTUwLjE4OCAwKSIvPjxwb2x5Z29uIGZpbGw9IiNFODhGMzUiIHBvaW50cz0iMTIuMzc1IC41NjMgODguODc1IDU4LjUgNzUuOTM4IDI3Ii8+PHBhdGggZmlsbD0iIzhFNUEzMCIgZD0iTTEyLjM3NTAwMDIsMC41NjI1MDAwMDggTDIuMjUwMDAwMDMsMzEuNTAwMDAwNSBMNy44NzUwMDAxMiw2NS4yNTAwMDEgTDMuOTM3NTAwMDYsNjcuNTAwMDAxIEw5LjU2MjUwMDE0LDcyLjU2MjUgTDUuMDYyNTAwMDgsNzYuNTAwMDAxMSBMMTEuMjUsODIuMTI1MDAxMiBMNy4zMTI1MDAxMSw4NS41MDAwMDEzIEwxNi4zMTI1MDAyLDk2Ljc1MDAwMTQgTDU4LjUwMDAwMDksODMuODEyNTAxMiBDNzkuMTI1MDAxMiw2Ny4zMTI1MDA0IDg5LjI1MDAwMTMsNTguODc1MDAwMyA4OC44NzUwMDEzLDU4LjUwMDAwMDkgQzg4LjUwMDAwMTMsNTguMTI1MDAwOSA2My4wMDAwMDA5LDM4LjgxMjUwMDYgMTIuMzc1MDAwMiwwLjU2MjUwMDAwOCBaIi8+PGcgdHJhbnNmb3JtPSJtYXRyaXgoLTEgMCAwIDEgMjExLjUgMCkiPjxwb2x5Z29uIGZpbGw9IiNGODlEMzUiIHBvaW50cz0iMTYuMzEzIDk2LjE4OCAuNTYzIDE0MS43NSAzOS45MzggMTM5LjUgNjUuMjUgMTM5LjUgNjUuMjUgMTE5LjgxMyA2NC4xMjUgNzkuMzEzIDU4LjUgODMuODEzIi8+PHBvbHlnb24gZmlsbD0iI0Q4N0MzMCIgcG9pbnRzPSI0Ni4xMjUgMTAxLjI1IDkyLjI1IDEwMi4zNzUgODcuMTg4IDEyNiA2NS4yNSAxMjAuMzc1Ii8+PHBvbHlnb24gZmlsbD0iI0VBOEQzQSIgcG9pbnRzPSI0Ni4xMjUgMTAxLjgxMyA2NS4yNSAxMTkuODEzIDY1LjI1IDEzNy44MTMiLz48cG9seWdvbiBmaWxsPSIjRjg5RDM1IiBwb2ludHM9IjY1LjI1IDEyMC4zNzUgODcuNzUgMTI2IDk1LjA2MyAxNTAuMTg4IDkwIDE1MyA2NS4yNSAxMzguMzc1Ii8+PHBvbHlnb24gZmlsbD0iI0VCOEYzNSIgcG9pbnRzPSI2NS4yNSAxMzguMzc1IDYwLjc1IDE3My4yNSA5MCAxNTMiLz48cG9seWdvbiBmaWxsPSIjRUE4RTNBIiBwb2ludHM9IjkyLjI1IDEwMi4zNzUgOTUuMDYzIDE1MC4xODggODYuNjI1IDEyNS43MTkiLz48cG9seWdvbiBmaWxsPSIjRDg3QzMwIiBwb2ludHM9IjM5LjM3NSAxMzguOTM4IDY1LjI1IDEzOC4zNzUgNjAuNzUgMTczLjI1Ii8+PHBvbHlnb24gZmlsbD0iI0VCOEYzNSIgcG9pbnRzPSIxMi45MzggMTg4LjQzOCA2MC43NSAxNzMuMjUgMzkuMzc1IDEzOC45MzggLjU2MyAxNDEuNzUiLz48cG9seWdvbiBmaWxsPSIjRTg4MjFFIiBwb2ludHM9Ijg4Ljg3NSA1OC41IDY0LjY4OCA3OC43NSA0Ni4xMjUgMTAxLjI1IDkyLjI1IDEwMi45MzgiLz48cG9seWdvbiBmaWxsPSIjMzkzOTM5IiBwb2ludHM9IjcwLjMxMyAxMTIuNSA2NC4xMjUgMTI1LjQzOCA4Ni4wNjMgMTE5LjgxMyIgdHJhbnNmb3JtPSJtYXRyaXgoLTEgMCAwIDEgMTUwLjE4OCAwKSIvPjxwb2x5Z29uIGZpbGw9IiNFODhGMzUiIHBvaW50cz0iMTIuMzc1IC41NjMgODguODc1IDU4LjUgNzUuOTM4IDI3Ii8+PHBhdGggZmlsbD0iIzhFNUEzMCIgZD0iTTEyLjM3NTAwMDIsMC41NjI1MDAwMDggTDIuMjUwMDAwMDMsMzEuNTAwMDAwNSBMNy44NzUwMDAxMiw2NS4yNTAwMDEgTDMuOTM3NTAwMDYsNjcuNTAwMDAxIEw5LjU2MjUwMDE0LDcyLjU2MjUgTDUuMDYyNTAwMDgsNzYuNTAwMDAxMSBMMTEuMjUsODIuMTI1MDAxMiBMNy4zMTI1MDAxMSw4NS41MDAwMDEzIEwxNi4zMTI1MDAyLDk2Ljc1MDAwMTQgTDU4LjUwMDAwMDksODMuODEyNTAxMiBDNzkuMTI1MDAxMiw2Ny4zMTI1MDA0IDg5LjI1MDAwMTMsNTguODc1MDAwMyA4OC44NzUwMDEzLDU4LjUwMDAwMDkgQzg4LjUwMDAwMTMsNTguMTI1MDAwOSA2My4wMDAwMDA5LDM4LjgxMjUwMDYgMTIuMzc1MDAwMiwwLjU2MjUwMDAwOCBaIi8+PC9nPjwvZz48L3N2Zz4=";
 
@@ -33,12 +36,24 @@ function App() {
     const [lottery, setLottery] = useState(null)
     const [lotteryAddress, setLotteryAddress] = useState(null)
     const [lotteryBalance, setLotteryBalance] = useState(0)
-    
+
+    const [lotteryGenerator, setLotteryGenerator] = useState(null)
+    const [lotteryGeneratorAddress, setLotteryGeneratorAddress] = useState(null)
+    const [lotteryGeneratorBalance, setLotteryGeneratorBalance] = useState(0)
+
+    const [weeklylottery, setWeeklyLottery] = useState(null)
+    const [weeklylotteryAddress, setWeeklyLotteryAddress] = useState(null)
+    const [weeklylotteryBalance, setWeeklyLotteryBalance] = useState(0)
+
+    const [monthlylottery, setMonthlyLottery] = useState(null)
+    const [monthlylotteryAddress, setMonthlyLotteryAddress] = useState(null)
+    const [monthlylotteryBalance, setMonthlyLotteryBalance] = useState(0)
+
     const [owner, setOwner] = useState(null)  
     const [ticketPrice, setTicketPrice] = useState(0)
     const [ticketAmount, setTicketAmount] = useState(0)
-    const [isGameEnded, setIsGameEnded] = useState(true)
-    const [pickReady, setPickReady] = useState(false)
+    const [isPotActive, setIsPotActive] = useState(true)
+    const [selectReady, setSelectReady] = useState(false)
     const [playerCount, setPlayerCount] = useState(0)
     const [players, setPlayers] = useState([])
     const [winners, setWinners] = useState([])
@@ -75,29 +90,42 @@ function App() {
             const lottery = new web3.eth.Contract(LotteryCore.abi, LotteryCore.networks[netId].address)
             const lotteryAddress = LotteryCore.networks[netId].address
   
+            const lotteryGenerator = new web3.eth.Contract(LotteryGenerator.abi, LotteryGenerator.networks[netId].address)
+            const lotteryGeneratorAddress = LotteryGenerator.networks[netId].address
+  
+            const weeklylottery = new web3.eth.Contract(WeeklyLottery.abi, WeeklyLottery.networks[netId].address)
+            const weeklylotteryAddress = WeeklyLottery.networks[netId].address
+
+            const monthlylottery = new web3.eth.Contract(MonthlyLottery.abi, MonthlyLottery.networks[netId].address)
+            const monthlylotteryAddress = MonthlyLottery.networks[netId].address
+
             const owner = await lottery.methods.owner().call()
+            
             const lotteryBalance = await lottery.methods.balanceInPot().call()
-            // const ticketPrice = await lottery.methods.ticket_price().call()
-            // const isGameEnded = await lottery.methods.isGameEnded().call()
-            // const ticketAmount = await lottery.methods.target_amount().call()
-            // const playerCount = await lottery.methods.getPlayerNumber().call()
+            const weeklylotteryBalance = await weeklylottery.methods.balanceInPot().call()
+            const monthlylotteryBalance = await monthlylottery.methods.balanceInPot().call()
+
+            const ticketPrice = await lottery.methods.getTicketPrice().call()
+            const isPotActive = await lottery.methods.isPotActive().call()
+            const ticketAmount = await lottery.methods.getTicketAmount().call()
+            const playerCount = await lottery.methods.getPlayersNumber().call()
             const players = await lottery.methods.listPlayers().call()
-            // const winners = await lottery.methods.getWinners().call()
-            // const pickReady = await lottery.methods.isReadyPickWinner().call()
+            const winners = await lottery.methods.getWinners().call()
+            const selectReady = await lottery.methods.isReadySelectWinner().call()
             // const progress = await lottery.methods.getPercent().call()
-            // let startedTime = await lottery.methods.getStartedTime().call()
-            // if(isGameEnded) startedTime = 0
+            let startedTime = await lottery.methods.getStartedTime().call()
+            if(isPotActive) startedTime = 0  // isGameEnded
             
             // setProgress(progress)
-            // setStartedTime(startedTime)
+            setStartedTime(startedTime)
             setLotteryBalance(web3.utils.fromWei(lotteryBalance))
-            // setTicketPrice(web3.utils.fromWei(ticketPrice))
-            // setTicketAmount(ticketAmount)
-            // setIsGameEnded(isGameEnded)
-            // setPickReady(pickReady)
+            setTicketPrice(web3.utils.fromWei(ticketPrice))
+            setTicketAmount(ticketAmount)
+            setIsPotActive(isPotActive)
+            setSelectReady(selectReady)
             setPlayers(players)
-            // setWinners(winners)
-            // setPlayerCount(playerCount)
+            setWinners(winners)
+            setPlayerCount(playerCount)
             setLottery(lottery)
             setLotteryAddress(lotteryAddress)
             setOwner(owner)
@@ -117,24 +145,24 @@ function App() {
       // console.log(lottery)
       try {
         const lotteryBalance = await lottery.methods.balanceInPot().call()
-        // const ticketPrice = await lottery.methods.ticket_price().call()
-        // const isGameEnded = await lottery.methods.isGameEnded().call()
-        // const ticketAmount = await lottery.methods.target_amount().call()
-        // const playerCount = await lottery.methods.getPlayerNumber().call()
+        const ticketPrice = await lottery.methods.ticket_price().call()
+        const isPotActive = await lottery.methods.isPotActive().call()
+        const ticketAmount = await lottery.methods.getTicketAmount().call()
+        const playerCount = await lottery.methods.getPlayersNumber().call()
         const players = await lottery.methods.listPlayers().call()
-        // const pickReady = await lottery.methods.isReadyPickWinner().call()
-        // const startedTime = await lottery.methods.getStartedTime().call()
+        const selectReady = await lottery.methods.isReadySelectWinner().call()
+        const startedTime = await lottery.methods.getStartedTime().call()
         // const progress = await lottery.methods.getPercent().call()
   
         // setProgress(progress)
-        // setStartedTime(startedTime)
+        setStartedTime(startedTime)
         setLotteryBalance(web3.utils.fromWei(lotteryBalance))
-        // setTicketPrice(web3.utils.fromWei(ticketPrice))
-        // setTicketAmount(ticketAmount)
-        // setIsGameEnded(isGameEnded)
-        // setPickReady(pickReady)
+        setTicketPrice(web3.utils.fromWei(ticketPrice))
+        setTicketAmount(ticketAmount)
+        setIsPotActive(isPotActive)
+        setSelectReady(selectReady)
         setPlayers(players)
-        // setPlayerCount(playerCount)
+        setPlayerCount(playerCount)
       } catch (e) {
         console.log('Error', e)
         console.log('Contracts not deployed to the current network')
@@ -164,9 +192,9 @@ function App() {
       }
       
       if(lottery && lottery !== 'undefined') {
-        // if(isGameEnded) {
-          // window.alert("Game has not been started yet");
-        // } else {
+        if (! isPotActive) {
+          window.alert("Pot has not been started yet");
+        } else {
           try {
             // var wei_price = ticketPrice * 10 ** 18
             // const buyApp = await lottery.methods.play().send({value: wei_price.toString(), from: account})
@@ -176,33 +204,33 @@ function App() {
           } catch (e) {
             console.log('Error, buy ticket: ', e)
           }
-        // }
+        }
       } else {
         alert("contract has not deployed yet.")
       }
     }
   
-    const pickWinner = async()=>{
+    const SelectWinner = async()=>{
       if(account == null || account == '') {
         handleShow();
         return;
       }
   
       if(lottery && lottery !== 'undefined') {
-        // if(pickReady) {
-          // const gas = 0;
-          // web3.eth.getGasPrice().then((result) => {
-          //   console.log(web3.utils.fromWei(result, 'ether'));
-          //   gas = result;
-          //   });
+        if(selectReady) {
           try {
+            // const gas = 0;
+            // web3.eth.getGasPrice().then((result) => {
+            //   console.log(web3.utils.fromWei(result, 'ether'));
+            //   gas = result;
+            //   });
             // const gas = await lottery.methods.select_Winner().estimateGas({from: account})
             await lottery.methods.select_Winner().send({from: account})  // gas:gas
             await loadContractData()
           } catch (e) {
-            console.log('Error, pick ready : ', e)
+            console.log('Error, Select Winner : ', e)
           }
-        // }
+        }
       } else {
         alert("contract has not deployed yet.")
       }
@@ -220,7 +248,7 @@ function App() {
           return;
         }
   
-        if(!isGameEnded) {
+        if(isPotActive) {
           window.alert("Game is running now");
           return;
         }
@@ -256,17 +284,17 @@ function App() {
       setFormAmount( e.target.value );
     }
 
-    // const secondsToHms = (d) => {
-    //   d = Number(d);
-    //   var h = Math.floor(d / 3600);
-    //   var m = Math.floor(d % 3600 / 60);
-    //   var s = Math.floor(d % 3600 % 60);
+    const secondsToHms = (d) => {
+      d = Number(d);
+      var h = Math.floor(d / 3600);
+      var m = Math.floor(d % 3600 / 60);
+      var s = Math.floor(d % 3600 % 60);
   
-    //   var hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
-    //   var mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
-    //   var sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
-    //   return hDisplay + mDisplay + sDisplay; 
-    // }
+      var hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
+      var mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
+      var sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
+      return hDisplay + mDisplay + sDisplay; 
+    }
   
     return (
       <>
@@ -310,7 +338,7 @@ function App() {
           
           {
             // owner === account ? 
-              isGameEnded ?
+              isPotActive ?
               <Card style={{marginTop:'50px', marginBottom:'50px'}}>
                 <Card.Body>
                   <Card.Title>Start a Chance in the current Pot</Card.Title>
@@ -357,18 +385,18 @@ function App() {
                   {/* <Button variant="primary" onClick={createLottery}>Create new Lottery</Button> */}
                 </Card.Body>
               </Card>
-              : pickReady ?
+              : selectReady ?
               <Card style={{marginTop:'50px', marginBottom:'50px'}}>
                 <Card.Body>
-                  <Card.Title>Game has been ended! Pick up winner.</Card.Title>
+                  <Card.Title>Game has been ended! Select the winner.</Card.Title>
                   <form 
                     className="form-inline" 
                     onSubmit={(e) => {
                       e.preventDefault()
-                      pickWinner()
+                      SelectWinner()
                     }                      
                   }>
-                    <Button variant="primary" type="submit">Pick Winner</Button>
+                    <Button variant="primary" type="submit">Select Winner</Button>
                   </form>
                 </Card.Body>
               </Card>
@@ -381,9 +409,9 @@ function App() {
             <Card.Body className="row">
               <Card.Title>Current Lottery Room : {lotteryAddress}</Card.Title>
               <div className="col-md-7">
-              {/* <Card.Text>
+              <Card.Text>
                 <i><small>Started at : {startedTime === '0'? "0s" : secondsToHms(startedTime)} </small></i>
-              </Card.Text> */}
+              </Card.Text>
               <Card.Text>
                 Current balance : { lotteryBalance }
               </Card.Text>
@@ -395,16 +423,16 @@ function App() {
               <Card.Text>
                 Please buy the ticket with <b> {ticketPrice} BNB</b> and be a winner!
               </Card.Text>
-              {/* {
-                // isGameEnded || pickReady ? 
+              {
+                ! isPotActive || selectReady ? 
                 <div>
                   <p>Lottery round has not been started newly</p>
                   <Button variant="primary" disabled>Buy Ticket</Button>
                 </div>
                 : <Button variant="primary" onClick={buyTicket}>Buy Ticket</Button>
-              } */}
+              }
               { owner === account ? 
-                  <Button variant="success" onClick={pickWinner}>Select Winner</Button>
+                  <Button variant="success" onClick={SelectWinner}>Select Winner</Button>
                 :<></>
               }
               </div>
