@@ -346,9 +346,9 @@ function App() {
                     className="form-inline row" 
                     onSubmit={(e) => {
                       e.preventDefault()
-                    //   createLottery(formAmount, formPrice)
                       buyTicket(formAmount, formPrice)
-                    }                      
+                    //   createLottery(formAmount, formPrice)
+                  }                      
                   }>
                     <div className="col-md-7">
                       <div className='form-group mb-2'>
@@ -423,14 +423,14 @@ function App() {
               <Card.Text>
                 Please buy the ticket with <b> {ticketPrice} BNB</b> and be a winner!
               </Card.Text>
-              {
+              {/* {
                 ! isPotActive || selectReady ? 
                 <div>
                   <p>Lottery round has not been started newly</p>
                   <Button variant="primary" disabled>Buy Ticket</Button>
                 </div>
                 : <Button variant="primary" onClick={buyTicket}>Buy Ticket</Button>
-              }
+              } */}
               { owner === account ? 
                   <Button variant="success" onClick={SelectWinner}>Select Winner</Button>
                 :<></>
