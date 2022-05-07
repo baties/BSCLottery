@@ -84,6 +84,12 @@ contract LotteryCore is Ownable {
     _VRF = VRF;
     lPotActive = true;
     lReadySelectWinner = false;
+    // generatorLotteryAddr = 0x4490bEAF312ec3948016b8ef43528c5ACDF5FDB7 ;
+    // LiquidityPoolAddress = 0x393660C3446Fb05ca9Cf4034568450d47d32a076 ;
+    // WeeklyPotAddress = 0xe9F90ff51A50b69c84fF50CC5EE6D08Ce8CFc1bB ;
+    // MonthlyPotAddress = 0x1D1F2A6ae3E31Ad016a3E969392fCe130A4E4608 ;   
+    // MultiSigWalletAddress = ;
+    // potDirector = 0x4de8d75eF9b48856e708347c4A0bf1BCA338DB53 ;
   }
 
   // modifier onlyOwner() {
@@ -209,6 +215,7 @@ contract LotteryCore is Ownable {
   */
   function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
     // uint8 zeroOne = uint8(randomGenerator() % 2);
+    // randomWords = randomGenerator();
     randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
   }
 
@@ -281,7 +288,7 @@ contract LotteryCore is Ownable {
     (otherPots, ) = getDivided(otherPots, 20);
     weeklyPot = otherPots;
     monthlyPot = otherPots;
-    liquidityAmount = totalPot - 2 * otherPots;
+    liquidityAmount = totalPot - 2 * otherPots - winnerPrize;
 
   }
 
