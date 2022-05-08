@@ -67,28 +67,28 @@ contract LotteryGenerator is Ownable {
         return LotteryWinnersArray;
     }
 
-    function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool) {
+    function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external onlyOwner returns (bool) {
         lotteryStructs[_lotteryAddress].totalBalance = _totalBalance;
         lotteryStructs[_lotteryAddress].winnerAddress = _winnerAddress;
         lotteryStructs[_lotteryAddress].lotteryType = LType(_lotteryType);
         return true;
     }
 
-    function setlotteryWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint) {
+    function setlotteryWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external onlyOwner returns (uint) {
         LotteryWinnersArray.push(_winnerAddress);
         LotteryWinnersMap[_winnerAddress].playersId = LotteryWinnersArray.length;  // -1
         LotteryWinnersMap[_winnerAddress].winnerCount++;
         return LotteryWinnersArray.length ;  // -1
     }
 
-    function setWeeklyWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint) {
+    function setWeeklyWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external onlyOwner returns (uint) {
         WeeklyWinnersArray.push(_winnerAddress);
         WeeklyWinnersMap[_winnerAddress].playersId = WeeklyWinnersArray.length;  // -1
         WeeklyWinnersMap[_winnerAddress].winnerCount++;
         return WeeklyWinnersArray.length ;  // -1
     }
 
-    function clearlotteryWinnersArrayMap(address _lotteryAddress) external returns (bool) {
+    function clearlotteryWinnersArrayMap(address _lotteryAddress) external onlyOwner returns (bool) {
         address _lotteryWinAddress;
         for (uint256 index = 0; index < LotteryWinnersArray.length - 1; index++) {
             _lotteryWinAddress = LotteryWinnersArray[index];
@@ -102,7 +102,7 @@ contract LotteryGenerator is Ownable {
         return true;
     }
 
-    function clearWeeklyWinnersArrayMap(address _lotteryAddress) external returns (bool) {
+    function clearWeeklyWinnersArrayMap(address _lotteryAddress) external onlyOwner returns (bool) {
         address _lotteryWinAddress;
         for (uint256 index = 0; index < WeeklyWinnersArray.length - 1; index++) {
             _lotteryWinAddress = WeeklyWinnersArray[index];
@@ -115,6 +115,7 @@ contract LotteryGenerator is Ownable {
         delete WeeklyWinnersArray;
         return true;
     }
+
 
     function createLottery(address _VRF) public onlyOwner {
 

@@ -45,10 +45,10 @@ contract LotteryCore is Ownable {
   uint constant TICKET_PRICE = 10 * 1e15; // finney (0.01 Ether)
 
   // address public LotteryOwner; 
-  bool private lPotActive;  /* ToDo: Boolean Controler for Open & Close Lottery  */
-  bool private lReadySelectWinner; /* ToDo: Boolean controler for show the Pot is ready for select winner or not */
+  bool private lPotActive;  
+  bool private lReadySelectWinner; 
+  uint public potStartTime = 0;
 
-  /* ToDo: Save Start and End of Tickets for each Address (ID) and Change Search routine */
   struct PotPlayerStr{
     uint PaymentCount;
     uint paymentValue;
@@ -60,7 +60,7 @@ contract LotteryCore is Ownable {
   mapping (address => PotPlayerStr) private PotPlayersMap;  
   address[] private potPlayersArray;  
   uint[] private potTickets;
-  uint[3][] private potTicketIds;
+  uint[3][] private potTicketIds;  /* ToDo: Change Search routine base on the Start and End of Tickets for each Address (ID)  */ 
   address private potWinnerAddress;
   address private potDirector;  /* ToDo: All Main Action must be controlled only by Owner or Director */
    
@@ -76,7 +76,7 @@ contract LotteryCore is Ownable {
   event SelectWinnerIndex(uint winnerIndex, uint potBalance, uint winnerPrize);
   event SelectWinnerAddress(address potWinner, uint winnerPrize);
   event PlayerRegister(address potPlayer, uint playerId, uint PlayerValue, uint ticketNumber);
-  event PlayeTotalValue(address potPlayer, uint[] playerId, uint playCount, uint playerValue, uint ticketNumber);
+  event PlayerTotalValue(address potPlayer, uint[] playerId, uint playCount, uint playerValue, uint ticketNumber);
   event TotalPayment(address receiver, uint TrxValue);
 
   constructor(address VRF) {   // , address lOwner
@@ -84,6 +84,7 @@ contract LotteryCore is Ownable {
     _VRF = VRF;
     lPotActive = true;
     lReadySelectWinner = false;
+    potStartTime = block.timestamp;
     // generatorLotteryAddr = 0x4490bEAF312ec3948016b8ef43528c5ACDF5FDB7 ;
     // LiquidityPoolAddress = 0x393660C3446Fb05ca9Cf4034568450d47d32a076 ;
     // WeeklyPotAddress = 0xe9F90ff51A50b69c84fF50CC5EE6D08Ce8CFc1bB ;
@@ -109,7 +110,7 @@ contract LotteryCore is Ownable {
   }
 
   modifier isGameOn() {
-      require(lPotActive && !lReadySelectWinner , "The Pot has not been Ready to Play yet Or The Game is Over!");
+      require(lPotActive , "The Pot has not been Ready to Play yet Or The Game is Over!");  // && !lReadySelectWinner 
       _;
   }
 
@@ -151,6 +152,7 @@ contract LotteryCore is Ownable {
     require(lPotActive == false, "The Pot is started before !");
     lPotActive = true ;
     lReadySelectWinner = false;
+    potStartTime = block.timestamp;
   }
 
   /**
@@ -161,6 +163,9 @@ contract LotteryCore is Ownable {
 
     /* ToDo: Convert Ether to BNB */
     require(msg.value >= 0.01 ether && msg.value < 100 ether, "Value should be between 0.01 & 100 BNB");
+
+    uint userPotAmount = PotPlayersMap[msg.sender].paymentValue;
+    require(userPotAmount <= 10 ether, "You played too much !!");
 
     /* ToDo: Replace with SafeMath */
     (uint ticketNumber, uint remainder ) = getDivided(msg.value, TICKET_PRICE); // 10000000000000000
@@ -189,7 +194,7 @@ contract LotteryCore is Ownable {
 
     emit PlayerRegister(msg.sender, id, msg.value, ticketNumber) ;
     if (PotPlayersMap[msg.sender].PaymentCount > 1) {
-        emit PlayeTotalValue(msg.sender, PotPlayersMap[msg.sender].PlayersId, PotPlayersMap[msg.sender].PaymentCount, PotPlayersMap[msg.sender].paymentValue, PotPlayersMap[msg.sender].TicketNumbers) ;
+        emit PlayerTotalValue(msg.sender, PotPlayersMap[msg.sender].PlayersId, PotPlayersMap[msg.sender].PaymentCount, PotPlayersMap[msg.sender].paymentValue, PotPlayersMap[msg.sender].TicketNumbers) ;
     }    
 
   }
@@ -407,7 +412,7 @@ contract LotteryCore is Ownable {
   }
 
   function getStartedTime() public view returns(uint) {
-
+    return block.timestamp - potStartTime;
   }
 
   function getPotDirector() public view returns(address) {

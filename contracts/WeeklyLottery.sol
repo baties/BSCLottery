@@ -47,20 +47,39 @@ contract WeeklyLottery is Ownable {
   // address private LiquidityPoolAddress;
   // address private MultiSigWalletAddress;
   // address private MonthlyPotAddress;   
+  address private LotteryOwner;
 
   address[] private _LotteryWinnersArray;
+  bool private lPotActive;  
+  bool private lReadySelectWinner; 
+  address private potDirector;  /* ToDo: All Main Action must be controlled only by Owner or Director */
+  address private potWinnerAddress;
 
   event SelectWinnerIndex(uint winnerIndex, uint potBalance, uint winnerPrize);
   event SelectWinnerAddress(address potWinner, uint winnerPrize);
   event TotalPayment(address receiver, uint TrxValue);
 
   constructor(address VRF) {   // , address lOwner
+    LotteryOwner = msg.sender;
     _VRF = VRF;
+    lPotActive = false;
+    lReadySelectWinner = false;
   }
 
+  /* ToDo : Add & Complete Fallback routine */
   fallback() external payable {
   }
   receive() external payable {
+  }
+
+  modifier isAllowedManager() {
+      require( msg.sender == potDirector || msg.sender == LotteryOwner , "Permission Denied !!" );
+      _;
+  }
+
+  modifier isGameOn() {
+      require(lPotActive , "The Pot has not been Ready to Play yet Or The Game is Over!");  // && !lReadySelectWinner 
+      _;
   }
 
   function balanceInPot() public view returns(uint){
@@ -80,12 +99,6 @@ contract WeeklyLottery is Ownable {
   }
   */
 
-  function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
-    // uint8 zeroOne = uint8(randomGenerator() % 2);
-    // randomWords = randomGenerator();
-    randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
-  }
-
   /* ToDo : Replace This function with OpenZeppelin SafeMath */
   /**
     * @notice Function for deviding two Integer Numbers and return the results.
@@ -101,7 +114,21 @@ contract WeeklyLottery is Ownable {
     remainder = numerator - denominator * quotient;
   }
 
+  function potInitialize() external isAllowedManager {
+    require(lPotActive == false, "The Weekly Pot is started before !");
+    lPotActive = true ;
+    lReadySelectWinner = true;
+  }
+
+  function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
+    // uint8 zeroOne = uint8(randomGenerator() % 2);
+    // randomWords = randomGenerator();
+    randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
+  }
+
   function select_Winner() public onlyOwner {  
+
+    require( lReadySelectWinner == true, "The Pot is not ready for Select the Winner" );
 
     _LotteryWinnersArray = getLotteryWinnersArray();  
     uint256 l_randomWords = getRandomValue(_VRF);
@@ -115,13 +142,16 @@ contract WeeklyLottery is Ownable {
     // FinalPayment();
     ClearDataBase();
 
+    lPotActive = false;
+    lReadySelectWinner = false;
+
   }
 
   /**
     * @notice Release Smart Contract Memory .
     * @dev Clear All Storages .
   */
-  function ClearDataBase() internal returns (bool) {
+  function ClearDataBase() private returns (bool) {
     bool _success;
     _success = LotteryInterface(generatorLotteryAddr).clearlotteryWinnersArrayMap(address(this));
     return true;
@@ -136,7 +166,6 @@ contract WeeklyLottery is Ownable {
   //   uint totalPot = address(this).balance;
   //   // _LotteryWinnersArray = getLotteryWinnersArray();  
   //   // address WinnerAddress = _LotteryWinnersArray[_winnerIndex];
-  //   /* ToDo : Replace Calculation Parts with OpenZeppelin SafeMath ) */
   //   (winnerPrize, ) = getDivided(totalPot, 20);  // winnerPrize
 
   // }
@@ -145,7 +174,7 @@ contract WeeklyLottery is Ownable {
     * @notice Pay Pot Prize to the Winner.
     * @dev Transfer Pot Prize to the Winner.
   */
-  function WinnerPrizePayment(uint _winnerIndex, uint _winnerPrize) internal {
+  function WinnerPrizePayment(uint _winnerIndex, uint _winnerPrize) private {
 
     // _LotteryWinnersArray = getLotteryWinnersArray();  
     address payable potWinner = payable(_LotteryWinnersArray[_winnerIndex]);  
@@ -172,17 +201,18 @@ contract WeeklyLottery is Ownable {
     * @notice Save The Winner Address for Weekly Lottery
     * @dev Update Generator Smart Contract For Saving Hourly Winner Address
   */
-  function UpdateLotteryData(uint _winnerIndex, uint _balance) internal returns(bool) {
+  function UpdateLotteryData(uint _winnerIndex, uint _balance) private returns(bool) {
     bool _success;
     uint _winnerId;
     // _LotteryWinnersArray = getLotteryWinnersArray();  
-    address _winnerAddress = _LotteryWinnersArray[_winnerIndex];
-    _success = LotteryInterface(generatorLotteryAddr).setlotteryStructs(address(this), _balance, _winnerAddress, 2);
-    _winnerId = LotteryInterface(generatorLotteryAddr).setWeeklyWinnersArrayMap(address(this), _winnerAddress);
+    // address _winnerAddress = _LotteryWinnersArray[_winnerIndex];
+    potWinnerAddress = _LotteryWinnersArray[_winnerIndex];
+    _success = LotteryInterface(generatorLotteryAddr).setlotteryStructs(address(this), _balance, potWinnerAddress, 2);  // _winnerAddress
+    _winnerId = LotteryInterface(generatorLotteryAddr).setWeeklyWinnersArrayMap(address(this), potWinnerAddress);  // _winnerAddress
     return true;
   }
 
-  function getLotteryWinnersArray() internal view returns(address[] memory) {
+  function getLotteryWinnersArray() public view returns(address[] memory) {
     return LotteryInterface(generatorLotteryAddr).LotteryWinnersArray();
   }
 
@@ -205,8 +235,33 @@ contract WeeklyLottery is Ownable {
   //   MultiSigWalletAddress = _MultiSigWalletAddress;
   // }
 
+  function setDirector(address _DirectorAddress) external onlyOwner {
+    require(_DirectorAddress != address(0) );
+    potDirector = _DirectorAddress;
+  }
+
   function listPlayers() external view returns (address[] memory){  
     return _LotteryWinnersArray;  
+  }
+
+  function isPotActive() public view returns(bool) {
+    return lPotActive;
+  }
+
+  function getPlayersNumber() public view returns(uint) {
+    return _LotteryWinnersArray.length;
+  }
+
+  function getWinners() public view returns(address) {
+    return potWinnerAddress;  
+  }  
+
+  function isReadySelectWinner() public view returns(bool) {
+    return lReadySelectWinner;
+  }
+
+  function getPotDirector() public view returns(address) {
+    return potDirector;
   }
 
 }
