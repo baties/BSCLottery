@@ -157,7 +157,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface LotteryInterface {\n  function LotteryWinnersArray() external view returns (address[] memory);\n  function WeeklyWinnersArray() external view returns (address[] memory);\n  function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool);\n  function setlotteryWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint);\n  function setWeeklyWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint);\n  function clearlotteryWinnersArrayMap(address _lotteryAddress) external returns (bool);\n  function clearWeeklyWinnersArrayMap(address _lotteryAddress) external returns (bool);\n}\n",
-  "sourcePath": "/home/batis/SrcCode/myPRJ/SmartContBlockChain/BSCLottery/contracts/LotteryInterface.sol",
+  "sourcePath": "/root/SC/BSCLottery/contracts/LotteryInterface.sol",
   "ast": {
     "absolutePath": "project:/contracts/LotteryInterface.sol",
     "exportedSymbols": {
@@ -1630,7 +1630,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-05-09T07:32:27.734Z",
+  "updatedAt": "2022-05-09T08:09:17.088Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
