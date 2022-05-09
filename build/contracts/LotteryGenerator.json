@@ -5349,10 +5349,10 @@
         241
       ],
       "VRFv2Consumer": [
-        2673
+        2814
       ],
       "VRFv2SubscriptionManager": [
-        2912
+        3053
       ]
     },
     "id": 2155,
@@ -10172,10 +10172,10 @@
         241
       ],
       "VRFv2Consumer": [
-        2673
+        2814
       ],
       "VRFv2SubscriptionManager": [
-        2912
+        3053
       ]
     },
     "id": 2155,
@@ -15009,10 +15009,43 @@
       "transactionHash": "0x2da2b20d8831744dfef0b7ac624c87020db193ff72778d449d7ef749d032971a"
     },
     "97": {
-      "events": {},
+      "events": {
+        "0xe610764cbcba803247df3450b7492f6a0084b7b5b734a7901c13fef8f84ffaf4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "newLottery",
+              "type": "address"
+            }
+          ],
+          "name": "LotteryCreated",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0x48845F3aB9d0e548B33711E951512C7b7984E869",
-      "transactionHash": "0x0bf3d4c699955f2c1e5f21022b4881fd765e8f3d6fa678d77aa7dfab459a4bc6"
+      "address": "0xc996F92ce20f7c3a0ACee60F9781e6548D666641",
+      "transactionHash": "0xbbcf7cc04eec72001ef9c0fde6fcb14b5c369f134844c654e3ce6571ebc89e34"
     },
     "1651668597457": {
       "events": {},
@@ -15028,7 +15061,7 @@
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-05-08T14:04:23.641Z",
+  "updatedAt": "2022-05-09T07:33:39.200Z",
   "devdoc": {
     "author": "Batis ",
     "details": "Lottery Generator SmartContract - Parent of Core Lottery",

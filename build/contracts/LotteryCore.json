@@ -13089,10 +13089,10 @@
         241
       ],
       "VRFv2Consumer": [
-        2673
+        2814
       ],
       "VRFv2SubscriptionManager": [
-        2912
+        3053
       ]
     },
     "id": 1751,
@@ -13141,7 +13141,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 1751,
-        "sourceUnit": 2674,
+        "sourceUnit": 2815,
         "src": "280:29:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -13153,7 +13153,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 1751,
-        "sourceUnit": 2913,
+        "sourceUnit": 3054,
         "src": "310:40:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -19558,10 +19558,10 @@
                             "name": "VRFv2Consumer",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2673,
+                            "referencedDeclaration": 2814,
                             "src": "8014:13:6",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_type$_t_contract$_VRFv2Consumer_$2673_$",
+                              "typeIdentifier": "t_type$_t_contract$_VRFv2Consumer_$2814_$",
                               "typeString": "type(contract VRFv2Consumer)"
                             }
                           },
@@ -19576,7 +19576,7 @@
                           "src": "8014:21:6",
                           "tryCall": false,
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_VRFv2Consumer_$2673",
+                            "typeIdentifier": "t_contract$_VRFv2Consumer_$2814",
                             "typeString": "contract VRFv2Consumer"
                           }
                         },
@@ -19587,7 +19587,7 @@
                         "lValueRequested": false,
                         "memberName": "getlRandomWords",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 2672,
+                        "referencedDeclaration": 2813,
                         "src": "8014:37:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$",
@@ -26373,10 +26373,10 @@
         241
       ],
       "VRFv2Consumer": [
-        2673
+        2814
       ],
       "VRFv2SubscriptionManager": [
-        2912
+        3053
       ]
     },
     "id": 1751,
@@ -26425,7 +26425,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 1751,
-        "sourceUnit": 2674,
+        "sourceUnit": 2815,
         "src": "280:29:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -26437,7 +26437,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 1751,
-        "sourceUnit": 2913,
+        "sourceUnit": 3054,
         "src": "310:40:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -32842,10 +32842,10 @@
                             "name": "VRFv2Consumer",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2673,
+                            "referencedDeclaration": 2814,
                             "src": "8014:13:6",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_type$_t_contract$_VRFv2Consumer_$2673_$",
+                              "typeIdentifier": "t_type$_t_contract$_VRFv2Consumer_$2814_$",
                               "typeString": "type(contract VRFv2Consumer)"
                             }
                           },
@@ -32860,7 +32860,7 @@
                           "src": "8014:21:6",
                           "tryCall": false,
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_VRFv2Consumer_$2673",
+                            "typeIdentifier": "t_contract$_VRFv2Consumer_$2814",
                             "typeString": "contract VRFv2Consumer"
                           }
                         },
@@ -32871,7 +32871,7 @@
                         "lValueRequested": false,
                         "memberName": "getlRandomWords",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 2672,
+                        "referencedDeclaration": 2813,
                         "src": "8014:37:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_external_view$__$returns$_t_uint256_$",
@@ -39792,10 +39792,161 @@
       "transactionHash": "0x4d221be9a3df3386b8f110c335c7522c44de9c158bee0e438cc0e5ab455973f6"
     },
     "97": {
-      "events": {},
+      "events": {
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        "0x8de5754e4ed9d4994bdb4b2b8c12dfcd51b0e994c1d34a7f20fe7f3d3fbb7bc2": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "potPlayer",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "playerId",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "PlayerValue",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "ticketNumber",
+              "type": "uint256"
+            }
+          ],
+          "name": "PlayerRegister",
+          "type": "event"
+        },
+        "0xf0b342fc13c65867c873cfbf6e19b5285bae679018bdf3376a4baca5ff066e0d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "potPlayer",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256[]",
+              "name": "playerId",
+              "type": "uint256[]"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "playCount",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "playerValue",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "ticketNumber",
+              "type": "uint256"
+            }
+          ],
+          "name": "PlayerTotalValue",
+          "type": "event"
+        },
+        "0x9b320e270eb528aa46b3a21b196f1da153ccb2d5637e892594474e969fe6b7a9": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "potWinner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "winnerPrize",
+              "type": "uint256"
+            }
+          ],
+          "name": "SelectWinnerAddress",
+          "type": "event"
+        },
+        "0x274f2e5ea35472f60f411beb007713c0f1c1b574f260789eedee1789cd49d9f5": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "winnerIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "potBalance",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "winnerPrize",
+              "type": "uint256"
+            }
+          ],
+          "name": "SelectWinnerIndex",
+          "type": "event"
+        },
+        "0xd36f5f37e53a101e11e745c4b553773a94d17d9d7cec00640ac8331369a76d11": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "TrxValue",
+              "type": "uint256"
+            }
+          ],
+          "name": "TotalPayment",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0x92D645E0Ae3A694aBD95B73b48d61F59Fc4Cd5bd",
-      "transactionHash": "0x477759588565d2f65916236d976f9db5ac0ebfb8d733544667beae888415516f"
+      "address": "0xE9272eB9d42dBeA8A984d88939f566AB08D97DAc",
+      "transactionHash": "0xe69e1a1dbb043631fed2e0c35d7d5e2d6f74029f9dd40c44c738975fe015f2a6"
     },
     "1651668597457": {
       "events": {},
@@ -39811,7 +39962,7 @@
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-05-08T14:04:23.597Z",
+  "updatedAt": "2022-05-09T07:33:39.169Z",
   "devdoc": {
     "author": "Batis ",
     "details": "LotteryGenerator SmartContract Create This for each Pot ",
