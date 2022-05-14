@@ -14,12 +14,18 @@ import Start from './Start.js'
 import Web3 from 'web3' ;
 // const web3 = new Web3(window.ethereum.currentProvider);
 
+
+// const fs = require('fs');
+// const mnemonic = fs.readFileSync(".secret").toString().trim();
+// MyContract.setProvider(`wss://rinkeby.infura.io/ws/v3/${process.env.REACT_APP_INFURA_PROJECT_ID}`);
+
+
 // const LotteryCore = require("./contracts/LotteryCore.json");
 // const abi = LotteryCore["abi"];
 // const contractAddress = LotteryCore["networks"]["4"]["address"];
 // const MyContract = new web3.eth.Contract(abi, contractAddress);  
 // console.log("Lottery Contract Address is : " + contractAddress);
-// MyContract.setProvider(`wss://rinkeby.infura.io/ws/v3/${process.env.REACT_APP_INFURA_PROJECT_ID}`);
+
 import LotteryCore from "./contractx/LotteryCore.json";
 import LotteryGenerator from "./contractx/LotteryGenerator.json";
 import WeeklyLottery from "./contractx/WeeklyLottery.json";
@@ -109,8 +115,9 @@ function App() {
             const isPotActive = await lottery.methods.isPotActive().call()
             const ticketAmount = await lottery.methods.getTicketAmount().call()
             const playerCount = await lottery.methods.getPlayersNumber().call()
+
             const players = await lottery.methods.listPlayers().call()
-            const winners = await lottery.methods.getWinners().call()
+            const winners = await lotteryGenerator.methods.getWinners().call()
             const selectReady = await lottery.methods.isReadySelectWinner().call()
             // const progress = await lottery.methods.getPercent().call()
             let startedTime = await lottery.methods.getStartedTime().call()
@@ -211,6 +218,7 @@ function App() {
     }
   
     const SelectWinner = async()=>{
+      console.log("Winner Selection Process");
       if(account == null || account == '') {
         handleShow();
         return;
@@ -219,6 +227,7 @@ function App() {
       if(lottery && lottery !== 'undefined') {
         if(selectReady) {
           try {
+            console.log("Winner Select Starts")
             // const gas = 0;
             // web3.eth.getGasPrice().then((result) => {
             //   console.log(web3.utils.fromWei(result, 'ether'));
@@ -227,9 +236,12 @@ function App() {
             // const gas = await lottery.methods.select_Winner().estimateGas({from: account})
             await lottery.methods.select_Winner().send({from: account})  // gas:gas
             await loadContractData()
+            console.log("Winner Selected")
           } catch (e) {
             console.log('Error, Select Winner : ', e)
           }
+        } else {
+          console.log("SelectReady is False")
         }
       } else {
         alert("contract has not deployed yet.")
@@ -431,9 +443,15 @@ function App() {
                 </div>
                 : <Button variant="primary" onClick={buyTicket}>Buy Ticket</Button>
               } */}
+              <Card.Text>
+                  Owner : { owner }
+              </Card.Text>
+              <Card.Text>
+                  Account : { account }
+              </Card.Text>
               { owner === account ? 
-                  <Button variant="success" onClick={SelectWinner}>Select Winner</Button>
-                :<></>
+                <Button variant="success" onClick={SelectWinner}>Select Winner</Button>
+                : <></>
               }
               </div>
               <div className="col-md-5" style={{ paddingTop: '30px'}}>
