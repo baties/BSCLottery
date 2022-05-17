@@ -18,6 +18,7 @@ import LotteryCore from "./contractx/LotteryCore.json";
 import LotteryGenerator from "./contractx/LotteryGenerator.json";
 import WeeklyLottery from "./contractx/WeeklyLottery.json";
 import MonthlyLottery from "./contractx/MonthlyLottery.json";
+import LotteryLiquidityPool from "./contractx/LotteryLiquidityPool.json"
 
 // import * as fs from 'fs';
 
@@ -60,6 +61,10 @@ function App() {
     const [monthlylottery, setMonthlyLottery] = useState(null)
     const [monthlylotteryAddress, setMonthlyLotteryAddress] = useState(null)
     const [monthlylotteryBalance, setMonthlyLotteryBalance] = useState(0)
+
+    const [liquidityPool, setLiquidityPool] = useState(null)
+    const [liquidityPoolAddress, setLiquidityPoolAddress] = useState(null)
+    const [liquidityPoolBalance, setLiquidityPoolBalance] = useState(0)
 
     const [owner, setOwner] = useState(null)  
     const [ticketPrice, setTicketPrice] = useState(0)
@@ -111,11 +116,15 @@ function App() {
             const monthlylottery = new web3.eth.Contract(MonthlyLottery.abi, MonthlyLottery.networks[netId].address)
             const monthlylotteryAddress = MonthlyLottery.networks[netId].address
 
+            const liquidityPool = new web3.eth.Contract(LotteryLiquidityPool.abi, LotteryLiquidityPool.networks[netId].address)
+            const liquidityPoolAddress = LotteryLiquidityPool.networks[netId].address
+
             const owner = await lottery.methods.owner().call()
             
             const lotteryBalance = await lottery.methods.balanceInPot().call()
             const weeklylotteryBalance = await weeklylottery.methods.balanceInPot().call()
             const monthlylotteryBalance = await monthlylottery.methods.balanceInPot().call()
+            const liquidityPoolBalance = await liquidityPool.methods.balanceInPot().call()
 
             const ticketPrice = await lottery.methods.getTicketPrice().call()
             const isPotActive = await lottery.methods.isPotActive().call()
@@ -132,6 +141,9 @@ function App() {
             // setProgress(progress)
             setStartedTime(startedTime)
             setLotteryBalance(web3.utils.fromWei(lotteryBalance))
+            setWeeklyLotteryBalance(web3.utils.fromWei(weeklylotteryBalance))
+            setMonthlyLotteryBalance(web3.utils.fromWei(monthlylotteryBalance))
+            setLiquidityPoolBalance(web3.utils.fromWei(liquidityPoolBalance))
             setTicketPrice(web3.utils.fromWei(ticketPrice))
             setTicketAmount(ticketAmount)
             setIsPotActive(isPotActive)
@@ -158,6 +170,9 @@ function App() {
       // console.log(lottery)
       try {
         const lotteryBalance = await lottery.methods.balanceInPot().call()
+        const weeklylotteryBalance = await weeklylottery.methods.balanceInPot().call()
+        const monthlylotteryBalance = await monthlylottery.methods.balanceInPot().call()
+        const liquidityPoolBalance = await liquidityPool.methods.balanceInPot().call()
         const ticketPrice = await lottery.methods.ticket_price().call()
         const isPotActive = await lottery.methods.isPotActive().call()
         const ticketAmount = await lottery.methods.getTicketAmount().call()
@@ -170,6 +185,9 @@ function App() {
         // setProgress(progress)
         setStartedTime(startedTime)
         setLotteryBalance(web3.utils.fromWei(lotteryBalance))
+        setWeeklyLotteryBalance(web3.utils.fromWei(weeklylotteryBalance))
+        setMonthlyLotteryBalance(web3.utils.fromWei(monthlylotteryBalance))
+        setLiquidityPoolBalance(web3.utils.fromWei(liquidityPoolBalance))
         setTicketPrice(web3.utils.fromWei(ticketPrice))
         setTicketAmount(ticketAmount)
         setIsPotActive(isPotActive)
@@ -384,7 +402,10 @@ function App() {
           </Row>
           <div>
             <img src={COIN1} alt="coin1"  style={{width: '40px', height: '40px'}}/>
-            <i>Your Balance : {accountBalance} </i>
+            <i>Your Balance : {accountBalance} </i> <br></br>
+            <i>Owner : {owner} </i> 
+            <i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> 
+            <i>Account : {account} </i> <p></p>
           </div>
           
           {
@@ -464,7 +485,16 @@ function App() {
                 <i><small>Started at : {startedTime === '0'? "0s" : secondsToHms(startedTime)} </small></i>
               </Card.Text>
               <Card.Text>
-                Current balance : { lotteryBalance }
+                Current balance : { lotteryBalance }   
+              </Card.Text>
+              <Card.Text>
+                Current Weekly Pot balance : { weeklylotteryBalance }   
+              </Card.Text>
+              <Card.Text>
+                Current Monthly Pot balance : { monthlylotteryBalance }   
+              </Card.Text>
+              <Card.Text>
+                Current LiquidityPool balance : { liquidityPoolBalance }   
               </Card.Text>
               
               <Card.Text>
@@ -482,12 +512,12 @@ function App() {
                 </div>
                 : <Button variant="primary" onClick={buyTicket}>Buy Ticket</Button>
               } */}
-              <Card.Text>
+              {/* <Card.Text>
                   Owner : { owner }
               </Card.Text>
               <Card.Text>
                   Account : { account }
-              </Card.Text>
+              </Card.Text> */}
               { owner === account ? 
                   (isPotActive && selectReady) ?
                       <Button variant="warning" onClick={SelectWinner}>Select a Winner</Button>

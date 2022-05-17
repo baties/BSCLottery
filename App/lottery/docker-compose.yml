@@ -1,0 +1,43 @@
+version: '3.3'
+
+services:
+  client:
+    container_name: batissite_lottery
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - '3030:3000'
+    volumes:
+      - "./:/app"
+      - "/app/node_modules"
+    # networks:
+    #   - external_he
+
+  nginx:
+    container_name: batissite_nginx
+#    image: docker.repos.balad.ir/nginx:latest
+    build: ./nginx
+    depends_on:
+      - client
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - staticfiles:/app/static
+      # - ./pages/app:/app/homepage
+      # - ./pages:/var/www/html
+      # - ./files:/files
+    # networks:
+    #   - external_he
+
+volumes:
+  staticfiles:
+
+# networks:
+#   external_he:
+#     external: true
+      
+
+
