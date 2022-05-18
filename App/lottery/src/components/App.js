@@ -400,16 +400,19 @@ function App() {
         <Container>      
           <Row className="justify-content-md-center">
             <Col md="auto">
-              <h4 style={{margin:'20px'}}>Welcome to Lottery. Please enjoy the day here. ✌️</h4>
+              <h4 style={{margin:'20px', color:"#0000CD"}}>Welcome to Lottery. Please enjoy the day here. ✌️</h4>
             </Col>
           </Row>
           <div>
             <img src={COIN1} alt="coin1"  style={{width: '40px', height: '40px'}}/>
-            <i>Your Balance : {accountBalance} </i> <br></br>
-            <i>Owner : {owner} </i> 
-            <i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> 
-            <i>Account : {account} </i> <br></br>
-            <i>Director : {potDirector} </i> <p></p>
+            <i>Your Wallet Balance : <card style={{color: "#32CD32"}}> <b>{accountBalance}</b> </card> </i> 
+            <i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> 
+            <i>Your Balance in This Pot : <card style={{color: "#32CD32"}}> <b>{accountBalance}</b> </card> </i> 
+            <br></br>
+            <i>Owner : <card style={{color: "#4682B4"}}> {owner} </card> </i> 
+            <i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> 
+            <i>Account : <card style={{color: "#4682B4"}}> {account} </card> </i> <br></br>
+            <i>Director : <card style={{color: "#4682B4"}}> {potDirector} </card> </i> <p></p>
           </div>
           
           {
@@ -417,7 +420,7 @@ function App() {
               isPotActive ?
               <Card style={{marginTop:'50px', marginBottom:'50px'}}>
                 <Card.Body>
-                  <Card.Title>Start a Chance in the current Pot</Card.Title>
+                  <Card.Title style={{color: "#C70039"}}>Start a Chance in the current Pot</Card.Title>
                   <form 
                     className="form-inline row" 
                     onSubmit={(e) => {
@@ -483,12 +486,12 @@ function App() {
           {/* <ProgressBar max={100} now={progress} label={`${progress}%`} animated srOnly/> */}
           <Card>
             <Card.Body className="row">
-              <Card.Title>Current Lottery Room : {lotteryAddress}</Card.Title>
+              <Card.Title style={{color: "#C70039"}}>Current Lottery Room : {lotteryAddress}</Card.Title>
               <div className="col-md-7">
               {
                   isPotActive ?
                     selectReady ?
-                        <Card.Text>
+                        <Card.Text> 
                             <i><small>Pot is Active and Ready for Select the Winner</small></i> <br></br>
                             <i><small>Started at : {startedTime === '0'? "0s" : secondsToHms(startedTime)} </small></i>
                         </Card.Text>
@@ -557,7 +560,7 @@ function App() {
                       return (
                         <tr key={idx}>
                           <td>{idx+1}</td>
-                          <td>{player}</td>
+                          <td style={{color: "#4682B4"}}>{player}</td>
                         </tr>
                       )
                     })    
@@ -574,7 +577,7 @@ function App() {
                       return (
                         <tr key={idx}>
                           <td>{idx+1}</td>
-                          <td>{winner}</td>
+                          <td style={{color: "#4682B4"}}>{winner}</td>
                         </tr>
                       )
                     })    
