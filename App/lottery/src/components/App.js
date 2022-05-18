@@ -18,7 +18,7 @@ import LotteryCore from "./contractx/LotteryCore.json";
 import LotteryGenerator from "./contractx/LotteryGenerator.json";
 import WeeklyLottery from "./contractx/WeeklyLottery.json";
 import MonthlyLottery from "./contractx/MonthlyLottery.json";
-import LotteryLiquidityPool from "./contractx/LotteryLiquidityPool.json"
+import LotteryLiquidityPool from "./contractx/LotteryLiquidityPool.json";
 
 // import * as fs from 'fs';
 
@@ -67,6 +67,7 @@ function App() {
     const [liquidityPoolBalance, setLiquidityPoolBalance] = useState(0)
 
     const [owner, setOwner] = useState(null)  
+    const [potDirector, setPotDirector] = useState(null)
     const [ticketPrice, setTicketPrice] = useState(0)
     const [ticketAmount, setTicketAmount] = useState(0)
     const [isPotActive, setIsPotActive] = useState(true)
@@ -120,6 +121,7 @@ function App() {
             const liquidityPoolAddress = LotteryLiquidityPool.networks[netId].address
 
             const owner = await lottery.methods.owner().call()
+            const potDirector = await lottery.methods.getPotDirector().call()
             
             const lotteryBalance = await lottery.methods.balanceInPot().call()
             const weeklylotteryBalance = await weeklylottery.methods.balanceInPot().call()
@@ -136,7 +138,7 @@ function App() {
             const selectReady = await lottery.methods.isReadySelectWinner().call()
             // const progress = await lottery.methods.getPercent().call()
             let startedTime = await lottery.methods.getStartedTime().call()
-            if(isPotActive) startedTime = 0  // isGameEnded
+            if(! isPotActive) startedTime = 0  // isGameEnded
             
             // setProgress(progress)
             setStartedTime(startedTime)
@@ -154,6 +156,7 @@ function App() {
             setLottery(lottery)
             setLotteryAddress(lotteryAddress)
             setOwner(owner)
+            setPotDirector(potDirector)
           } catch (e) {
             console.log('Error', e)
             console.log('Contracts not deployed to the current network')
@@ -405,7 +408,8 @@ function App() {
             <i>Your Balance : {accountBalance} </i> <br></br>
             <i>Owner : {owner} </i> 
             <i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> 
-            <i>Account : {account} </i> <p></p>
+            <i>Account : {account} </i> <br></br>
+            <i>Director : {potDirector} </i> <p></p>
           </div>
           
           {
@@ -481,24 +485,32 @@ function App() {
             <Card.Body className="row">
               <Card.Title>Current Lottery Room : {lotteryAddress}</Card.Title>
               <div className="col-md-7">
+              {
+                  isPotActive ?
+                    selectReady ?
+                        <Card.Text>
+                            <i><small>Pot is Active and Ready for Select the Winner</small></i> <br></br>
+                            <i><small>Started at : {startedTime === '0'? "0s" : secondsToHms(startedTime)} </small></i>
+                        </Card.Text>
+                    :
+                        <Card.Text>
+                            <i><small>Pot is Active But not fill enough for Selecting the Winner</small></i> <br></br>
+                            <i><small>Started at : {startedTime === '0'? "0s" : secondsToHms(startedTime)} </small></i>
+                        </Card.Text>
+                  : 
+                    <Card.Text>
+                        <i><small>Pot is Finished</small></i> <br></br>
+                    </Card.Text>
+              }
               <Card.Text>
-                <i><small>Started at : {startedTime === '0'? "0s" : secondsToHms(startedTime)} </small></i>
-              </Card.Text>
-              <Card.Text>
-                Current balance : { lotteryBalance }   
-              </Card.Text>
-              <Card.Text>
-                Current Weekly Pot balance : { weeklylotteryBalance }   
-              </Card.Text>
-              <Card.Text>
-                Current Monthly Pot balance : { monthlylotteryBalance }   
-              </Card.Text>
-              <Card.Text>
-                Current LiquidityPool balance : { liquidityPoolBalance }   
+                Current balance : <b> { lotteryBalance } </b> <br></br> 
+                Current Weekly Pot balance : <b> { weeklylotteryBalance } </b> <br></br>  
+                Current Monthly Pot balance : <b> { monthlylotteryBalance } </b> <br></br>
+                Current LiquidityPool balance : <b> { liquidityPoolBalance } </b>  
               </Card.Text>
               
               <Card.Text>
-                Available Ticket Count : { ticketAmount }
+                Total Ticket bought : <b> { ticketAmount } </b>
               </Card.Text>
   
               <Card.Text>
