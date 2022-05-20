@@ -79,18 +79,16 @@ contract LotteryCore is Ownable {
   event PlayerTotalValue(address potPlayer, uint[] playerId, uint playCount, uint playerValue, uint ticketNumber);
   event TotalPayment(address receiver, uint TrxValue);
 
-  constructor(address VRF) {   // , address lOwner
+  constructor(address VRF, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr) {
     LotteryOwner = msg.sender;
     _VRF = VRF;
     lPotActive = true;
     lReadySelectWinner = false;
     potStartTime = block.timestamp;
-    // generatorLotteryAddr = 0x4490bEAF312ec3948016b8ef43528c5ACDF5FDB7 ;
-    // LiquidityPoolAddress = 0x393660C3446Fb05ca9Cf4034568450d47d32a076 ;
-    // WeeklyPotAddress = 0xe9F90ff51A50b69c84fF50CC5EE6D08Ce8CFc1bB ;
-    // MonthlyPotAddress = 0x1D1F2A6ae3E31Ad016a3E969392fCe130A4E4608 ;   
-    // MultiSigWalletAddress = ;
-    // potDirector = 0x4de8d75eF9b48856e708347c4A0bf1BCA338DB53 ;
+    generatorLotteryAddr = generatorLotteryAddress;
+    LiquidityPoolAddress = LiquidityPoolAddr ;
+    WeeklyPotAddress = WeeklyLotteryAddress ;
+    MonthlyPotAddress = MonthlyLotteryAddress ;   
   }
 
   // modifier onlyOwner() {
@@ -345,8 +343,8 @@ contract LotteryCore is Ownable {
     uint _winnerId;
     // address _winnerAddress = potPlayersArray[_winnerIndex];
     potWinnerAddress = potPlayersArray[_winnerIndex];
-    _success = LotteryInterface(generatorLotteryAddr).setlotteryStructs(address(this), _balance, potWinnerAddress, 0);  // _winnerAddress  
-    _winnerId = LotteryInterface(generatorLotteryAddr).setlotteryWinnersArrayMap(address(this), potWinnerAddress);  // _winnerAddress
+    _success = LotteryInterface(generatorLotteryAddr).setlotteryStructs(address(this), _balance, potWinnerAddress, 0);  
+    _winnerId = LotteryInterface(generatorLotteryAddr).setlotteryWinnersArrayMap(potWinnerAddress);  
     return true;
   }
 
@@ -360,7 +358,7 @@ contract LotteryCore is Ownable {
     MonthlyPotAddress = _MonthlyPotAddress;
   }
 
-  function generatorLotteryAddress(address _contractAddr) external onlyOwner {
+  function set_generatorLotteryAddress(address _contractAddr) external onlyOwner {
     generatorLotteryAddr = _contractAddr;
   }
 
@@ -417,6 +415,26 @@ contract LotteryCore is Ownable {
 
   function getPotDirector() public view returns(address) {
     return potDirector;
+  }
+
+  function getAllContractAddresses() public view returns(address[] memory) {
+    address[] memory contractAddresses;
+    contractAddresses[0] = generatorLotteryAddr;
+    contractAddresses[1] = LiquidityPoolAddress;
+    contractAddresses[2] = WeeklyPotAddress;
+    contractAddresses[3] = MonthlyPotAddress;
+    return contractAddresses;
+  }
+
+  function getPlayerAmounts(address PlayerAddress) public view returns(uint, uint) {
+    uint PaymentCount = PotPlayersMap[PlayerAddress].PaymentCount;
+    uint PaymentValue = PotPlayersMap[PlayerAddress].paymentValue;
+    return (PaymentCount, PaymentValue);
+  }
+
+  function getPlayerValue(address PlayerAddress) public view returns(uint) {
+    uint PaymentValue = PotPlayersMap[PlayerAddress].paymentValue;
+    return PaymentValue;
   }
 
 }

@@ -59,11 +59,12 @@ contract WeeklyLottery is Ownable {
   event SelectWinnerAddress(address potWinner, uint winnerPrize);
   event TotalPayment(address receiver, uint TrxValue);
 
-  constructor(address VRF) {   // , address lOwner
+  constructor(address VRF, address generatorLotteryAddress) {   
     LotteryOwner = msg.sender;
     _VRF = VRF;
     lPotActive = false;
     lReadySelectWinner = false;
+    generatorLotteryAddr = generatorLotteryAddress;
   }
 
   /* ToDo : Add & Complete Fallback routine */
@@ -116,6 +117,7 @@ contract WeeklyLottery is Ownable {
 
   function potInitialize() external isAllowedManager {
     require(lPotActive == false, "The Weekly Pot is started before !");
+    _LotteryWinnersArray = getLotteryWinnersArray();  
     lPotActive = true ;
     lReadySelectWinner = true;
   }
@@ -130,7 +132,7 @@ contract WeeklyLottery is Ownable {
 
     require( lReadySelectWinner == true, "The Pot is not ready for Select the Winner" );
 
-    _LotteryWinnersArray = getLotteryWinnersArray();  
+    // _LotteryWinnersArray = getLotteryWinnersArray();  
     uint256 l_randomWords = getRandomValue(_VRF);
     uint winnerIndex = l_randomWords % _LotteryWinnersArray.length;
     uint winnerPrize = address(this).balance; // Calculation();
@@ -153,7 +155,7 @@ contract WeeklyLottery is Ownable {
   */
   function ClearDataBase() private returns (bool) {
     bool _success;
-    _success = LotteryInterface(generatorLotteryAddr).clearlotteryWinnersArrayMap(address(this));
+    _success = LotteryInterface(generatorLotteryAddr).clearlotteryWinnersArrayMap();
     return true;
   }
 
@@ -208,12 +210,12 @@ contract WeeklyLottery is Ownable {
     // address _winnerAddress = _LotteryWinnersArray[_winnerIndex];
     potWinnerAddress = _LotteryWinnersArray[_winnerIndex];
     _success = LotteryInterface(generatorLotteryAddr).setlotteryStructs(address(this), _balance, potWinnerAddress, 2);  // _winnerAddress
-    _winnerId = LotteryInterface(generatorLotteryAddr).setWeeklyWinnersArrayMap(address(this), potWinnerAddress);  // _winnerAddress
+    _winnerId = LotteryInterface(generatorLotteryAddr).setWeeklyWinnersArrayMap(potWinnerAddress);  // _winnerAddress
     return true;
   }
 
   function getLotteryWinnersArray() public view returns(address[] memory) {
-    return LotteryInterface(generatorLotteryAddr).LotteryWinnersArray();
+    return LotteryInterface(generatorLotteryAddr).getWinners();
   }
 
   // function set_MonthlyPotAddress(address _MonthlyPotAddress) external onlyOwner {
@@ -221,7 +223,7 @@ contract WeeklyLottery is Ownable {
   //   MonthlyPotAddress = _MonthlyPotAddress;
   // }
 
-  function generatorLotteryAddress(address _contractAddr) external onlyOwner {
+  function set_generatorLotteryAddress(address _contractAddr) external onlyOwner {
     generatorLotteryAddr = _contractAddr;
   }
 

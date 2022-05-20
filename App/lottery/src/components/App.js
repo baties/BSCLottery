@@ -45,6 +45,8 @@ function App() {
     const [web3, setWeb3] = useState('undefined')
     const [account, setAccount] = useState(null)
     const [accountBalance, setAccountBalance] = useState(0)
+    const [accountPotCount, setAccountPotCount] = useState(0)
+    const [accountPotValue, setAccountPotValue] = useState(0)
   
     const [lottery, setLottery] = useState(null)
     const [lotteryAddress, setLotteryAddress] = useState(null)
@@ -127,6 +129,9 @@ function App() {
             const weeklylotteryBalance = await weeklylottery.methods.balanceInPot().call()
             const monthlylotteryBalance = await monthlylottery.methods.balanceInPot().call()
             const liquidityPoolBalance = await liquidityPool.methods.balanceInPot().call()
+            
+            // let {accountPotCount, accountPotValue} = await lottery.methods.getPlayerAmounts().call()
+            const accountPotValue = await lottery.methods.getPlayerValue(accounts[0]).call()
 
             const ticketPrice = await lottery.methods.getTicketPrice().call()
             const isPotActive = await lottery.methods.isPotActive().call()
@@ -147,6 +152,7 @@ function App() {
             setMonthlyLotteryBalance(web3.utils.fromWei(monthlylotteryBalance))
             setLiquidityPoolBalance(web3.utils.fromWei(liquidityPoolBalance))
             setTicketPrice(web3.utils.fromWei(ticketPrice))
+            setAccountPotValue(web3.utils.fromWei(accountPotValue))
             setTicketAmount(ticketAmount)
             setIsPotActive(isPotActive)
             setSelectReady(selectReady)
@@ -176,6 +182,10 @@ function App() {
         const weeklylotteryBalance = await weeklylottery.methods.balanceInPot().call()
         const monthlylotteryBalance = await monthlylottery.methods.balanceInPot().call()
         const liquidityPoolBalance = await liquidityPool.methods.balanceInPot().call()
+
+        // let {accountPotCount, accountPotValue} = await lottery.methods.getPlayerAmounts().call()
+        const accountPotValue = await lottery.methods.getPlayerValue(account).call()
+
         const ticketPrice = await lottery.methods.ticket_price().call()
         const isPotActive = await lottery.methods.isPotActive().call()
         const ticketAmount = await lottery.methods.getTicketAmount().call()
@@ -192,6 +202,7 @@ function App() {
         setMonthlyLotteryBalance(web3.utils.fromWei(monthlylotteryBalance))
         setLiquidityPoolBalance(web3.utils.fromWei(liquidityPoolBalance))
         setTicketPrice(web3.utils.fromWei(ticketPrice))
+        setAccountPotValue(web3.utils.fromWei(accountPotValue))
         setTicketAmount(ticketAmount)
         setIsPotActive(isPotActive)
         setSelectReady(selectReady)
@@ -407,7 +418,7 @@ function App() {
             <img src={COIN1} alt="coin1"  style={{width: '40px', height: '40px'}}/>
             <i>Your Wallet Balance : <card style={{color: "#32CD32"}}> <b>{accountBalance}</b> </card> </i> 
             <i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> 
-            <i>Your Balance in This Pot : <card style={{color: "#32CD32"}}> <b>{accountBalance}</b> </card> </i> 
+            <i>Your Balance in This Pot : <card style={{color: "#32CD32"}}> <b>{accountPotValue}</b> </card> </i> 
             <br></br>
             <i>Owner : <card style={{color: "#4682B4"}}> {owner} </card> </i> 
             <i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> 

@@ -3,7 +3,7 @@
   "abi": [
     {
       "inputs": [],
-      "name": "LotteryWinnersArray",
+      "name": "getWinners",
       "outputs": [
         {
           "internalType": "address[]",
@@ -16,7 +16,20 @@
     },
     {
       "inputs": [],
-      "name": "WeeklyWinnersArray",
+      "name": "getWeeklyWinners",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getMonthlyWinners",
       "outputs": [
         {
           "internalType": "address[]",
@@ -65,11 +78,6 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_lotteryAddress",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
           "name": "_winnerAddress",
           "type": "address"
         }
@@ -87,11 +95,6 @@
     },
     {
       "inputs": [
-        {
-          "internalType": "address",
-          "name": "_lotteryAddress",
-          "type": "address"
-        },
         {
           "internalType": "address",
           "name": "_winnerAddress",
@@ -113,10 +116,23 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_lotteryAddress",
+          "name": "_winnerAddress",
           "type": "address"
         }
       ],
+      "name": "setMonthlyWinnersArrayMap",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "clearlotteryWinnersArrayMap",
       "outputs": [
         {
@@ -129,14 +145,21 @@
       "type": "function"
     },
     {
-      "inputs": [
+      "inputs": [],
+      "name": "clearWeeklyWinnersArrayMap",
+      "outputs": [
         {
-          "internalType": "address",
-          "name": "_lotteryAddress",
-          "type": "address"
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
         }
       ],
-      "name": "clearWeeklyWinnersArrayMap",
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "clearMonthlyWinnersArrayMap",
       "outputs": [
         {
           "internalType": "bool",
@@ -148,7 +171,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.9+commit.e5eed63a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"LotteryWinnersArray\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"WeeklyWinnersArray\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_lotteryAddress\",\"type\":\"address\"}],\"name\":\"clearWeeklyWinnersArrayMap\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_lotteryAddress\",\"type\":\"address\"}],\"name\":\"clearlotteryWinnersArrayMap\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_lotteryAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_winnerAddress\",\"type\":\"address\"}],\"name\":\"setWeeklyWinnersArrayMap\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_lotteryAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_totalBalance\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_winnerAddress\",\"type\":\"address\"},{\"internalType\":\"uint8\",\"name\":\"_lotteryType\",\"type\":\"uint8\"}],\"name\":\"setlotteryStructs\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_lotteryAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_winnerAddress\",\"type\":\"address\"}],\"name\":\"setlotteryWinnersArrayMap\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/LotteryInterface.sol\":\"LotteryInterface\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/LotteryInterface.sol\":{\"keccak256\":\"0xd4e699f1136b795a0f2a76a20d9a9b1b80573079aff142b66af663acf7fb6a8c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9e6c6e12f48f462c81579d1713c06295b9edd9e6c5c722b3a82d58224a771c54\",\"dweb:/ipfs/Qmb2p1fhXvtMgQAt48B4q2XpY6WthtQS6GM9cPvfgjd6UN\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.9+commit.e5eed63a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"clearMonthlyWinnersArrayMap\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"clearWeeklyWinnersArrayMap\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"clearlotteryWinnersArrayMap\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getMonthlyWinners\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getWeeklyWinners\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getWinners\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_winnerAddress\",\"type\":\"address\"}],\"name\":\"setMonthlyWinnersArrayMap\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_winnerAddress\",\"type\":\"address\"}],\"name\":\"setWeeklyWinnersArrayMap\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_lotteryAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_totalBalance\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_winnerAddress\",\"type\":\"address\"},{\"internalType\":\"uint8\",\"name\":\"_lotteryType\",\"type\":\"uint8\"}],\"name\":\"setlotteryStructs\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_winnerAddress\",\"type\":\"address\"}],\"name\":\"setlotteryWinnersArrayMap\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/LotteryInterface.sol\":\"LotteryInterface\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/LotteryInterface.sol\":{\"keccak256\":\"0xcbec6e2249a4dcaee7fccf505e5f3b5d0de89d8b72a040a1ed5c4008e9fbb87a\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://733f6284ad35ff9eae635c1ebb25640d3134877a5ab615a943fceb97e2df2d94\",\"dweb:/ipfs/QmQLGXgvsdBeEvUdW8NNVdh1UYsvLqK9h1qNKzYGcto8T1\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -156,21 +179,21 @@
   "deployedGeneratedSources": [],
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface LotteryInterface {\n  function LotteryWinnersArray() external view returns (address[] memory);\n  function WeeklyWinnersArray() external view returns (address[] memory);\n  function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool);\n  function setlotteryWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint);\n  function setWeeklyWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint);\n  function clearlotteryWinnersArrayMap(address _lotteryAddress) external returns (bool);\n  function clearWeeklyWinnersArrayMap(address _lotteryAddress) external returns (bool);\n}\n",
+  "source": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface LotteryInterface {\n  // function LotteryWinnersArray() external view returns (address[] memory);\n  // function WeeklyWinnersArray() external view returns (address[] memory);\n  function getWinners() external view returns(address[] memory);\n  function getWeeklyWinners() external view returns(address[] memory);\n  function getMonthlyWinners() external view returns(address[] memory);\n  function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool);\n  function setlotteryWinnersArrayMap(address _winnerAddress) external returns (uint);\n  function setWeeklyWinnersArrayMap(address _winnerAddress) external returns (uint);\n  function setMonthlyWinnersArrayMap(address _winnerAddress) external returns (uint);\n  function clearlotteryWinnersArrayMap() external returns (bool);\n  function clearWeeklyWinnersArrayMap() external returns (bool);\n  function clearMonthlyWinnersArrayMap() external returns (bool);\n}\n",
   "sourcePath": "/home/batis/SrcCode/myPRJ/SmartContBlockChain/BSCLottery/contracts/LotteryInterface.sol",
   "ast": {
     "absolutePath": "project:/contracts/LotteryInterface.sol",
     "exportedSymbols": {
       "LotteryInterface": [
-        2214
+        2439
       ]
     },
-    "id": 2215,
+    "id": 2440,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2156,
+        "id": 2371,
         "literals": [
           "solidity",
           "^",
@@ -187,42 +210,42 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 2214,
+        "id": 2439,
         "linearizedBaseContracts": [
-          2214
+          2439
         ],
         "name": "LotteryInterface",
         "nameLocation": "67:16:8",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "functionSelector": "abaccb32",
-            "id": 2162,
+            "functionSelector": "df15c37e",
+            "id": 2377,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "LotteryWinnersArray",
-            "nameLocation": "97:19:8",
+            "name": "getWinners",
+            "nameLocation": "252:10:8",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2157,
+              "id": 2372,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "116:2:8"
+              "src": "262:2:8"
             },
             "returnParameters": {
-              "id": 2161,
+              "id": 2376,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2160,
+                  "id": 2375,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2162,
-                  "src": "142:16:8",
+                  "scope": 2377,
+                  "src": "287:16:8",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -231,19 +254,19 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2158,
+                      "id": 2373,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
-                      "src": "142:7:8",
+                      "src": "287:7:8",
                       "stateMutability": "nonpayable",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "id": 2159,
+                    "id": 2374,
                     "nodeType": "ArrayTypeName",
-                    "src": "142:9:8",
+                    "src": "287:9:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
                       "typeString": "address[]"
@@ -252,42 +275,42 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "141:18:8"
+              "src": "286:18:8"
             },
-            "scope": 2214,
-            "src": "88:72:8",
+            "scope": 2439,
+            "src": "243:62:8",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "functionSelector": "716e5a46",
-            "id": 2168,
+            "functionSelector": "4488d679",
+            "id": 2383,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "WeeklyWinnersArray",
-            "nameLocation": "172:18:8",
+            "name": "getWeeklyWinners",
+            "nameLocation": "317:16:8",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2163,
+              "id": 2378,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "190:2:8"
+              "src": "333:2:8"
             },
             "returnParameters": {
-              "id": 2167,
+              "id": 2382,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2166,
+                  "id": 2381,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2168,
-                  "src": "216:16:8",
+                  "scope": 2383,
+                  "src": "358:16:8",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -296,19 +319,19 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2164,
+                      "id": 2379,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
-                      "src": "216:7:8",
+                      "src": "358:7:8",
                       "stateMutability": "nonpayable",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "id": 2165,
+                    "id": 2380,
                     "nodeType": "ArrayTypeName",
-                    "src": "216:9:8",
+                    "src": "358:9:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
                       "typeString": "address[]"
@@ -317,36 +340,101 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "215:18:8"
+              "src": "357:18:8"
             },
-            "scope": 2214,
-            "src": "163:71:8",
+            "scope": 2439,
+            "src": "308:68:8",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "195b6e9d",
+            "id": 2389,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getMonthlyWinners",
+            "nameLocation": "388:17:8",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2384,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "405:2:8"
+            },
+            "returnParameters": {
+              "id": 2388,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2387,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2389,
+                  "src": "430:16:8",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
+                    "typeString": "address[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 2385,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "430:7:8",
+                      "stateMutability": "nonpayable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "id": 2386,
+                    "nodeType": "ArrayTypeName",
+                    "src": "430:9:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                      "typeString": "address[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "429:18:8"
+            },
+            "scope": 2439,
+            "src": "379:69:8",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "7a1fa9e3",
-            "id": 2181,
+            "id": 2402,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "setlotteryStructs",
-            "nameLocation": "246:17:8",
+            "nameLocation": "460:17:8",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2177,
+              "id": 2398,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2170,
+                  "id": 2391,
                   "mutability": "mutable",
                   "name": "_lotteryAddress",
-                  "nameLocation": "272:15:8",
+                  "nameLocation": "486:15:8",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2181,
-                  "src": "264:23:8",
+                  "scope": 2402,
+                  "src": "478:23:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -354,10 +442,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2169,
+                    "id": 2390,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "264:7:8",
+                    "src": "478:7:8",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -368,13 +456,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2172,
+                  "id": 2393,
                   "mutability": "mutable",
                   "name": "_totalBalance",
-                  "nameLocation": "294:13:8",
+                  "nameLocation": "508:13:8",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2181,
-                  "src": "289:18:8",
+                  "scope": 2402,
+                  "src": "503:18:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -382,10 +470,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2171,
+                    "id": 2392,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "289:4:8",
+                    "src": "503:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -395,13 +483,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2174,
+                  "id": 2395,
                   "mutability": "mutable",
                   "name": "_winnerAddress",
-                  "nameLocation": "317:14:8",
+                  "nameLocation": "531:14:8",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2181,
-                  "src": "309:22:8",
+                  "scope": 2402,
+                  "src": "523:22:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -409,10 +497,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2173,
+                    "id": 2394,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "309:7:8",
+                    "src": "523:7:8",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -423,13 +511,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2176,
+                  "id": 2397,
                   "mutability": "mutable",
                   "name": "_lotteryType",
-                  "nameLocation": "339:12:8",
+                  "nameLocation": "553:12:8",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2181,
-                  "src": "333:18:8",
+                  "scope": 2402,
+                  "src": "547:18:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -437,10 +525,10 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 2175,
+                    "id": 2396,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
-                    "src": "333:5:8",
+                    "src": "547:5:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint8",
                       "typeString": "uint8"
@@ -449,21 +537,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "263:89:8"
+              "src": "477:89:8"
             },
             "returnParameters": {
-              "id": 2180,
+              "id": 2401,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2179,
+                  "id": 2400,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2181,
-                  "src": "371:4:8",
+                  "scope": 2402,
+                  "src": "585:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -471,10 +559,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2178,
+                    "id": 2399,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "371:4:8",
+                    "src": "585:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -483,64 +571,36 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "370:6:8"
+              "src": "584:6:8"
             },
-            "scope": 2214,
-            "src": "237:140:8",
+            "scope": 2439,
+            "src": "451:140:8",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "functionSelector": "a6dddd64",
-            "id": 2190,
+            "functionSelector": "12592fc8",
+            "id": 2409,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "setlotteryWinnersArrayMap",
-            "nameLocation": "389:25:8",
+            "nameLocation": "603:25:8",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2186,
+              "id": 2405,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2183,
-                  "mutability": "mutable",
-                  "name": "_lotteryAddress",
-                  "nameLocation": "423:15:8",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2190,
-                  "src": "415:23:8",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2182,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "415:7:8",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 2185,
+                  "id": 2404,
                   "mutability": "mutable",
                   "name": "_winnerAddress",
-                  "nameLocation": "448:14:8",
+                  "nameLocation": "637:14:8",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2190,
-                  "src": "440:22:8",
+                  "scope": 2409,
+                  "src": "629:22:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -548,10 +608,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2184,
+                    "id": 2403,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "440:7:8",
+                    "src": "629:7:8",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -561,21 +621,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "414:49:8"
+              "src": "628:24:8"
             },
             "returnParameters": {
-              "id": 2189,
+              "id": 2408,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2188,
+                  "id": 2407,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2190,
-                  "src": "482:4:8",
+                  "scope": 2409,
+                  "src": "671:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -583,10 +643,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2187,
+                    "id": 2406,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "482:4:8",
+                    "src": "671:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -595,64 +655,36 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "481:6:8"
+              "src": "670:6:8"
             },
-            "scope": 2214,
-            "src": "380:108:8",
+            "scope": 2439,
+            "src": "594:83:8",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "functionSelector": "94c31c9b",
-            "id": 2199,
+            "functionSelector": "a2d96705",
+            "id": 2416,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "setWeeklyWinnersArrayMap",
-            "nameLocation": "500:24:8",
+            "nameLocation": "689:24:8",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2195,
+              "id": 2412,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2192,
-                  "mutability": "mutable",
-                  "name": "_lotteryAddress",
-                  "nameLocation": "533:15:8",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2199,
-                  "src": "525:23:8",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2191,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "525:7:8",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 2194,
+                  "id": 2411,
                   "mutability": "mutable",
                   "name": "_winnerAddress",
-                  "nameLocation": "558:14:8",
+                  "nameLocation": "722:14:8",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2199,
-                  "src": "550:22:8",
+                  "scope": 2416,
+                  "src": "714:22:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -660,10 +692,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2193,
+                    "id": 2410,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "550:7:8",
+                    "src": "714:7:8",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -673,21 +705,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "524:49:8"
+              "src": "713:24:8"
             },
             "returnParameters": {
-              "id": 2198,
+              "id": 2415,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2197,
+                  "id": 2414,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2199,
-                  "src": "592:4:8",
+                  "scope": 2416,
+                  "src": "756:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -695,10 +727,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2196,
+                    "id": 2413,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "592:4:8",
+                    "src": "756:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -707,71 +739,126 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "591:6:8"
+              "src": "755:6:8"
             },
-            "scope": 2214,
-            "src": "491:107:8",
+            "scope": 2439,
+            "src": "680:82:8",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "functionSelector": "54a1ec73",
-            "id": 2206,
+            "functionSelector": "bb085b09",
+            "id": 2423,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setMonthlyWinnersArrayMap",
+            "nameLocation": "774:25:8",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2419,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2418,
+                  "mutability": "mutable",
+                  "name": "_winnerAddress",
+                  "nameLocation": "808:14:8",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2423,
+                  "src": "800:22:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2417,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "800:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "799:24:8"
+            },
+            "returnParameters": {
+              "id": 2422,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2421,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2423,
+                  "src": "842:4:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2420,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "842:4:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "841:6:8"
+            },
+            "scope": 2439,
+            "src": "765:83:8",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "5f697d60",
+            "id": 2428,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "clearlotteryWinnersArrayMap",
-            "nameLocation": "610:27:8",
+            "nameLocation": "860:27:8",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2202,
+              "id": 2424,
               "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2201,
-                  "mutability": "mutable",
-                  "name": "_lotteryAddress",
-                  "nameLocation": "646:15:8",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2206,
-                  "src": "638:23:8",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2200,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "638:7:8",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "visibility": "internal"
-                }
-              ],
-              "src": "637:25:8"
+              "parameters": [],
+              "src": "887:2:8"
             },
             "returnParameters": {
-              "id": 2205,
+              "id": 2427,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2204,
+                  "id": 2426,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2206,
-                  "src": "681:4:8",
+                  "scope": 2428,
+                  "src": "908:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -779,10 +866,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2203,
+                    "id": 2425,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "681:4:8",
+                    "src": "908:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -791,71 +878,42 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "680:6:8"
+              "src": "907:6:8"
             },
-            "scope": 2214,
-            "src": "601:86:8",
+            "scope": 2439,
+            "src": "851:63:8",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "functionSelector": "32f655fd",
-            "id": 2213,
+            "functionSelector": "a1b8aad1",
+            "id": 2433,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "clearWeeklyWinnersArrayMap",
-            "nameLocation": "699:26:8",
+            "nameLocation": "926:26:8",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2209,
+              "id": 2429,
               "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2208,
-                  "mutability": "mutable",
-                  "name": "_lotteryAddress",
-                  "nameLocation": "734:15:8",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2213,
-                  "src": "726:23:8",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2207,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "726:7:8",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "visibility": "internal"
-                }
-              ],
-              "src": "725:25:8"
+              "parameters": [],
+              "src": "952:2:8"
             },
             "returnParameters": {
-              "id": 2212,
+              "id": 2432,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2211,
+                  "id": 2431,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2213,
-                  "src": "769:4:8",
+                  "scope": 2433,
+                  "src": "973:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -863,10 +921,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2210,
+                    "id": 2430,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "769:4:8",
+                    "src": "973:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -875,35 +933,90 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "768:6:8"
+              "src": "972:6:8"
             },
-            "scope": 2214,
-            "src": "690:85:8",
+            "scope": 2439,
+            "src": "917:62:8",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "4cd9c25b",
+            "id": 2438,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "clearMonthlyWinnersArrayMap",
+            "nameLocation": "991:27:8",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2434,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1018:2:8"
+            },
+            "returnParameters": {
+              "id": 2437,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2436,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2438,
+                  "src": "1039:4:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2435,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1039:4:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1038:6:8"
+            },
+            "scope": 2439,
+            "src": "982:63:8",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2215,
-        "src": "57:720:8",
+        "scope": 2440,
+        "src": "57:990:8",
         "usedErrors": []
       }
     ],
-    "src": "32:746:8"
+    "src": "32:1016:8"
   },
   "legacyAST": {
     "absolutePath": "project:/contracts/LotteryInterface.sol",
     "exportedSymbols": {
       "LotteryInterface": [
-        2214
+        2439
       ]
     },
-    "id": 2215,
+    "id": 2440,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2156,
+        "id": 2371,
         "literals": [
           "solidity",
           "^",
@@ -920,42 +1033,42 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 2214,
+        "id": 2439,
         "linearizedBaseContracts": [
-          2214
+          2439
         ],
         "name": "LotteryInterface",
         "nameLocation": "67:16:8",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "functionSelector": "abaccb32",
-            "id": 2162,
+            "functionSelector": "df15c37e",
+            "id": 2377,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "LotteryWinnersArray",
-            "nameLocation": "97:19:8",
+            "name": "getWinners",
+            "nameLocation": "252:10:8",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2157,
+              "id": 2372,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "116:2:8"
+              "src": "262:2:8"
             },
             "returnParameters": {
-              "id": 2161,
+              "id": 2376,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2160,
+                  "id": 2375,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2162,
-                  "src": "142:16:8",
+                  "scope": 2377,
+                  "src": "287:16:8",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -964,19 +1077,19 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2158,
+                      "id": 2373,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
-                      "src": "142:7:8",
+                      "src": "287:7:8",
                       "stateMutability": "nonpayable",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "id": 2159,
+                    "id": 2374,
                     "nodeType": "ArrayTypeName",
-                    "src": "142:9:8",
+                    "src": "287:9:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
                       "typeString": "address[]"
@@ -985,42 +1098,42 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "141:18:8"
+              "src": "286:18:8"
             },
-            "scope": 2214,
-            "src": "88:72:8",
+            "scope": 2439,
+            "src": "243:62:8",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "functionSelector": "716e5a46",
-            "id": 2168,
+            "functionSelector": "4488d679",
+            "id": 2383,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
-            "name": "WeeklyWinnersArray",
-            "nameLocation": "172:18:8",
+            "name": "getWeeklyWinners",
+            "nameLocation": "317:16:8",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2163,
+              "id": 2378,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "190:2:8"
+              "src": "333:2:8"
             },
             "returnParameters": {
-              "id": 2167,
+              "id": 2382,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2166,
+                  "id": 2381,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2168,
-                  "src": "216:16:8",
+                  "scope": 2383,
+                  "src": "358:16:8",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -1029,19 +1142,19 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2164,
+                      "id": 2379,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
-                      "src": "216:7:8",
+                      "src": "358:7:8",
                       "stateMutability": "nonpayable",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "id": 2165,
+                    "id": 2380,
                     "nodeType": "ArrayTypeName",
-                    "src": "216:9:8",
+                    "src": "358:9:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
                       "typeString": "address[]"
@@ -1050,36 +1163,101 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "215:18:8"
+              "src": "357:18:8"
             },
-            "scope": 2214,
-            "src": "163:71:8",
+            "scope": 2439,
+            "src": "308:68:8",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "195b6e9d",
+            "id": 2389,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getMonthlyWinners",
+            "nameLocation": "388:17:8",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2384,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "405:2:8"
+            },
+            "returnParameters": {
+              "id": 2388,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2387,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2389,
+                  "src": "430:16:8",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
+                    "typeString": "address[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 2385,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "430:7:8",
+                      "stateMutability": "nonpayable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "id": 2386,
+                    "nodeType": "ArrayTypeName",
+                    "src": "430:9:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                      "typeString": "address[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "429:18:8"
+            },
+            "scope": 2439,
+            "src": "379:69:8",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "7a1fa9e3",
-            "id": 2181,
+            "id": 2402,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "setlotteryStructs",
-            "nameLocation": "246:17:8",
+            "nameLocation": "460:17:8",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2177,
+              "id": 2398,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2170,
+                  "id": 2391,
                   "mutability": "mutable",
                   "name": "_lotteryAddress",
-                  "nameLocation": "272:15:8",
+                  "nameLocation": "486:15:8",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2181,
-                  "src": "264:23:8",
+                  "scope": 2402,
+                  "src": "478:23:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1087,10 +1265,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2169,
+                    "id": 2390,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "264:7:8",
+                    "src": "478:7:8",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1101,13 +1279,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2172,
+                  "id": 2393,
                   "mutability": "mutable",
                   "name": "_totalBalance",
-                  "nameLocation": "294:13:8",
+                  "nameLocation": "508:13:8",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2181,
-                  "src": "289:18:8",
+                  "scope": 2402,
+                  "src": "503:18:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1115,10 +1293,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2171,
+                    "id": 2392,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "289:4:8",
+                    "src": "503:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1128,13 +1306,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2174,
+                  "id": 2395,
                   "mutability": "mutable",
                   "name": "_winnerAddress",
-                  "nameLocation": "317:14:8",
+                  "nameLocation": "531:14:8",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2181,
-                  "src": "309:22:8",
+                  "scope": 2402,
+                  "src": "523:22:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1142,10 +1320,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2173,
+                    "id": 2394,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "309:7:8",
+                    "src": "523:7:8",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1156,13 +1334,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2176,
+                  "id": 2397,
                   "mutability": "mutable",
                   "name": "_lotteryType",
-                  "nameLocation": "339:12:8",
+                  "nameLocation": "553:12:8",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2181,
-                  "src": "333:18:8",
+                  "scope": 2402,
+                  "src": "547:18:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1170,10 +1348,10 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 2175,
+                    "id": 2396,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
-                    "src": "333:5:8",
+                    "src": "547:5:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint8",
                       "typeString": "uint8"
@@ -1182,21 +1360,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "263:89:8"
+              "src": "477:89:8"
             },
             "returnParameters": {
-              "id": 2180,
+              "id": 2401,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2179,
+                  "id": 2400,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2181,
-                  "src": "371:4:8",
+                  "scope": 2402,
+                  "src": "585:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1204,10 +1382,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2178,
+                    "id": 2399,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "371:4:8",
+                    "src": "585:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -1216,64 +1394,36 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "370:6:8"
+              "src": "584:6:8"
             },
-            "scope": 2214,
-            "src": "237:140:8",
+            "scope": 2439,
+            "src": "451:140:8",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "functionSelector": "a6dddd64",
-            "id": 2190,
+            "functionSelector": "12592fc8",
+            "id": 2409,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "setlotteryWinnersArrayMap",
-            "nameLocation": "389:25:8",
+            "nameLocation": "603:25:8",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2186,
+              "id": 2405,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2183,
-                  "mutability": "mutable",
-                  "name": "_lotteryAddress",
-                  "nameLocation": "423:15:8",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2190,
-                  "src": "415:23:8",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2182,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "415:7:8",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 2185,
+                  "id": 2404,
                   "mutability": "mutable",
                   "name": "_winnerAddress",
-                  "nameLocation": "448:14:8",
+                  "nameLocation": "637:14:8",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2190,
-                  "src": "440:22:8",
+                  "scope": 2409,
+                  "src": "629:22:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1281,10 +1431,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2184,
+                    "id": 2403,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "440:7:8",
+                    "src": "629:7:8",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1294,21 +1444,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "414:49:8"
+              "src": "628:24:8"
             },
             "returnParameters": {
-              "id": 2189,
+              "id": 2408,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2188,
+                  "id": 2407,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2190,
-                  "src": "482:4:8",
+                  "scope": 2409,
+                  "src": "671:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1316,10 +1466,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2187,
+                    "id": 2406,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "482:4:8",
+                    "src": "671:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1328,64 +1478,36 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "481:6:8"
+              "src": "670:6:8"
             },
-            "scope": 2214,
-            "src": "380:108:8",
+            "scope": 2439,
+            "src": "594:83:8",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "functionSelector": "94c31c9b",
-            "id": 2199,
+            "functionSelector": "a2d96705",
+            "id": 2416,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "setWeeklyWinnersArrayMap",
-            "nameLocation": "500:24:8",
+            "nameLocation": "689:24:8",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2195,
+              "id": 2412,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2192,
-                  "mutability": "mutable",
-                  "name": "_lotteryAddress",
-                  "nameLocation": "533:15:8",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2199,
-                  "src": "525:23:8",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2191,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "525:7:8",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 2194,
+                  "id": 2411,
                   "mutability": "mutable",
                   "name": "_winnerAddress",
-                  "nameLocation": "558:14:8",
+                  "nameLocation": "722:14:8",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2199,
-                  "src": "550:22:8",
+                  "scope": 2416,
+                  "src": "714:22:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1393,10 +1515,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2193,
+                    "id": 2410,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "550:7:8",
+                    "src": "714:7:8",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1406,21 +1528,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "524:49:8"
+              "src": "713:24:8"
             },
             "returnParameters": {
-              "id": 2198,
+              "id": 2415,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2197,
+                  "id": 2414,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2199,
-                  "src": "592:4:8",
+                  "scope": 2416,
+                  "src": "756:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1428,10 +1550,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2196,
+                    "id": 2413,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "592:4:8",
+                    "src": "756:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1440,71 +1562,126 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "591:6:8"
+              "src": "755:6:8"
             },
-            "scope": 2214,
-            "src": "491:107:8",
+            "scope": 2439,
+            "src": "680:82:8",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "functionSelector": "54a1ec73",
-            "id": 2206,
+            "functionSelector": "bb085b09",
+            "id": 2423,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setMonthlyWinnersArrayMap",
+            "nameLocation": "774:25:8",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2419,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2418,
+                  "mutability": "mutable",
+                  "name": "_winnerAddress",
+                  "nameLocation": "808:14:8",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2423,
+                  "src": "800:22:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2417,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "800:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "799:24:8"
+            },
+            "returnParameters": {
+              "id": 2422,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2421,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2423,
+                  "src": "842:4:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2420,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "842:4:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "841:6:8"
+            },
+            "scope": 2439,
+            "src": "765:83:8",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "5f697d60",
+            "id": 2428,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "clearlotteryWinnersArrayMap",
-            "nameLocation": "610:27:8",
+            "nameLocation": "860:27:8",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2202,
+              "id": 2424,
               "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2201,
-                  "mutability": "mutable",
-                  "name": "_lotteryAddress",
-                  "nameLocation": "646:15:8",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2206,
-                  "src": "638:23:8",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2200,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "638:7:8",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "visibility": "internal"
-                }
-              ],
-              "src": "637:25:8"
+              "parameters": [],
+              "src": "887:2:8"
             },
             "returnParameters": {
-              "id": 2205,
+              "id": 2427,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2204,
+                  "id": 2426,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2206,
-                  "src": "681:4:8",
+                  "scope": 2428,
+                  "src": "908:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1512,10 +1689,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2203,
+                    "id": 2425,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "681:4:8",
+                    "src": "908:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -1524,71 +1701,42 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "680:6:8"
+              "src": "907:6:8"
             },
-            "scope": 2214,
-            "src": "601:86:8",
+            "scope": 2439,
+            "src": "851:63:8",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "functionSelector": "32f655fd",
-            "id": 2213,
+            "functionSelector": "a1b8aad1",
+            "id": 2433,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "clearWeeklyWinnersArrayMap",
-            "nameLocation": "699:26:8",
+            "nameLocation": "926:26:8",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2209,
+              "id": 2429,
               "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 2208,
-                  "mutability": "mutable",
-                  "name": "_lotteryAddress",
-                  "nameLocation": "734:15:8",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 2213,
-                  "src": "726:23:8",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 2207,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "726:7:8",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "visibility": "internal"
-                }
-              ],
-              "src": "725:25:8"
+              "parameters": [],
+              "src": "952:2:8"
             },
             "returnParameters": {
-              "id": 2212,
+              "id": 2432,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2211,
+                  "id": 2431,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2213,
-                  "src": "769:4:8",
+                  "scope": 2433,
+                  "src": "973:4:8",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1596,10 +1744,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2210,
+                    "id": 2430,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "769:4:8",
+                    "src": "973:4:8",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -1608,21 +1756,76 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "768:6:8"
+              "src": "972:6:8"
             },
-            "scope": 2214,
-            "src": "690:85:8",
+            "scope": 2439,
+            "src": "917:62:8",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "4cd9c25b",
+            "id": 2438,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "clearMonthlyWinnersArrayMap",
+            "nameLocation": "991:27:8",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2434,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1018:2:8"
+            },
+            "returnParameters": {
+              "id": 2437,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2436,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2438,
+                  "src": "1039:4:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2435,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1039:4:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1038:6:8"
+            },
+            "scope": 2439,
+            "src": "982:63:8",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2215,
-        "src": "57:720:8",
+        "scope": 2440,
+        "src": "57:990:8",
         "usedErrors": []
       }
     ],
-    "src": "32:746:8"
+    "src": "32:1016:8"
   },
   "compiler": {
     "name": "solc",
@@ -1630,7 +1833,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-05-13T11:03:44.597Z",
+  "updatedAt": "2022-05-20T06:59:17.200Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

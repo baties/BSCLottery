@@ -46,6 +46,13 @@ contract LotteryGenerator is Ownable {
     }
     mapping (address => WeeklyWinnerStr) public WeeklyWinnersMap;
 
+    address[] public MonthlyWinnersArray;
+    struct MonthlyWinnerStr{
+        uint playersId;
+        uint winnerCount;
+    }
+    mapping (address => MonthlyWinnerStr) public MonthlyWinnersMap;
+
     // event
     event LotteryCreated(address newLottery);
 
@@ -63,8 +70,16 @@ contract LotteryGenerator is Ownable {
         payable(msg.sender).transfer(address(this).balance);
     }
 
-    function getWinners() public view returns(address[] memory) {
+    function getWinners() external view returns(address[] memory) {
         return LotteryWinnersArray;
+    }
+
+    function getWeeklyWinners() external view returns(address[] memory) {
+        return WeeklyWinnersArray;
+    }
+
+    function getMonthlyWinners() external view returns(address[] memory) {
+        return MonthlyWinnersArray;
     }
 
     function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool) {
@@ -74,21 +89,28 @@ contract LotteryGenerator is Ownable {
         return true;
     }
 
-    function setlotteryWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint) {
+    function setlotteryWinnersArrayMap(address _winnerAddress) external returns (uint) {
         LotteryWinnersArray.push(_winnerAddress);
         LotteryWinnersMap[_winnerAddress].playersId = LotteryWinnersArray.length;  // -1
         LotteryWinnersMap[_winnerAddress].winnerCount++;
         return LotteryWinnersArray.length ;  // -1
     }
 
-    function setWeeklyWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint) {
+    function setWeeklyWinnersArrayMap(address _winnerAddress) external returns (uint) {
         WeeklyWinnersArray.push(_winnerAddress);
         WeeklyWinnersMap[_winnerAddress].playersId = WeeklyWinnersArray.length;  // -1
         WeeklyWinnersMap[_winnerAddress].winnerCount++;
         return WeeklyWinnersArray.length ;  // -1
     }
 
-    function clearlotteryWinnersArrayMap(address _lotteryAddress) external returns (bool) {
+    function setMonthlyWinnersArrayMap(address _winnerAddress) external returns (uint) {
+        MonthlyWinnersArray.push(_winnerAddress);
+        MonthlyWinnersMap[_winnerAddress].playersId = MonthlyWinnersArray.length;  // -1
+        MonthlyWinnersMap[_winnerAddress].winnerCount++;
+        return MonthlyWinnersArray.length ;  // -1
+    }
+
+    function clearlotteryWinnersArrayMap() external returns (bool) {
         address _lotteryWinAddress;
         for (uint256 index = 0; index < LotteryWinnersArray.length - 1; index++) {
             _lotteryWinAddress = LotteryWinnersArray[index];
@@ -102,7 +124,7 @@ contract LotteryGenerator is Ownable {
         return true;
     }
 
-    function clearWeeklyWinnersArrayMap(address _lotteryAddress) external returns (bool) {
+    function clearWeeklyWinnersArrayMap() external returns (bool) {
         address _lotteryWinAddress;
         for (uint256 index = 0; index < WeeklyWinnersArray.length - 1; index++) {
             _lotteryWinAddress = WeeklyWinnersArray[index];
@@ -116,11 +138,27 @@ contract LotteryGenerator is Ownable {
         return true;
     }
 
+    function clearMonthlyWinnersArrayMap() external returns (bool) {
+        address _lotteryWinAddress;
+        for (uint256 index = 0; index < MonthlyWinnersArray.length - 1; index++) {
+            _lotteryWinAddress = MonthlyWinnersArray[index];
+            // if (MonthlyWinnersMap[_lotteryWinAddress].playersId > 0) {
+            //     MonthlyWinnersMap[_lotteryWinAddress].playersId = 0;
+            //     MonthlyWinnersMap[_lotteryWinAddress].winnerCount = 0;
+            // }
+            delete MonthlyWinnersMap[_lotteryWinAddress];
+        }
+        delete MonthlyWinnersArray;
+        return true;
+    }
 
-    function createLottery(address _VRF) public onlyOwner {
+
+    function createLottery(address _VRF, address weeklyAddr, address monthlyAddr, address liquidityAddr) public onlyOwner {
+
+        address generatorAddress = address(this);
 
         // require(bytes(name).length > 0);
-        address newLottery = address(new LotteryCore(_VRF));
+        address newLottery = address(new LotteryCore(_VRF, generatorAddress, weeklyAddr, monthlyAddr, liquidityAddr));
         lotteries.push(newLottery);
         lotteryStructs[newLottery].index = lotteries.length - 1;
         lotteryStructs[newLottery].creator = msg.sender;
