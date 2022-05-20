@@ -32,6 +32,9 @@ contract LotteryGenerator is Ownable {
     }
     mapping(address => lottery) lotteryStructs;
 
+    address private LotteryOwner;
+    address private potDirector;  /* ToDo: All Main Action must be controlled only by Owner or Director */
+
     address[] public LotteryWinnersArray;
     struct LotteryWinnerStr{
         uint playersId;
@@ -56,10 +59,20 @@ contract LotteryGenerator is Ownable {
     // event
     event LotteryCreated(address newLottery);
 
+    constructor() {   
+        LotteryOwner = msg.sender;
+    }
+
+
   /* ToDo : Add & Complete Fallback routine */
     fallback() external payable {
     }
     receive() external payable {
+    }
+
+    modifier isAllowedManager() {
+        require( msg.sender == potDirector || msg.sender == LotteryOwner , "Permission Denied !!" );
+        _;
     }
 
     function balanceInPot() public view returns(uint){
@@ -80,6 +93,15 @@ contract LotteryGenerator is Ownable {
 
     function getMonthlyWinners() external view returns(address[] memory) {
         return MonthlyWinnersArray;
+    }
+
+    function getPotDirector() public view returns(address) {
+        return potDirector;
+    }
+
+    function setDirector(address _DirectorAddress) external onlyOwner {
+        require(_DirectorAddress != address(0) );
+        potDirector = _DirectorAddress;
     }
 
     function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool) {

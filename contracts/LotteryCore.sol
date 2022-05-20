@@ -15,12 +15,6 @@ import "./VRFv2SubscriptionManager.sol";
 
 import "./LotteryInterface.sol";
 
-// interface IlotteryGenerator {
-//     function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool);
-//     function setlotteryWinnersArrayMap(address _lotteryAddress, address _winnerAddress) external returns (uint);
-// }
-
-
 /**
 ************************************************************************************
 ************************************************************************************
@@ -48,6 +42,7 @@ contract LotteryCore is Ownable {
   bool private lPotActive;  
   bool private lReadySelectWinner; 
   uint public potStartTime = 0;
+  uint public realPLayerCount = 0;
 
   struct PotPlayerStr{
     uint PaymentCount;
@@ -159,7 +154,6 @@ contract LotteryCore is Ownable {
   */
   function play() public payable isGameOn {
 
-    /* ToDo: Convert Ether to BNB */
     require(msg.value >= 0.01 ether && msg.value < 100 ether, "Value should be between 0.01 & 100 BNB");
 
     uint userPotAmount = PotPlayersMap[msg.sender].paymentValue;
@@ -185,8 +179,11 @@ contract LotteryCore is Ownable {
     PotPlayersMap[msg.sender].TicketNumbers += ticketNumber;
     PotPlayersMap[msg.sender].PlayersId.push( id );
     PotPlayersMap[msg.sender].TicketsId.push( id2);
+    if (PotPlayersMap[msg.sender].PaymentCount == 1) {
+      realPLayerCount++;
+    }
 
-    if (address(this).balance >= 0.1 ether && potPlayersArray.length >= 5) {
+    if (address(this).balance >= 0.1 ether && realPLayerCount >= 5) {  // // potPlayersArray.length
       lReadySelectWinner = true;
     } 
 
@@ -269,6 +266,7 @@ contract LotteryCore is Ownable {
     }
     delete potPlayersArray;
     delete potTickets;
+    realPLayerCount = 0;
     return true;
   }
 

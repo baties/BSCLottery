@@ -17,12 +17,6 @@ import "./LotteryCore.sol";
 
 import "./LotteryInterface.sol";
 
-// interface IiilotteryGenerator {
-//     function WeeklyWinnersArray() external view returns (address[] memory);
-//     function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool);
-//     function clearWeeklyWinnersArrayMap(address _lotteryAddress) external returns (bool);
-// }
-
 
 /**
 ************************************************************************************
@@ -120,7 +114,7 @@ contract MonthlyLottery is Ownable {
     randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
   }
 
-  function select_Winner() public onlyOwner {  
+  function select_Winner() public isAllowedManager {  
 
     require( lReadySelectWinner == true, "The Pot is not ready for Select the Winner" );
 
