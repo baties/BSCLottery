@@ -96,7 +96,7 @@ contract WeeklyLottery is Ownable {
     return uint(
       keccak256(
         abi.encodePacked(
-          block.difficulty, block.timestamp, potTickets ))) ;
+          block.difficulty, block.timestamp, _LotteryWinnersArray ))) ;
   }
   */
 

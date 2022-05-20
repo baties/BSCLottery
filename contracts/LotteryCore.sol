@@ -417,13 +417,20 @@ contract LotteryCore is Ownable {
     return potDirector;
   }
 
-  function getAllContractAddresses() public view returns(address[] memory) {
-    address[] memory contractAddresses;
-    contractAddresses[0] = generatorLotteryAddr;
-    contractAddresses[1] = LiquidityPoolAddress;
-    contractAddresses[2] = WeeklyPotAddress;
-    contractAddresses[3] = MonthlyPotAddress;
-    return contractAddresses;
+  // function getAllContractAddresses() public view returns(address[] memory) {
+  //   address[] memory contractAddresses;
+  //   contractAddresses[0] = generatorLotteryAddr;
+  //   contractAddresses[1] = LiquidityPoolAddress;
+  //   contractAddresses[2] = WeeklyPotAddress;
+  //   contractAddresses[3] = MonthlyPotAddress;
+  //   return contractAddresses;
+  // }
+  function getAllContractAddresses() public view returns(address gAddress, address lAddress, address wAddress, address mAddress) {
+    gAddress = generatorLotteryAddr ;
+    lAddress = LiquidityPoolAddress ;
+    wAddress = WeeklyPotAddress ;
+    mAddress = MonthlyPotAddress ;
+    return (gAddress, lAddress, wAddress, mAddress); 
   }
 
   function getPlayerAmounts(address PlayerAddress) public view returns(uint, uint) {
