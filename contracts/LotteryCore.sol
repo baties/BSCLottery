@@ -341,8 +341,8 @@ contract LotteryCore is Ownable {
     uint _winnerId;
     // address _winnerAddress = potPlayersArray[_winnerIndex];
     potWinnerAddress = potPlayersArray[_winnerIndex];
-    _success = LotteryInterface(generatorLotteryAddr).setlotteryStructs(address(this), _balance, potWinnerAddress, 0);  
-    _winnerId = LotteryInterface(generatorLotteryAddr).setlotteryWinnersArrayMap(potWinnerAddress);  
+    _success = LotteryInterface(generatorLotteryAddr).setlotteryStructs(address(this), msg.sender, _balance, potWinnerAddress, 0);  
+    _winnerId = LotteryInterface(generatorLotteryAddr).setlotteryWinnersArrayMap(msg.sender, potWinnerAddress);  
     return true;
   }
 

@@ -2,6 +2,10 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+
+// import "truffle/Console.sol";
+// import "hardhat/console.sol";
+
 import "./LotteryCore.sol";
 
 
@@ -71,7 +75,12 @@ contract LotteryGenerator is Ownable {
     }
 
     modifier isAllowedManager() {
-        require( msg.sender == potDirector || msg.sender == LotteryOwner , "Permission Denied !!" );
+        require( msg.sender == potDirector || msg.sender == LotteryOwner , "(Manager) Permission Denied !!" );
+        _;
+    }
+
+    modifier isAllowedOwner(address _caller) {
+        require( _caller == potDirector || _caller == LotteryOwner , "(Owner) Permission Denied !!" );
         _;
     }
 
@@ -104,35 +113,35 @@ contract LotteryGenerator is Ownable {
         potDirector = _DirectorAddress;
     }
 
-    function setlotteryStructs(address _lotteryAddress, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external returns (bool) {
+    function setlotteryStructs(address _lotteryAddress, address _commander, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external isAllowedOwner(_commander) returns (bool) {
         lotteryStructs[_lotteryAddress].totalBalance = _totalBalance;
         lotteryStructs[_lotteryAddress].winnerAddress = _winnerAddress;
         lotteryStructs[_lotteryAddress].lotteryType = LType(_lotteryType);
         return true;
     }
 
-    function setlotteryWinnersArrayMap(address _winnerAddress) external returns (uint) {
+    function setlotteryWinnersArrayMap(address _commander, address _winnerAddress) external isAllowedOwner(_commander) returns (uint) {
         LotteryWinnersArray.push(_winnerAddress);
         LotteryWinnersMap[_winnerAddress].playersId = LotteryWinnersArray.length;  // -1
         LotteryWinnersMap[_winnerAddress].winnerCount++;
         return LotteryWinnersArray.length ;  // -1
     }
 
-    function setWeeklyWinnersArrayMap(address _winnerAddress) external returns (uint) {
+    function setWeeklyWinnersArrayMap(address _commander, address _winnerAddress) external isAllowedOwner(_commander) returns (uint) {
         WeeklyWinnersArray.push(_winnerAddress);
         WeeklyWinnersMap[_winnerAddress].playersId = WeeklyWinnersArray.length;  // -1
         WeeklyWinnersMap[_winnerAddress].winnerCount++;
         return WeeklyWinnersArray.length ;  // -1
     }
 
-    function setMonthlyWinnersArrayMap(address _winnerAddress) external returns (uint) {
+    function setMonthlyWinnersArrayMap(address _commander, address _winnerAddress) external isAllowedOwner(_commander) returns (uint) {
         MonthlyWinnersArray.push(_winnerAddress);
         MonthlyWinnersMap[_winnerAddress].playersId = MonthlyWinnersArray.length;  // -1
         MonthlyWinnersMap[_winnerAddress].winnerCount++;
         return MonthlyWinnersArray.length ;  // -1
     }
 
-    function clearlotteryWinnersArrayMap() external returns (bool) {
+    function clearlotteryWinnersArrayMap(address _commander) external isAllowedOwner(_commander) returns (bool) {
         address _lotteryWinAddress;
         for (uint256 index = 0; index < LotteryWinnersArray.length - 1; index++) {
             _lotteryWinAddress = LotteryWinnersArray[index];
@@ -146,7 +155,7 @@ contract LotteryGenerator is Ownable {
         return true;
     }
 
-    function clearWeeklyWinnersArrayMap() external returns (bool) {
+    function clearWeeklyWinnersArrayMap(address _commander) external isAllowedOwner(_commander) returns (bool) {
         address _lotteryWinAddress;
         for (uint256 index = 0; index < WeeklyWinnersArray.length - 1; index++) {
             _lotteryWinAddress = WeeklyWinnersArray[index];
@@ -160,7 +169,7 @@ contract LotteryGenerator is Ownable {
         return true;
     }
 
-    function clearMonthlyWinnersArrayMap() external returns (bool) {
+    function clearMonthlyWinnersArrayMap(address _commander) external isAllowedOwner(_commander) returns (bool) {
         address _lotteryWinAddress;
         for (uint256 index = 0; index < MonthlyWinnersArray.length - 1; index++) {
             _lotteryWinAddress = MonthlyWinnersArray[index];

@@ -148,7 +148,7 @@ contract WeeklyLottery is Ownable {
   */
   function ClearDataBase() private returns (bool) {
     bool _success;
-    _success = LotteryInterface(generatorLotteryAddr).clearlotteryWinnersArrayMap();
+    _success = LotteryInterface(generatorLotteryAddr).clearlotteryWinnersArrayMap(msg.sender);
     return true;
   }
 
@@ -202,8 +202,8 @@ contract WeeklyLottery is Ownable {
     // _LotteryWinnersArray = getLotteryWinnersArray();  
     // address _winnerAddress = _LotteryWinnersArray[_winnerIndex];
     potWinnerAddress = _LotteryWinnersArray[_winnerIndex];
-    _success = LotteryInterface(generatorLotteryAddr).setlotteryStructs(address(this), _balance, potWinnerAddress, 2);  // _winnerAddress
-    _winnerId = LotteryInterface(generatorLotteryAddr).setWeeklyWinnersArrayMap(potWinnerAddress);  // _winnerAddress
+    _success = LotteryInterface(generatorLotteryAddr).setlotteryStructs(address(this), msg.sender, _balance, potWinnerAddress, 2);  // _winnerAddress
+    _winnerId = LotteryInterface(generatorLotteryAddr).setWeeklyWinnersArrayMap(msg.sender, potWinnerAddress);  // _winnerAddress
     return true;
   }
 
