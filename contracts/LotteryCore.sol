@@ -194,15 +194,13 @@ contract LotteryCore is Ownable {
 
   }
 
-  /*
   function randomGenerator() private view returns (uint) {
     return uint(
       keccak256(
         abi.encodePacked(
           block.difficulty, block.timestamp, potTickets ))) ;
   }
-  */
-
+  
   /*
   function lrequestRandomWords(address _VRFv2) public {
     VRFv2Consumer(_VRFv2).requestRandomWords(LotteryOwner) ;
@@ -215,8 +213,8 @@ contract LotteryCore is Ownable {
   */
   function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
     // uint8 zeroOne = uint8(randomGenerator() % 2);
-    // randomWords = randomGenerator();
-    randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
+    randomWords = randomGenerator();
+    // randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
   }
 
   /**
