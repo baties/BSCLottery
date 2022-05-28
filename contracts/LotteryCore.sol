@@ -43,6 +43,7 @@ contract LotteryCore is Ownable {
   bool private lReadySelectWinner; 
   uint public potStartTime = 0;
   uint public realPLayerCount = 0;
+  uint public potWinnerPrize = 0;
 
   struct PotPlayerStr{
     uint PaymentCount;
@@ -213,8 +214,8 @@ contract LotteryCore is Ownable {
   */
   function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
     // uint8 zeroOne = uint8(randomGenerator() % 2);
-    randomWords = randomGenerator();
-    // randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
+    // randomWords = randomGenerator();
+    randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
   }
 
   /**
@@ -233,7 +234,7 @@ contract LotteryCore is Ownable {
     
     emit SelectWinnerIndex(winnerIndex, address(this).balance, winnerPrize);
 
-    UpdateLotteryData(winnerIndex, address(this).balance);
+    UpdateLotteryData(winnerIndex, address(this).balance, winnerPrize);
     WinnerPrizePayment(winnerIndex, winnerPrize); 
     FinalPayment(weeklyPot, monthlyPot, liquidityAmount);
     ClearDataBase();
@@ -334,13 +335,14 @@ contract LotteryCore is Ownable {
     * @notice Save The Winner Address for Weekly Lottery
     * @dev Update Generator Smart Contract For Saving Hourly Winner Address
   */
-  function UpdateLotteryData(uint _winnerIndex, uint _balance) private returns(bool) {
+  function UpdateLotteryData(uint _winnerIndex, uint _balance, uint _winnerPrize) private returns(bool) {
     bool _success;
     uint _winnerId;
     // address _winnerAddress = potPlayersArray[_winnerIndex];
     potWinnerAddress = potPlayersArray[_winnerIndex];
+    potWinnerPrize = _winnerPrize;
     _success = LotteryInterface(generatorLotteryAddr).setlotteryStructs(address(this), msg.sender, _balance, potWinnerAddress, 0);  
-    _winnerId = LotteryInterface(generatorLotteryAddr).setlotteryWinnersArrayMap(msg.sender, potWinnerAddress);  
+    _winnerId = LotteryInterface(generatorLotteryAddr).setlotteryWinnersArrayMap(msg.sender, potWinnerAddress, _winnerPrize);  
     return true;
   }
 
@@ -397,8 +399,8 @@ contract LotteryCore is Ownable {
     return potPlayersArray.length;
   }
 
-  function getWinners() public view returns(address) {
-    return potWinnerAddress;  
+  function getWinners() public view returns(address, uint) {
+    return ( potWinnerAddress, potWinnerPrize ) ;  
   }  
 
   function isReadySelectWinner() public view returns(bool) {

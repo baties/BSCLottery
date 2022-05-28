@@ -84,14 +84,12 @@ contract WeeklyLottery is Ownable {
     payable(msg.sender).transfer(address(this).balance);
   }
 
-  /*
   function randomGenerator() private view returns (uint) {
     return uint(
       keccak256(
         abi.encodePacked(
           block.difficulty, block.timestamp, _LotteryWinnersArray ))) ;
   }
-  */
 
   /* ToDo : Replace This function with OpenZeppelin SafeMath */
   /**
@@ -132,7 +130,7 @@ contract WeeklyLottery is Ownable {
     
     emit SelectWinnerIndex(winnerIndex, address(this).balance, winnerPrize);
     
-    UpdateLotteryData(winnerIndex, address(this).balance);
+    UpdateLotteryData(winnerIndex, address(this).balance, winnerPrize);
     WinnerPrizePayment(winnerIndex, winnerPrize); 
     // FinalPayment();
     ClearDataBase();
@@ -196,14 +194,14 @@ contract WeeklyLottery is Ownable {
     * @notice Save The Winner Address for Weekly Lottery
     * @dev Update Generator Smart Contract For Saving Hourly Winner Address
   */
-  function UpdateLotteryData(uint _winnerIndex, uint _balance) private returns(bool) {
+  function UpdateLotteryData(uint _winnerIndex, uint _balance, uint _winnerPrize) private returns(bool) {
     bool _success;
     uint _winnerId;
     // _LotteryWinnersArray = getLotteryWinnersArray();  
     // address _winnerAddress = _LotteryWinnersArray[_winnerIndex];
     potWinnerAddress = _LotteryWinnersArray[_winnerIndex];
     _success = LotteryInterface(generatorLotteryAddr).setlotteryStructs(address(this), msg.sender, _balance, potWinnerAddress, 2);  // _winnerAddress
-    _winnerId = LotteryInterface(generatorLotteryAddr).setWeeklyWinnersArrayMap(msg.sender, potWinnerAddress);  // _winnerAddress
+    _winnerId = LotteryInterface(generatorLotteryAddr).setWeeklyWinnersArrayMap(msg.sender, potWinnerAddress, _winnerPrize);  // _winnerAddress
     return true;
   }
 
@@ -247,8 +245,8 @@ contract WeeklyLottery is Ownable {
     return _LotteryWinnersArray.length;
   }
 
-  function getWinners() public view returns(address) {
-    return potWinnerAddress;  
+  function getWinners() public view returns(address, uint) {
+    return ( potWinnerAddress, address(this).balance );  
   }  
 
   function isReadySelectWinner() public view returns(bool) {

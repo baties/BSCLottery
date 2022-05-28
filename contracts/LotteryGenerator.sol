@@ -40,6 +40,7 @@ contract LotteryGenerator is Ownable {
     address private potDirector;  /* ToDo: All Main Action must be controlled only by Owner or Director */
 
     address[] public LotteryWinnersArray;
+    uint[] public LotteryWinnersArrayPrizes;
     struct LotteryWinnerStr{
         uint playersId;
         uint winnerCount;
@@ -47,6 +48,7 @@ contract LotteryGenerator is Ownable {
     mapping (address => LotteryWinnerStr) public LotteryWinnersMap;
 
     address[] public WeeklyWinnersArray;
+    uint[] public WeeklyWinnersArrayPrizes;
     struct WeeklyWinnerStr{
         uint playersId;
         uint winnerCount;
@@ -54,6 +56,7 @@ contract LotteryGenerator is Ownable {
     mapping (address => WeeklyWinnerStr) public WeeklyWinnersMap;
 
     address[] public MonthlyWinnersArray;
+    uint[] public MonthlyWinnersArrayPrizes;
     struct MonthlyWinnerStr{
         uint playersId;
         uint winnerCount;
@@ -120,22 +123,25 @@ contract LotteryGenerator is Ownable {
         return true;
     }
 
-    function setlotteryWinnersArrayMap(address _commander, address _winnerAddress) external isAllowedOwner(_commander) returns (uint) {
+    function setlotteryWinnersArrayMap(address _commander, address _winnerAddress, uint _winnerPrize) external isAllowedOwner(_commander) returns (uint) {
         LotteryWinnersArray.push(_winnerAddress);
+        LotteryWinnersArrayPrizes.push(_winnerPrize);
         LotteryWinnersMap[_winnerAddress].playersId = LotteryWinnersArray.length;  // -1
         LotteryWinnersMap[_winnerAddress].winnerCount++;
         return LotteryWinnersArray.length ;  // -1
     }
 
-    function setWeeklyWinnersArrayMap(address _commander, address _winnerAddress) external isAllowedOwner(_commander) returns (uint) {
+    function setWeeklyWinnersArrayMap(address _commander, address _winnerAddress, uint _winnerPrize) external isAllowedOwner(_commander) returns (uint) {
         WeeklyWinnersArray.push(_winnerAddress);
+        WeeklyWinnersArrayPrizes.push(_winnerPrize);
         WeeklyWinnersMap[_winnerAddress].playersId = WeeklyWinnersArray.length;  // -1
         WeeklyWinnersMap[_winnerAddress].winnerCount++;
         return WeeklyWinnersArray.length ;  // -1
     }
 
-    function setMonthlyWinnersArrayMap(address _commander, address _winnerAddress) external isAllowedOwner(_commander) returns (uint) {
+    function setMonthlyWinnersArrayMap(address _commander, address _winnerAddress, uint _winnerPrize) external isAllowedOwner(_commander) returns (uint) {
         MonthlyWinnersArray.push(_winnerAddress);
+        MonthlyWinnersArrayPrizes.push(_winnerPrize);
         MonthlyWinnersMap[_winnerAddress].playersId = MonthlyWinnersArray.length;  // -1
         MonthlyWinnersMap[_winnerAddress].winnerCount++;
         return MonthlyWinnersArray.length ;  // -1

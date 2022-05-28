@@ -137,7 +137,10 @@ contract('LotteryCore', ([deployer, user, user1, user2, user3, user4, user5]) =>
         });
 
         it('Select a Winner ..', async () => {
-            expect(await lotteryCore.getWinners()).to.eq('0x0000000000000000000000000000000000000000');
+            // expect(await lotteryCore.getWinners()).to.eq('0x0000000000000000000000000000000000000000');
+            const [winnerAddress, winnerPrize] = await lotteryCore.getWinners();
+            console.log(winnerAddress);
+            expect(winnerAddress.to.eq('0x0000000000000000000000000000000000000000'));
         });
         
     });
