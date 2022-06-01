@@ -190,6 +190,7 @@ contract LotteryGenerator is Ownable {
     }
 
 
+    /*
     function createLottery(address _VRF, address weeklyAddr, address monthlyAddr, address liquidityAddr) public onlyOwner {
 
         address generatorAddress = address(this);
@@ -205,10 +206,6 @@ contract LotteryGenerator is Ownable {
         emit LotteryCreated( newLottery );
     }
 
-    // function getLotteries() public view returns(address[]) {
-    //     return lotteries;
-    // }
-
     function deleteLottery(address lotteryAddress) public  onlyOwner {
         require(msg.sender == lotteryStructs[lotteryAddress].creator);
         uint indexToDelete = lotteryStructs[lotteryAddress].index;
@@ -216,6 +213,11 @@ contract LotteryGenerator is Ownable {
         lotteries[indexToDelete] = lastAddress;
         // lotteries.length --;
     }
+    */
+
+    // function getLotteries() public view returns(address[]) {
+    //     return lotteries;
+    // }
 
     // Events
     // event LotteryCreated(

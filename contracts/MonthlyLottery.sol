@@ -99,11 +99,12 @@ contract MonthlyLottery is Ownable {
     remainder = numerator - denominator * quotient;
   }
 
-  function potInitialize() external isAllowedManager {
+  function potInitialize() external isAllowedManager returns(bool success) {
     require(lPotActive == false, "The Monthly Pot is started before !");
     _WeeklyWinnersArray = getWeeklyWinnersArray();  
     lPotActive = true ;
     lReadySelectWinner = true;
+    success = true;
   }
 
   function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
@@ -112,7 +113,7 @@ contract MonthlyLottery is Ownable {
     randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
   }
 
-  function select_Winner() public isAllowedManager {  
+  function select_Winner() public isAllowedManager returns(bool success) {  
 
     require( lReadySelectWinner == true, "The Pot is not ready for Select the Winner" );
 
@@ -130,6 +131,7 @@ contract MonthlyLottery is Ownable {
 
     lPotActive = false;
     lReadySelectWinner = false;
+    success = true;
 
   }
 

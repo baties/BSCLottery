@@ -142,18 +142,19 @@ contract LotteryCore is Ownable {
     remainder = numerator - denominator * quotient;
   }
 
-  function potInitialize() external isAllowedManager {
+  function potInitialize() external isAllowedManager returns(bool success) {
     require(lPotActive == false, "The Pot is started before !");
     lPotActive = true ;
     lReadySelectWinner = false;
     potStartTime = block.timestamp;
+    success = true;
   }
 
   /**
     * @notice Players' Operation and Calculation after Sending Transaction to the SmartContract. 
     * @dev Payable Function. 
   */
-  function play() public payable isGameOn {
+  function play() public payable isGameOn returns(bool success) {
 
     require(msg.value >= 0.01 ether && msg.value < 100 ether, "Value should be between 0.01 & 100 BNB");
 
@@ -193,6 +194,8 @@ contract LotteryCore is Ownable {
         emit PlayerTotalValue(msg.sender, PotPlayersMap[msg.sender].PlayersId, PotPlayersMap[msg.sender].PaymentCount, PotPlayersMap[msg.sender].paymentValue, PotPlayersMap[msg.sender].TicketNumbers) ;
     }    
 
+    return success;
+
   }
 
   function randomGenerator() private view returns (uint) {
@@ -202,11 +205,9 @@ contract LotteryCore is Ownable {
           block.difficulty, block.timestamp, potTickets ))) ;
   }
   
-  /*
-  function lrequestRandomWords(address _VRFv2) public {
-    VRFv2Consumer(_VRFv2).requestRandomWords(LotteryOwner) ;
+  function lrequestRandomWords(address _VRFv2) public isAllowedManager {
+    VRFv2Consumer(_VRFv2).requestRandomWords() ;
   }
-  */
 
   /**
     * @notice Generating Random Number for Finding the Hourly Winner.
@@ -222,7 +223,7 @@ contract LotteryCore is Ownable {
     * @notice Select The Hourly Winner Function.
     * @dev Select The Pot Winner.
   */
-  function select_Winner() public isAllowedManager {  
+  function select_Winner() public isAllowedManager returns(bool success) {  
 
     require( lReadySelectWinner == true, "The Pot is not ready for Select the Winner" );
 
@@ -242,6 +243,7 @@ contract LotteryCore is Ownable {
 
     lPotActive = false;
     lReadySelectWinner = false;
+    success = true;
 
   }
 
