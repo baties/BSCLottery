@@ -10,7 +10,8 @@ var LotteryGenerator=artifacts.require ("./LotteryGenerator.sol");
 var LotteryLiquidityPool=artifacts.require ("./LotteryLiquidityPool.sol");
 var LotteryMultiSigWallet= artifacts.require("./LotteryMultiSigWallet.sol");
 // const VRFv2ConsumerAddress = "0xE535CB9554C86c78fCf9ef1EaE9862ed4A8afA46";  // Rinkeby TestNet
-const VRFv2ConsumerAddress = "0x904C3029603a58e499197Ce4315D6185d8D5012A";  // BSC Testnet
+// const VRFv2ConsumerAddress = "0x904C3029603a58e499197Ce4315D6185d8D5012A";  // BSC Testnet  ID:707  Owner: 0x4de8d75ef9b48856e708347c4a0bf1bca338db53
+const VRFv2ConsumerAddress = "0x1e481086668e91bacad76e58ecd015062d22cea9";  // BSC Testnet  ID:706  Owner: 0x893300d805a6db7d4e691fa7679db53c94802cde
 
 // module.exports = function(deployer) {
 //    deployer.deploy(LotteryGenerator).then(() => generatorAddress = LotteryGenerator.address);

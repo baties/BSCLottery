@@ -259,6 +259,11 @@ contract WeeklyLottery is Ownable {
     return potDirector;
   }
 
+  function getVerifier() public view returns(address) {
+    return _VRF;
+  }
+
+
 }
 
 /**

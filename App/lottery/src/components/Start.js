@@ -15,7 +15,7 @@ export default function Header(props) {
             <div className="navbar navbar-dark bg-dark shadow-sm">
                 <div className="container">
                     <a href="/" className="navbar-brand d-flex align-items-center">
-                        <strong>✨ Binance Smart Chain LOttery ✨</strong>
+                        <strong>✨ Binance Smart Chain Lottery ✨</strong>
                     </a>
                     {
                         props.account != null && props.account !== '' ?

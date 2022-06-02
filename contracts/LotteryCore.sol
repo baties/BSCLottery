@@ -417,6 +417,10 @@ contract LotteryCore is Ownable {
     return potDirector;
   }
 
+  function getVerifier() public view returns(address) {
+    return _VRF;
+  }
+
   // function getAllContractAddresses() public view returns(address[] memory) {
   //   address[] memory contractAddresses;
   //   contractAddresses[0] = generatorLotteryAddr;

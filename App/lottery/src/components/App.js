@@ -69,6 +69,7 @@ function App() {
     const [liquidityPoolBalance, setLiquidityPoolBalance] = useState(0)
 
     const [owner, setOwner] = useState(null)  
+    const [verifier, setVerifier] = useState(null)
     const [potDirector, setPotDirector] = useState(null)
     const [ticketPrice, setTicketPrice] = useState(0)
     const [ticketAmount, setTicketAmount] = useState(0)
@@ -79,7 +80,6 @@ function App() {
     const [winners, setWinners] = useState([])
     const [startedTime, setStartedTime] = useState(0)
     const [progress, setProgress] = useState(0)
-  
     const [formPrice, setFormPrice] = useState(0.01)
     const [formAmount, setFormAmount] = useState(1)
   
@@ -123,6 +123,7 @@ function App() {
             const liquidityPoolAddress = LotteryLiquidityPool.networks[netId].address
 
             const owner = await lottery.methods.owner().call()
+            const verifier = await lottery.methods.getVerifier().call()
             const potDirector = await lottery.methods.getPotDirector().call()
             
             const lotteryBalance = await lottery.methods.balanceInPot().call()
@@ -162,6 +163,7 @@ function App() {
             setLottery(lottery)
             setLotteryAddress(lotteryAddress)
             setOwner(owner)
+            setVerifier(verifier);
             setPotDirector(potDirector)
           } catch (e) {
             console.log('Error', e)
@@ -229,7 +231,28 @@ function App() {
       }
       handleClose()
     }
-  
+
+    const setAddress = async(potDirector)=>{
+      if(account == null || account == '') {
+        handleShow();
+        return;
+      }
+      
+      if(lottery && lottery !== 'undefined') {
+        try {
+          await lottery.methods.setDirector(potDirector).send({from: account})
+          await lotteryGenerator.methods.setDirector(potDirector).send({from: account})
+          await weeklylottery.methods.setDirector(potDirector).send({from: account})
+          await monthlylottery.methods.setDirector(potDirector).send({from: account})
+          await loadContractData()
+        } catch (e) {
+          console.log('Error, Set Address: ', e)
+        }
+      } else {
+        alert("contract has not deployed yet.")
+      }
+    }
+    
     const buyTicket = async(amount, price)=>{
       if(account == null || account == '') {
         handleShow();
@@ -367,6 +390,10 @@ function App() {
       setFormAmount( e.target.value );
     }
 
+    const handlePotDirectorChange = (e) => {
+      setPotDirector( e.target.value );
+    }
+
     const secondsToHms = (d) => {
       d = Number(d);
       var h = Math.floor(d / 3600);
@@ -423,13 +450,14 @@ function App() {
             <i>Owner : <card style={{color: "#4682B4"}}> {owner} </card> </i> 
             <i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> 
             <i>Account : <card style={{color: "#4682B4"}}> {account} </card> </i> <br></br>
-            <i>Director : <card style={{color: "#4682B4"}}> {potDirector} </card> </i> <p></p>
+            <i>Director : <card style={{color: "#4682B4"}}> {potDirector} </card> </i> 
+            <i>Verifier : <card style={{color: "#4682B4"}}> {verifier} </card> </i> <p></p>
           </div>
           
           {
             // owner === account ? 
               isPotActive ?
-              <Card style={{marginTop:'50px', marginBottom:'50px'}}>
+              <Card style={{marginTop:'10px', marginBottom:'10px'}}>
                 <Card.Body>
                   <Card.Title style={{color: "#C70039"}}>Start a Chance in the current Pot</Card.Title>
                   <form 
@@ -440,7 +468,7 @@ function App() {
                     //   createLottery(formAmount, formPrice)
                   }                      
                   }>
-                    <div className="col-md-7">
+                    <div className="col-md-4">
                       <div className='form-group mb-2'>
                         <label htmlFor="price" className="sr-only">Ticket Price (BNB)</label>
                         <input
@@ -467,7 +495,7 @@ function App() {
                       </div>
                       <Button variant="primary" type="submit">Deposit</Button>
                     </div>
-                    <div className="col-md-5 text-center" style={{paddingTop:'20px'}}>
+                    <div className="col-md-5 text-center" style={{marginLeft:'300px', paddingTop:'20px', paddingLeft:'50px'}}>
                       <img src={COIN2} alt="coin2" className="icon2"/>
                     </div>
                     {/* <button type='submit' className='btn btn-primary'>DEPOSIT</button> */}
@@ -494,6 +522,38 @@ function App() {
             // : <></>
           }
           
+          {
+            owner === account ? 
+              <Card style={{marginTop:'10px', marginBottom:'10px'}}>
+                <Card.Body>
+                  <Card.Title style={{color: "#C70039"}}>Main Setting for The Pots</Card.Title>
+                  <form 
+                    className="form-inline row" 
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      setAddress(potDirector)
+                  }                      
+                  }>
+                    <div className="col-md-6">
+                      <div className='form-group mb-2'>
+                        <label htmlFor="potDirector" className="sr-only">Pot Director Address</label>
+                        <input
+                          id='potDirector'
+                          type='string'
+                          className="form-control"
+                          placeholder='Pot Director Address'
+                          value={potDirector}
+                          onChange={handlePotDirectorChange}
+                          required />
+                      </div>
+                      <Button variant="warning" type="submit">SetAddress</Button>
+                    </div>
+                  </form>
+                </Card.Body>
+              </Card>
+            : <></>
+          }
+
           {/* <ProgressBar max={100} now={progress} label={`${progress}%`} animated srOnly/> */}
           <Card>
             <Card.Body className="row">
@@ -517,16 +577,10 @@ function App() {
                     </Card.Text>
               }
               <Card.Text>
-                Current balance : <b> { lotteryBalance } </b> <br></br> 
-                Current Weekly Pot balance : <b> { weeklylotteryBalance } </b> <br></br>  
-                Current Monthly Pot balance : <b> { monthlylotteryBalance } </b> <br></br>
-                Current LiquidityPool balance : <b> { liquidityPoolBalance } </b>  
+                Current balance : <b> { lotteryBalance } </b>  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  Total Ticket bought : <b> { ticketAmount } </b> <br></br>
+                Current Weekly Pot balance : <b> { weeklylotteryBalance } </b> &emsp;&emsp; Current Monthly Pot balance : <b> { monthlylotteryBalance } </b> <br></br>
+                Current LiquidityPool balance : <b> { liquidityPoolBalance } </b> <br></br> 
               </Card.Text>
-              
-              <Card.Text>
-                Total Ticket bought : <b> { ticketAmount } </b>
-              </Card.Text>
-  
               <Card.Text>
                 Please buy more more than one ticket with <b> {ticketPrice} BNB</b> and increase the chance to be a winner!
               </Card.Text>
@@ -553,7 +607,7 @@ function App() {
                 : <></>
               }
               </div>
-              <div className="col-md-5" style={{ paddingTop: '30px'}}>
+              <div className="col-md-5" style={{paddingLeft:'30px', paddingTop: '30px'}}>
                 <img src={COIN3} alt="icon3" className="icon3"/>
               </div>
             </Card.Body>
