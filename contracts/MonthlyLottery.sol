@@ -7,8 +7,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 // import "./LotteryGenerator.sol";
+
+// import "./VRFv2SubscriptionManager.sol";
 import "./VRFv2Consumer.sol";
-import "./VRFv2SubscriptionManager.sol";
 
 import "./LotteryCore.sol";
 
