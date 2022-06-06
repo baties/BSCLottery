@@ -6,10 +6,15 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
+import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
+import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
+
+
 // import "./LotteryGenerator.sol";
 
 // import "./VRFv2SubscriptionManager.sol";
-import "./VRFv2Consumer.sol";
+// import "./VRFv2Consumer.sol";
 
 // import "truffle/Console.sol";
 // import "hardhat/console.sol";
@@ -27,9 +32,25 @@ import "./LotteryInterface.sol";
   * @notice This SmartContract is responsible for implimentation of Lottery Core System and response to the Players 
   * @dev LotteryGenerator SmartContract Create This for each Pot 
 */
-contract LotteryCore is Ownable {
+contract LotteryCore is Ownable, VRFConsumerBaseV2 {
 
-  address private _VRF;
+  VRFCoordinatorV2Interface COORDINATOR;
+  LinkTokenInterface LINKTOKEN;
+  uint64 s_subscriptionId;
+
+  address vrfCoordinator = 0x6A2AAd07396B36Fe02a22b33cf443582f682c82f;  // BSC TestNet coordinator
+  address link = 0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06;  //  BSC TestNet LINK token
+  bytes32 keyHash = 0xd4bb89654db74673a187bd804519e65e3f71a52bc55f11da7601a13dcf505314;  //  BSC TestNet keyhash
+
+  uint32 callbackGasLimit = 100000;
+  uint16 requestConfirmations = 3;
+  uint32 numWords =  1;
+
+  uint256[] public s_randomWords;
+  uint256 public s_requestId;
+
+
+  // address private _VRF;
   address private generatorLotteryAddr;
   address private LiquidityPoolAddress;
   // address private MultiSigWalletAddress;
@@ -45,6 +66,7 @@ contract LotteryCore is Ownable {
   uint public potStartTime = 0;
   uint public realPLayerCount = 0;
   uint public potWinnerPrize = 0;
+  bool private lWinnerSelected;
 
   struct PotPlayerStr{
     uint PaymentCount;
@@ -76,11 +98,26 @@ contract LotteryCore is Ownable {
   event PlayerTotalValue(address potPlayer, uint[] playerId, uint playCount, uint playerValue, uint ticketNumber);
   event TotalPayment(address receiver, uint TrxValue);
 
-  constructor(address VRF, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr) {
+  // constructor(address VRF, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr) {
+  //   LotteryOwner = msg.sender;
+  //   _VRF = VRF;
+  //   lPotActive = true;
+  //   lReadySelectWinner = false;
+  //   potStartTime = block.timestamp;
+  //   generatorLotteryAddr = generatorLotteryAddress;
+  //   LiquidityPoolAddress = LiquidityPoolAddr ;
+  //   WeeklyPotAddress = WeeklyLotteryAddress ;
+  //   MonthlyPotAddress = MonthlyLotteryAddress ;   
+  // }
+
+  constructor(uint64 subscriptionId, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr) VRFConsumerBaseV2(vrfCoordinator) {
+    COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
+    LINKTOKEN = LinkTokenInterface(link);
+    s_subscriptionId = subscriptionId;
     LotteryOwner = msg.sender;
-    _VRF = VRF;
     lPotActive = true;
     lReadySelectWinner = false;
+    lWinnerSelected = false;
     potStartTime = block.timestamp;
     generatorLotteryAddr = generatorLotteryAddress;
     LiquidityPoolAddress = LiquidityPoolAddr ;
@@ -127,6 +164,29 @@ contract LotteryCore is Ownable {
     payable(msg.sender).transfer(address(this).balance);
   }
 
+  function requestRandomWords() public isAllowedManager {    // external   onlyOwner
+    // Will revert if subscription is not set and funded.
+    s_requestId = COORDINATOR.requestRandomWords(
+      keyHash,
+      s_subscriptionId,
+      requestConfirmations,
+      callbackGasLimit,
+      numWords
+    );
+  }
+
+  function fulfillRandomWords(
+    uint256, /* requestId */
+    uint256[] memory randomWords
+  ) internal override {
+    s_randomWords = randomWords;
+    // select_Winner_Continue();
+    lWinnerSelected = true;
+  }
+
+  // function getlRandomWords() external view returns (uint256) {
+  //    return s_randomWords[0];
+  // }
 
   /* ToDo : Replace This function with OpenZeppelin SafeMath */
   /**
@@ -148,6 +208,7 @@ contract LotteryCore is Ownable {
     lPotActive = true ;
     lReadySelectWinner = false;
     potStartTime = block.timestamp;
+    lWinnerSelected = false;
     success = true;
   }
 
@@ -206,19 +267,23 @@ contract LotteryCore is Ownable {
           block.difficulty, block.timestamp, potTickets ))) ;
   }
   
-  function lrequestRandomWords(address _VRFv2) public isAllowedManager {
-    VRFv2Consumer(_VRFv2).requestRandomWords() ;
-  }
+  // function lrequestRandomWords(address _VRFv2) public isAllowedManager {
+  //   VRFv2Consumer(_VRFv2).requestRandomWords() ;
+  // }
 
   /**
     * @notice Generating Random Number for Finding the Hourly Winner.
     * @dev Call VRFv2 Random Generator Routines.
   */
-  function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
-    // uint8 zeroOne = uint8(randomGenerator() % 2);
-    // randomWords = randomGenerator();
-    randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
-  }
+  // function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
+  //   // uint8 zeroOne = uint8(randomGenerator() % 2);
+  //   // randomWords = randomGenerator();
+  //   randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
+  // }
+
+  // function rRandomValue() public onlyOwner {
+  //   requestRandomWords();
+  // }
 
   /**
     * @notice Select The Hourly Winner Function.
@@ -227,10 +292,18 @@ contract LotteryCore is Ownable {
   function select_Winner() public isAllowedManager returns(bool success) {  
 
     require( lReadySelectWinner == true, "The Pot is not ready for Select the Winner" );
+    require(lWinnerSelected == false, "The Winner has been Selected before !!");
 
-    // uint256 l_randomWords = randomGenerator();
-    uint256 l_randomWords = getRandomValue(_VRF);
-    uint winnerIndex = l_randomWords % potTickets.length;  
+    requestRandomWords();
+    success = true;
+
+  }
+
+  function select_Winner_Continue() public isAllowedManager returns(bool success) {  
+    
+    require(lWinnerSelected == true, "The Winner has Not been Selected Yet !");
+
+    uint winnerIndex = s_randomWords[0] % potTickets.length;    // l_randomWords
     winnerIndex = potTickets[winnerIndex];
     (uint winnerPrize, uint weeklyPot, uint monthlyPot, uint liquidityAmount) = Calculation(winnerIndex);
     
@@ -244,6 +317,7 @@ contract LotteryCore is Ownable {
 
     lPotActive = false;
     lReadySelectWinner = false;
+    lWinnerSelected = false;
     success = true;
 
   }
@@ -418,9 +492,9 @@ contract LotteryCore is Ownable {
     return potDirector;
   }
 
-  function getVerifier() public view returns(address) {
-    return _VRF;
-  }
+  // function getVerifier() public view returns(address) {
+  //   return _VRF;
+  // }
 
   // function getAllContractAddresses() public view returns(address[] memory) {
   //   address[] memory contractAddresses;
