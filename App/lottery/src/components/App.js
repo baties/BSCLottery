@@ -69,7 +69,7 @@ function App() {
     const [liquidityPoolBalance, setLiquidityPoolBalance] = useState(0)
 
     const [owner, setOwner] = useState(null)  
-    const [verifier, setVerifier] = useState(null)
+    // const [verifier, setVerifier] = useState(null)
     const [potDirector, setPotDirector] = useState(null)
     const [ticketPrice, setTicketPrice] = useState(0)
     const [ticketAmount, setTicketAmount] = useState(0)
@@ -123,7 +123,7 @@ function App() {
             const liquidityPoolAddress = LotteryLiquidityPool.networks[netId].address
 
             const owner = await lottery.methods.owner().call()
-            const verifier = await lottery.methods.getVerifier().call()
+            // const verifier = await lottery.methods.getVerifier().call()
             const potDirector = await lottery.methods.getPotDirector().call()
             
             const lotteryBalance = await lottery.methods.balanceInPot().call()
@@ -163,7 +163,7 @@ function App() {
             setLottery(lottery)
             setLotteryAddress(lotteryAddress)
             setOwner(owner)
-            setVerifier(verifier);
+            // setVerifier(verifier);
             setPotDirector(potDirector)
           } catch (e) {
             console.log('Error', e)
@@ -451,7 +451,7 @@ function App() {
             <i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> 
             <i>Account : <card style={{color: "#4682B4"}}> {account} </card> </i> <br></br>
             <i>Director : <card style={{color: "#4682B4"}}> {potDirector} </card> </i> 
-            <i>Verifier : <card style={{color: "#4682B4"}}> {verifier} </card> </i> <p></p>
+            {/* <i>Verifier : <card style={{color: "#4682B4"}}> {verifier} </card> </i> <p></p> */}
           </div>
           
           {
