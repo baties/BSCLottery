@@ -269,6 +269,14 @@ function App() {
             var wei_price = amount * price * 10 ** 18
             const buyApp = await lottery.methods.play().send({value: wei_price, from: account})
             await loadContractData()
+            console.log("--------------------")
+            console.log(buyApp.events.PlayerRegister);
+            console.log(buyApp.events.PlayerRegister.raw);
+            console.log("--------------------")
+            console.log(buyApp.events.PlayerRegister.returnValues);
+            console.log(buyApp.events.PlayerRegister.returnValues[0]);
+            console.log(buyApp.events.PlayerRegister.returnValues["potPlayer"]);
+            console.log("--------------------")
           } catch (e) {
             console.log('Error, buy ticket: ', e)
           }
@@ -296,9 +304,17 @@ function App() {
             //   });
             const gas = await lottery.methods.select_Winner().estimateGas({from: account})
             // console.log(gas);
-            await lottery.methods.select_Winner().send({from: account, gas:gas}); 
+            const result = await lottery.methods.select_Winner().send({from: account, gas:gas}); 
             await loadContractData()
             console.log("Winner Selected")
+            console.log("--------------------")
+            console.log(result.events.SelectWinnerIndex);
+            console.log(result.events.SelectWinnerIndex.raw);
+            console.log("--------------------")
+            console.log(result.events.SelectWinnerIndex.returnValues);
+            console.log(result.events.SelectWinnerIndex.returnValues[0]);
+            console.log(result.events.SelectWinnerIndex.returnValues["winnerIndex"]);
+            console.log("--------------------")
           } catch (e) {
             console.log('Error, Select Winner : ', e)
           }

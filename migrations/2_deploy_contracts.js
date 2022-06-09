@@ -22,7 +22,8 @@ var LotteryMultiSigWallet= artifacts.require("./LotteryMultiSigWallet.sol");
 //    deployer.deploy(LotteryCore, VRFv2ConsumerAddress, generatorAddress, weeklyAddress, monthlyAddress, liquidityAddress).then(() => console.log(LotteryCore.address));
 // }
 
-const SubscriptionID = 706;
+// const SubscriptionID = 706;  // BSC TestNet
+const SubscriptionID = 2181;  // Rinkeby TestNet
 
 module.exports = function (deployer) {
    deployer.deploy(LotteryMultiSigWallet);
