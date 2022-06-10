@@ -216,11 +216,6 @@ function App() {
         setPlayers(players)
         setPlayerCount(playerCount)
 
-        console.log("Winner Select Checking ...")
-        console.log("--------------------")
-        console.log(lottery.events.ReadyForSelectWinner);
-        console.log("--------------------")
-
       } catch (e) {
         console.log('Error', e)
         console.log('Contracts not deployed to the current network')
@@ -252,8 +247,59 @@ function App() {
       if(lottery && lottery !== 'undefined') {
         try {
           await lottery.methods.setDirector(potDirector).send({from: account})
+          await loadContractData()
+        } catch (e) {
+          console.log('Error, Set Address: ', e)
+        }
+      } else {
+        alert("contract has not deployed yet.")
+      }
+    }
+
+    const setAddressG = async(potDirector)=>{
+      if(account == null || account == '') {
+        handleShow();
+        return;
+      }
+      
+      if(lotteryGenerator && lotteryGenerator !== 'undefined') {
+        try {
           await lotteryGenerator.methods.setDirector(potDirector).send({from: account})
+          await loadContractData()
+        } catch (e) {
+          console.log('Error, Set Address: ', e)
+        }
+      } else {
+        alert("contract has not deployed yet.")
+      }
+    }
+
+    const setAddressW = async(potDirector)=>{
+      if(account == null || account == '') {
+        handleShow();
+        return;
+      }
+      
+      if(weeklylottery && weeklylottery !== 'undefined') {
+        try {
           await weeklylottery.methods.setDirector(potDirector).send({from: account})
+          await loadContractData()
+        } catch (e) {
+          console.log('Error, Set Address: ', e)
+        }
+      } else {
+        alert("contract has not deployed yet.")
+      }
+    }
+
+    const setAddressM = async(potDirector)=>{
+      if(account == null || account == '') {
+        handleShow();
+        return;
+      }
+      
+      if(monthlylottery && monthlylottery !== 'undefined') {
+        try {
           await monthlylottery.methods.setDirector(potDirector).send({from: account})
           await loadContractData()
         } catch (e) {
@@ -263,7 +309,7 @@ function App() {
         alert("contract has not deployed yet.")
       }
     }
-    
+
     const buyTicket = async(amount, price)=>{
       if(account == null || account == '') {
         handleShow();
@@ -503,14 +549,14 @@ function App() {
           </Row>
           <div>
             <img src={COIN1} alt="coin1"  style={{width: '40px', height: '40px'}}/>
-            <i>Your Wallet Balance : <card style={{color: "#32CD32"}}> <b>{accountBalance}</b> </card> </i> 
+            <i>Your Wallet Balance : <b style={{color: "#32CD32"}}>{accountBalance}</b> </i> 
             <i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> 
-            <i>Your Balance in This Pot : <card style={{color: "#32CD32"}}> <b>{accountPotValue}</b> </card> </i> 
+            <i>Your Balance in This Pot : <b style={{color: "#32CD32"}}>{accountPotValue}</b> </i> 
             <br></br>
-            <i>Owner : <card style={{color: "#4682B4"}}> {owner} </card> </i> 
+            <i>Owner : <b style={{color: "#4682B4"}}> {owner} </b> </i> 
             <i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> 
-            <i>Account : <card style={{color: "#4682B4"}}> {account} </card> </i> <br></br>
-            <i>Director : <card style={{color: "#4682B4"}}> {potDirector} </card> </i> 
+            <i>Account : <b style={{color: "#4682B4"}}> {account} </b> </i> <br></br>
+            <i>Director : <b style={{color: "#4682B4"}}> {potDirector} </b> </i> 
             {/* <i>Verifier : <card style={{color: "#4682B4"}}> {verifier} </card> </i> <p></p> */}
           </div>
           
