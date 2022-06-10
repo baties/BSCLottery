@@ -75,6 +75,7 @@ function App() {
     const [ticketAmount, setTicketAmount] = useState(0)
     const [isPotActive, setIsPotActive] = useState(true)
     const [selectReady, setSelectReady] = useState(false)
+    const [winnerSelected, setWinnerSelected] = useState(false)
     const [playerCount, setPlayerCount] = useState(0)
     const [players, setPlayers] = useState([])
     const [winners, setWinners] = useState([])
@@ -142,6 +143,7 @@ function App() {
             const players = await lottery.methods.listPlayers().call()
             const winners = await lotteryGenerator.methods.getWinners().call()
             const selectReady = await lottery.methods.isReadySelectWinner().call()
+            const winnerSelected = await lottery.methods.isWinnerSelected().call()
             // const progress = await lottery.methods.getPercent().call()
             let startedTime = await lottery.methods.getStartedTime().call()
             if(! isPotActive) startedTime = 0  // isGameEnded
@@ -157,6 +159,7 @@ function App() {
             setTicketAmount(ticketAmount)
             setIsPotActive(isPotActive)
             setSelectReady(selectReady)
+            setWinnerSelected(winnerSelected)
             setPlayers(players)
             setWinners(winners)
             setPlayerCount(playerCount)
@@ -194,6 +197,7 @@ function App() {
         const playerCount = await lottery.methods.getPlayersNumber().call()
         const players = await lottery.methods.listPlayers().call()
         const selectReady = await lottery.methods.isReadySelectWinner().call()
+        const winnerSelected = await lottery.methods.isWinnerSelected().call()
         const startedTime = await lottery.methods.getStartedTime().call()
         // const progress = await lottery.methods.getPercent().call()
   
@@ -208,8 +212,15 @@ function App() {
         setTicketAmount(ticketAmount)
         setIsPotActive(isPotActive)
         setSelectReady(selectReady)
+        setWinnerSelected(winnerSelected)
         setPlayers(players)
         setPlayerCount(playerCount)
+
+        console.log("Winner Select Checking ...")
+        console.log("--------------------")
+        console.log(lottery.events.ReadyForSelectWinner);
+        console.log("--------------------")
+
       } catch (e) {
         console.log('Error', e)
         console.log('Contracts not deployed to the current network')
@@ -305,6 +316,39 @@ function App() {
             const gas = await lottery.methods.select_Winner().estimateGas({from: account})
             // console.log(gas);
             const result = await lottery.methods.select_Winner().send({from: account, gas:gas}); 
+            await loadContractData()
+            console.log("Winner is Starting to Select")
+            console.log("--------------------")
+          } catch (e) {
+            console.log('Error, Select Winner : ', e)
+          }
+        } else {
+          console.log("SelectReady is False")
+        }
+      } else {
+        alert("contract has not deployed yet.")
+      }
+    }
+  
+    const SelectWinnerContinue = async()=>{
+      console.log("Winner Selection Process Continue");
+      if(account == null || account == '') {
+        handleShow();
+        return;
+      }
+  
+      if(lottery && lottery !== 'undefined') {
+        if(selectReady) {
+          try {
+            console.log("Winner Select Continues")
+            // const gas = 0;
+            // web3.eth.getGasPrice().then((result) => {
+            //   console.log(web3.utils.fromWei(result, 'ether'));
+            //   gas = result;
+            //   });
+            const gas = await lottery.methods.select_Winner_Continue().estimateGas({from: account})
+            // console.log(gas);
+            const result = await lottery.methods.select_Winner_Continue().send({from: account, gas:gas}); 
             await loadContractData()
             console.log("Winner Selected")
             console.log("--------------------")
@@ -530,7 +574,19 @@ function App() {
                       SelectWinner()
                     }                      
                   }>
-                    <Button variant="primary" type="submit">Select Winner</Button>
+                    <Button variant="Warning" type="submit">Select Winner</Button>
+                  </form>
+                </Card.Body>
+                <Card.Body>
+                  <Card.Title>Game has been ended! Select the winner.</Card.Title>
+                  <form 
+                    className="form-inline" 
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      SelectWinnerContinue()
+                    }                      
+                  }>
+                    <Button variant="Warning" type="submit">Select Winner Continue</Button>
                   </form>
                 </Card.Body>
               </Card>
@@ -619,6 +675,13 @@ function App() {
                       <Button variant="warning" onClick={SelectWinner}>Select a Winner</Button>
                   : ! isPotActive ?
                       <Button variant="danger" onClick={potInitialize}>Start New POT</Button>
+                  : <></> 
+                : <></>
+              }
+              &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  
+              { owner === account ? 
+                  (isPotActive && selectReady) ?
+                      <Button variant="danger" onClick={SelectWinnerContinue}>Select a Winner Continue</Button>
                   : <></> 
                 : <></>
               }

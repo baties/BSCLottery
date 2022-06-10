@@ -110,6 +110,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   event PlayerRegister(address potPlayer, uint playerId, uint PlayerValue, uint ticketNumber);
   event PlayerTotalValue(address potPlayer, uint[] playerId, uint playCount, uint playerValue, uint ticketNumber);
   event TotalPayment(address receiver, uint TrxValue);
+  event ReadyForSelectWinner(bool isReadySelectWinner);
 
   // constructor(address VRF, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr) {
   //   LotteryOwner = msg.sender;
@@ -195,6 +196,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     s_randomWords = randomWords;
     // select_Winner_Continue();
     lWinnerSelected = true;
+    emit ReadyForSelectWinner(lWinnerSelected);
   }
 
   // function getlRandomWords() external view returns (uint256) {
@@ -495,6 +497,10 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
 
   function isReadySelectWinner() public view returns(bool) {
     return lReadySelectWinner;
+  }
+
+  function isWinnerSelected() public view returns(bool) {
+    return lWinnerSelected;
   }
 
   function getStartedTime() public view returns(uint) {
