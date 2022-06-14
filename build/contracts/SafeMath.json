@@ -1,9 +1,9 @@
 {
   "contractName": "SafeMath",
   "abi": [],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.9+commit.e5eed63a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"details\":\"Wrappers over Solidity's arithmetic operations. NOTE: `SafeMath` is generally not needed starting with Solidity 0.8, since the compiler now has built in overflow checking.\",\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"@openzeppelin/contracts/utils/math/SafeMath.sol\":\"SafeMath\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":1000},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/utils/math/SafeMath.sol\":{\"keccak256\":\"0xa2f576be637946f767aa56601c26d717f48a0aff44f82e46f13807eea1009a21\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://973868f808e88e21a1a0a01d4839314515ee337ad096286c88e41b74dcc11fc2\",\"dweb:/ipfs/QmfYuZxRfx2J2xdk4EXN7jKg4bUYEMTaYk9BAw9Bqn4o2Y\"]}},\"version\":1}",
-  "bytecode": "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212209358c8628b02627112fa7ed7fdbf3a2c5aa763c3e66764abc6289aceaedcf74b64736f6c63430008090033",
-  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212209358c8628b02627112fa7ed7fdbf3a2c5aa763c3e66764abc6289aceaedcf74b64736f6c63430008090033",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"details\":\"Wrappers over Solidity's arithmetic operations. NOTE: `SafeMath` is generally not needed starting with Solidity 0.8, since the compiler now has built in overflow checking.\",\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"@openzeppelin/contracts/utils/math/SafeMath.sol\":\"SafeMath\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":1000},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/utils/math/SafeMath.sol\":{\"keccak256\":\"0xa2f576be637946f767aa56601c26d717f48a0aff44f82e46f13807eea1009a21\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://973868f808e88e21a1a0a01d4839314515ee337ad096286c88e41b74dcc11fc2\",\"dweb:/ipfs/QmfYuZxRfx2J2xdk4EXN7jKg4bUYEMTaYk9BAw9Bqn4o2Y\"]}},\"version\":1}",
+  "bytecode": "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220e5f0b36039961d77ca8c9f0811fa90d7d63e01a5f5faf0ba55769ff5dbd4db0464736f6c634300080d0033",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220e5f0b36039961d77ca8c9f0811fa90d7d63e01a5f5faf0ba55769ff5dbd4db0464736f6c634300080d0033",
   "immutableReferences": {},
   "generatedSources": [],
   "deployedGeneratedSources": [],
@@ -7519,11 +7519,11 @@
   },
   "compiler": {
     "name": "solc",
-    "version": "0.8.9+commit.e5eed63a.Emscripten.clang"
+    "version": "0.8.13+commit.abaa5c0e.Emscripten.clang"
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-06-10T04:40:31.517Z",
+  "updatedAt": "2022-06-14T14:49:19.723Z",
   "devdoc": {
     "details": "Wrappers over Solidity's arithmetic operations. NOTE: `SafeMath` is generally not needed starting with Solidity 0.8, since the compiler now has built in overflow checking.",
     "kind": "dev",

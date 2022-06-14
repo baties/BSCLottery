@@ -35,7 +35,7 @@ module.exports = function (deployer) {
             const cMonthlyInstance = await MonthlyLottery.deployed();
             await deployer.deploy(WeeklyLottery, SubscriptionID, cGeneratorInstance.address).then(async() => {  // VRFv2ConsumerAddress
                const cWeeklyInstance = await WeeklyLottery.deployed();
-               await deployer.deploy(LotteryCore, SubscriptionID, cGeneratorInstance.address, cWeeklyInstance.address, cMonthlyInstance.address, cLiquidityInstance.address),then(async() => {  // VRFv2ConsumerAddress
+               await deployer.deploy(LotteryCore, SubscriptionID, cGeneratorInstance.address, cWeeklyInstance.address, cMonthlyInstance.address, cLiquidityInstance.address).then(async() => {  // VRFv2ConsumerAddress
                   const cHourlyInstance = await LotteryCore.deployed();
                }) ;  
             })
@@ -43,11 +43,11 @@ module.exports = function (deployer) {
 
       })
    })
-   console.log(cLiquidityInstance.address);
-   console.log(cGeneratorInstance.address);
-   console.log(cMonthlyInstance.address);
-   console.log(cWeeklyInstance.address);
-   console.log(cHourlyInstance.address);
+   // console.log(cLiquidityInstance.address);
+   // console.log(cGeneratorInstance.address);
+   // console.log(cMonthlyInstance.address);
+   // console.log(cWeeklyInstance.address);
+   // console.log(cHourlyInstance.address);
 }
 
 

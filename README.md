@@ -1,6 +1,6 @@
 # BSC Lottery 
 
-This Repository Contains the Source Code of a Lottery Program which is Programmed by Solidity and Deployed on Binance Smart Chain . 
+This Repository Contains the Source Code of a Lottery Program which is Programmed by Solidity and Deployed on Rinkeby and Binance Smart Chain Testnet. 
 
 ## Getting Started
 
@@ -12,7 +12,7 @@ These instructions will get you a copy of the project up and running on your loc
 * *NPM* v6.14.10
 * *Ganache CLI* v6.12.2 (ganache-core: 2.13.2)
 * *Truffle* v5.4.16 (core: 5.4.16)
-* *Solidity* v0.8.9 (solc-js)
+* *Solidity* v0.8.13 (solc-js)
 * *Web3.js* v1.5.3
 * *truffle-hdwallet-provider* v2.0.4
 * *OpenZeppelin* v4.5.0
@@ -75,13 +75,16 @@ All tests should pass.
 In a separate terminal window, launch the DApp:
 
 ```
+cd App/lottery
 npm run dev
 ```
 
 ## Built With
 
-* [Ethereum](https://www.ethereum.org/) - Ethereum is a decentralized platform that runs smart contracts
-* [Truffle Framework](http://truffleframework.com/) - Truffle is the most popular development framework for Ethereum with a mission to make your life a whole lot easier.
+* [Ethereum](https://www.ethereum.org/) - Ethereum is a decentralized platform that runs smart contracts.
+* [Truffle Framework](http://truffleframework.com/) - Truffle is the most popular development framework for Ethereum with a mission to make your life a lot easier.
+* [ChainLink](https://chain.link/) - Securely connect smart contracts with off-chain data and services.
+* [OpenZeppelin](https://www.openzeppelin.com/) - The standard for secure blockchain applications.
 
 ## Acknowledgments
 
@@ -89,6 +92,11 @@ npm run dev
 * Ganache-cli
 * Truffle
 
+## Building & Running Notes 
+* **VRF V2** :
+    - In the new Version The Project can not be built under Ganache local Development because of useing VRFv2 Which is not accessible outside Testnet.
+    - Please Replace the VRFv2 with randomGenerator to running The Test Module on local Development Platform without any problem. 
+    - In the next Version The Test Module will be fully compatible with VRFv2.
 
 ## Example workflow
 
@@ -102,36 +110,22 @@ npm run dev
 
 ## Smart Contract Addresses on Rinkeby TestNet :
 
-* *Deploy with Remix (Ver ):*
-    - **LotteryGenerator** : [0xd44e2Beb657cF17a298C1bF2bdDb3e4f1722949A](https://rinkeby.etherscan.io/address/0xd44e2Beb657cF17a298C1bF2bdDb3e4f1722949A)
-    - **LotteryCore** : [0xD166681c76AADdc703dF06216159F8035B149d22](https://rinkeby.etherscan.io/address/0xD166681c76AADdc703dF06216159F8035B149d22)
-    - **WeeklyLottery** : [0x09df50dC330e4C539864661D2692b835c6eC2070](https://rinkeby.etherscan.io/address/0x09df50dC330e4C539864661D2692b835c6eC2070)
-    - **MonthlyLottery** : [0x8e613B525B183576fE13C939115BAf073fd3b73A](https://rinkeby.etherscan.io/address/0x8e613B525B183576fE13C939115BAf073fd3b73A)
-    - **LotteryLiquidityPool** : [0x3F9d494C0117b455C8D51B5DA1B9667fbf3459B6](https://rinkeby.etherscan.io/address/0x3F9d494C0117b455C8D51B5DA1B9667fbf3459B6)
-    - **LOtteryMultiSigWallet** : [](https://rinkeby.etherscan.io/address/)
-* *Deploy with Truffle (Ver ):*
-    - **LotteryGenerator** : [](https://rinkeby.etherscan.io/address/)
-    - **LotteryCore** : [](https://rinkeby.etherscan.io/address/)
-    - **WeeklyLottery** : [](https://rinkeby.etherscan.io/address/)
-    - **MonthlyLottery** : [](https://rinkeby.etherscan.io/address/)
-    - **LotteryLiquidityPool** : [](https://rinkeby.etherscan.io/address/)
-    - **LOtteryMultiSigWallet** : [](https://rinkeby.etherscan.io/address/)
+* *Deploy with Truffle (Ver 0.52):*
+    - **LotteryGenerator** : [0x8Ca9997FeeF619f0CcAf311a11A5cD304685709a](https://rinkeby.etherscan.io/address/0x8Ca9997FeeF619f0CcAf311a11A5cD304685709a)
+    - **LotteryCore** : [0x61cBF84dA7494c50626DE9c89A65C59f639E8F22](https://rinkeby.etherscan.io/address/0x61cBF84dA7494c50626DE9c89A65C59f639E8F22)
+    - **WeeklyLottery** : [0x9a944147a2f241081991C9ba0A7b01977bD4043a](https://rinkeby.etherscan.io/address/0x9a944147a2f241081991C9ba0A7b01977bD4043a)
+    - **MonthlyLottery** : [0xDC2169250638b973C808BFa09D042C3Ab5Eb88d4](https://rinkeby.etherscan.io/address/0xDC2169250638b973C808BFa09D042C3Ab5Eb88d4)
+    - **LotteryLiquidityPool** : [0x22515475372968c8536A0439885C99F91F30aE43](https://rinkeby.etherscan.io/address/0x22515475372968c8536A0439885C99F91F30aE43)
+    - **LOtteryMultiSigWallet** : [0x82B0f049AD24d10bc88d2dDd621fC8b69f55B778](https://rinkeby.etherscan.io/address/0x82B0f049AD24d10bc88d2dDd621fC8b69f55B778)
 
 ## Smart Contract Addresses on Binance Smart Chain TestNet :
 
-* *Deploy with Remix (Ver ):*
-    - **LotteryGenerator** : [0x4490bEAF312ec3948016b8ef43528c5ACDF5FDB7](https://rinkeby.etherscan.io/address/0x4490bEAF312ec3948016b8ef43528c5ACDF5FDB7)
-    - **LotteryCore** : [0xdE2c8B2f097F13161B9501952097Ef6C10655dE4](https://rinkeby.etherscan.io/address/0xdE2c8B2f097F13161B9501952097Ef6C10655dE4)
-    - **WeeklyLottery** : [0xe9F90ff51A50b69c84fF50CC5EE6D08Ce8CFc1bB](https://rinkeby.etherscan.io/address/0xe9F90ff51A50b69c84fF50CC5EE6D08Ce8CFc1bB)
-    - **MonthlyLottery** : [0x1D1F2A6ae3E31Ad016a3E969392fCe130A4E4608](https://rinkeby.etherscan.io/address/0x1D1F2A6ae3E31Ad016a3E969392fCe130A4E4608)
-    - **LotteryLiquidityPool** : [0x393660C3446Fb05ca9Cf4034568450d47d32a076](https://rinkeby.etherscan.io/address/0x393660C3446Fb05ca9Cf4034568450d47d32a076)
-    - **LOtteryMultiSigWallet** : [](https://rinkeby.etherscan.io/address/)
-* *Deploy with Truffle (Ver ):*
-    - **LotteryGenerator** : [](https://rinkeby.etherscan.io/address/)
-    - **LotteryCore** : [](https://rinkeby.etherscan.io/address/)
-    - **WeeklyLottery** : [](https://rinkeby.etherscan.io/address/)
-    - **MonthlyLottery** : [](https://rinkeby.etherscan.io/address/)
-    - **LotteryLiquidityPool** : [](https://rinkeby.etherscan.io/address/)
-    - **LOtteryMultiSigWallet** : [](https://rinkeby.etherscan.io/address/)
+* *Deploy with Truffle (Ver 0.41):*
+    - **LotteryGenerator** : [0xf415f0c24cFA775d566De6B8c8Afe7098448FEfa](https://rinkeby.etherscan.io/address/0xf415f0c24cFA775d566De6B8c8Afe7098448FEfa)
+    - **LotteryCore** : [0xc65d246f01EF7c04a95DD8429BbfA126d8272549](https://rinkeby.etherscan.io/address/0xc65d246f01EF7c04a95DD8429BbfA126d8272549)
+    - **WeeklyLottery** : [0xc6e5ba1D46e7f7a1A674AC6979f9228f9CE9AA1D](https://rinkeby.etherscan.io/address/0xc6e5ba1D46e7f7a1A674AC6979f9228f9CE9AA1D)
+    - **MonthlyLottery** : [0xDc458c1968E40361E46E6FAa0f5E83f985058c3b](https://rinkeby.etherscan.io/address/0xDc458c1968E40361E46E6FAa0f5E83f985058c3b)
+    - **LotteryLiquidityPool** : [0xc52E5BC3D189c2f2621A3432e74787202b42D79A](https://rinkeby.etherscan.io/address/0xc52E5BC3D189c2f2621A3432e74787202b42D79A)
+    - **LOtteryMultiSigWallet** : [0x32b02534dbDf25eF66e53C4c1501eF28aa9274a4](https://rinkeby.etherscan.io/address/0x32b02534dbDf25eF66e53C4c1501eF28aa9274a4)
 
 
