@@ -26,8 +26,8 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
       - staticfiles:/app/static
-      # - ./pages/app:/app/homepage
-      # - ./pages:/var/www/html
+      - ./pages/app:/app/homepage
+      - ./pages:/var/www/html
       # - ./files:/files
     # networks:
     #   - external_he
