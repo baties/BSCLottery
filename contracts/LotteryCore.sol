@@ -2,7 +2,6 @@
 pragma solidity ^0.8.0;
 // pragma experimental ABIEncoderV2;
 
-/* ToDo : Use Ownable OpenZeppelin */
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
@@ -10,8 +9,6 @@ import "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 
-
-// import "./LotteryGenerator.sol";
 
 // import "./VRFv2SubscriptionManager.sol";
 // import "./VRFv2Consumer.sol";
@@ -27,10 +24,10 @@ import "./LotteryInterface.sol";
 */
 
 /**
-  * @title Core SmartContract for BNB Public Lottery 
-  * @author Batis 
-  * @notice This SmartContract is responsible for implimentation of Lottery Core System and response to the Players 
-  * @dev LotteryGenerator SmartContract Create This for each Pot 
+  * @title Core SmartContract for BNB Game Lottery 
+  * @author Batis (https://github.com/baties)
+  * @notice This SmartContract is responsible for implimentation of Lottery Core System and communication with the Players 
+  * @dev  
 */
 contract LotteryCore is Ownable, VRFConsumerBaseV2 {
 
@@ -73,7 +70,6 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
 
   uint constant TICKET_PRICE = 10 * 1e15; // finney (0.01 Ether)
 
-  // address public LotteryOwner; 
   bool private lPotActive;  
   bool private lReadySelectWinner; 
   uint public potStartTime = 0;
@@ -113,17 +109,6 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   event ReadyForSelectWinner(bool isReadySelectWinner);
 
   // constructor(address VRF, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr) {
-  //   LotteryOwner = msg.sender;
-  //   _VRF = VRF;
-  //   lPotActive = true;
-  //   lReadySelectWinner = false;
-  //   potStartTime = block.timestamp;
-  //   generatorLotteryAddr = generatorLotteryAddress;
-  //   LiquidityPoolAddress = LiquidityPoolAddr ;
-  //   WeeklyPotAddress = WeeklyLotteryAddress ;
-  //   MonthlyPotAddress = MonthlyLotteryAddress ;   
-  // }
-
   constructor(uint64 subscriptionId, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr) VRFConsumerBaseV2(vrfCoordinator) {
     COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
     LINKTOKEN = LinkTokenInterface(link);
@@ -137,18 +122,19 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     LiquidityPoolAddress = LiquidityPoolAddr ;
     WeeklyPotAddress = WeeklyLotteryAddress ;
     MonthlyPotAddress = MonthlyLotteryAddress ;   
+    // _VRF = VRF;
   }
-
-  // modifier onlyOwner() {
-  //   require(msg.sender == LotteryOwner, "Owner Only! . You have not the right Access.");
-  //   _;
-  // }
 
   /* ToDo : Add & Complete Fallback routine */
   fallback() external payable {
   }
   receive() external payable {
   }
+
+  // modifier onlyOwner() {
+  //   require(msg.sender == LotteryOwner, "Owner Only! . You have not the right Access.");
+  //   _;
+  // }
 
   modifier isAllowedManager() {
       require( msg.sender == potDirector || msg.sender == LotteryOwner , "Permission Denied !!" );
@@ -165,11 +151,6 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
       _;
   }
 
-  /**
-    * @notice Show the total Balance of this Pot. 
-    * @dev Smart Contract total Balance.
-    * @return Balance of This Contract.
-  */
   function balanceInPot() public view returns(uint){
     return address(this).balance;
   }
@@ -178,6 +159,10 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     payable(msg.sender).transfer(address(this).balance);
   }
 
+  /**
+    * @notice 
+    * @dev 
+  */
   function requestRandomWords() public isAllowedManager {    // external   onlyOwner
     // Will revert if subscription is not set and funded.
     s_requestId = COORDINATOR.requestRandomWords(
@@ -286,10 +271,6 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   //   VRFv2Consumer(_VRFv2).requestRandomWords() ;
   // }
 
-  /**
-    * @notice Generating Random Number for Finding the Hourly Winner.
-    * @dev Call VRFv2 Random Generator Routines.
-  */
   // function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
   //   // uint8 zeroOne = uint8(randomGenerator() % 2);
   //   // randomWords = randomGenerator();

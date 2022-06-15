@@ -11,9 +11,9 @@ import "./LotteryCore.sol";
 
 /**
   * @title Lottery Generator Smart Contract.
-  * @author Batis 
-  * @notice This SmartContract is responsible for Lottery Generation.
-  * @dev Lottery Generator SmartContract - Parent of Core Lottery
+  * @author Batis (https://github.com/baties)
+  * @notice This SmartContract will be responsible for Lottery Generation in next Versions.
+  * @dev Lottery Generator SmartContract - Parent of All Lottery MOdules
 */
 contract LotteryGenerator is Ownable {
 
@@ -37,7 +37,7 @@ contract LotteryGenerator is Ownable {
     mapping(address => lottery) lotteryStructs;
 
     address private LotteryOwner;
-    address private potDirector;  /* ToDo: All Main Action must be controlled only by Owner or Director */
+    address private potDirector;  
 
     address[] public LotteryWinnersArray;
     uint[] public LotteryWinnersArrayPrizes;
@@ -95,22 +95,42 @@ contract LotteryGenerator is Ownable {
         payable(msg.sender).transfer(address(this).balance);
     }
 
+    /**
+        * @notice Get The Total List of Hourly Lottery Winners Wallet Addresses
+        * @return Hourly Lottery Winners Array List
+    */
     function getWinners() external view returns(address[] memory) {
         return LotteryWinnersArray;
     }
 
+    /**
+        * @notice Get the List of Weekly Winners Wallet Addresses
+        * @return Weekly Lottery Winners Array List
+    */
     function getWeeklyWinners() external view returns(address[] memory) {
         return WeeklyWinnersArray;
     }
 
+    /**
+        * @notice Get the List of Monthly Winners Wallet Addresses
+        * @return Monthly Lottery Winners Array List
+    */
     function getMonthlyWinners() external view returns(address[] memory) {
         return MonthlyWinnersArray;
     }
 
+    /**
+        * @notice Get The Address of Current Pot Director (Pot Manager)
+        * @return The Current Pot Director 
+    */
     function getPotDirector() public view returns(address) {
         return potDirector;
     }
 
+    /**
+        * @notice Set or Change The Address of Current Pot Director (Pot Manager)
+        * @dev This function is Set a Pot Manager and Only should be called by the Owner
+    */
     function setDirector(address _DirectorAddress) external onlyOwner {
         require(_DirectorAddress != address(0) );
         potDirector = _DirectorAddress;
@@ -219,7 +239,6 @@ contract LotteryGenerator is Ownable {
     //     return lotteries;
     // }
 
-    // Events
     // event LotteryCreated(
     //     address lotteryAddress
     // );

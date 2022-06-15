@@ -82,13 +82,6 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   event ReadyForSelectWinner(bool isReadySelectWinner);
 
   // constructor(address VRF, address generatorLotteryAddress) {  
-  //   LotteryOwner = msg.sender;
-  //   _VRF = VRF;
-  //   lPotActive = false;
-  //   lReadySelectWinner = false;
-  //   generatorLotteryAddr = generatorLotteryAddress;
-  // }
-
   constructor(uint64 subscriptionId, address generatorLotteryAddress) VRFConsumerBaseV2(vrfCoordinator) {
     COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
     LINKTOKEN = LinkTokenInterface(link);
@@ -98,6 +91,7 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
     lReadySelectWinner = false;
     lWinnerSelected = false;
     generatorLotteryAddr = generatorLotteryAddress;
+    // _VRF = VRF;
   }
 
   /* ToDo : Add & Complete Fallback routine */

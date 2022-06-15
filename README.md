@@ -110,7 +110,7 @@ npm run dev
 
 ## Smart Contract Addresses on Rinkeby TestNet :
 
-* *Deploy with Truffle (Ver 0.52):*
+* *Deployed Final Version with Truffle (Ver 0.52):*
     - **LotteryGenerator** : [0x8Ca9997FeeF619f0CcAf311a11A5cD304685709a](https://rinkeby.etherscan.io/address/0x8Ca9997FeeF619f0CcAf311a11A5cD304685709a)
     - **LotteryCore** : [0x61cBF84dA7494c50626DE9c89A65C59f639E8F22](https://rinkeby.etherscan.io/address/0x61cBF84dA7494c50626DE9c89A65C59f639E8F22)
     - **WeeklyLottery** : [0x9a944147a2f241081991C9ba0A7b01977bD4043a](https://rinkeby.etherscan.io/address/0x9a944147a2f241081991C9ba0A7b01977bD4043a)
@@ -120,7 +120,7 @@ npm run dev
 
 ## Smart Contract Addresses on Binance Smart Chain TestNet :
 
-* *Deploy with Truffle (Ver 0.41):*
+* *Deployed Final Version with Truffle (Ver 0.41):*
     - **LotteryGenerator** : [0xf415f0c24cFA775d566De6B8c8Afe7098448FEfa](https://rinkeby.etherscan.io/address/0xf415f0c24cFA775d566De6B8c8Afe7098448FEfa)
     - **LotteryCore** : [0xc65d246f01EF7c04a95DD8429BbfA126d8272549](https://rinkeby.etherscan.io/address/0xc65d246f01EF7c04a95DD8429BbfA126d8272549)
     - **WeeklyLottery** : [0xc6e5ba1D46e7f7a1A674AC6979f9228f9CE9AA1D](https://rinkeby.etherscan.io/address/0xc6e5ba1D46e7f7a1A674AC6979f9228f9CE9AA1D)
