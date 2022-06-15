@@ -1,4 +1,4 @@
-FROM docker.repos.balad.ir/node:14-alpine AS deps
+FROM node:14-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json package-lock.json ./
@@ -6,7 +6,7 @@ RUN npm install
 ##--network-timeout 600000
 
 # Rebuild the source code only when needed
-FROM docker.repos.balad.ir/node:14-alpine AS builder
+FROM node:14-alpine AS builder
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
@@ -14,7 +14,7 @@ COPY --from=deps /app/node_modules ./node_modules
 RUN npm run build
 
 # Production image, copy all the files and run next
-FROM docker.repos.balad.ir/node:14-alpine AS runner
+FROM node:14-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
