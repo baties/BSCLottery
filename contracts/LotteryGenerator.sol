@@ -11,7 +11,7 @@ import "./LotteryCore.sol";
 
 /**
   * @title Lottery Generator Smart Contract.
-  * @author Batis (https://github.com/baties)
+  * @author Batis Abhari (https://github.com/baties - ContactMe: abhari_Batis@hotmail.com)
   * @notice This SmartContract will be responsible for Lottery Generation in next Versions.
   * @dev Lottery Generator SmartContract - Parent of All Lottery MOdules
 */
@@ -136,6 +136,16 @@ contract LotteryGenerator is Ownable {
         potDirector = _DirectorAddress;
     }
 
+  /**
+    * @notice Save All (Hourly, Daily, Weekly & Monthly) Lotteries' Important Data in One Place.
+    * @dev A struct with Hourly, Daily, Weekly & Monthly Lotteries Data.
+    * @param _lotteryAddress : Address of Lottery .
+    * @param _commander : The Address of Owner or Lottery Manager Which are the Only Allowed addresses for Running This Function.  
+    * @param _totalBalance : Total Balance in this Lottery .
+    * @param _winnerAddress : The Lottery Winner Wallet Address. 
+    * @param _lotteryType : Type of Lottery (Hourly - Daily - Weekly - Monthly)
+    * @return True
+  */
     function setlotteryStructs(address _lotteryAddress, address _commander, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external isAllowedOwner(_commander) returns (bool) {
         lotteryStructs[_lotteryAddress].totalBalance = _totalBalance;
         lotteryStructs[_lotteryAddress].winnerAddress = _winnerAddress;
@@ -143,6 +153,14 @@ contract LotteryGenerator is Ownable {
         return true;
     }
 
+  /**
+    * @notice Save All Hourly Lotteries' Important Data 
+    * @dev Save Hourly Data into Hourly Lottery Array & Hourly Lottery Map.
+    * @param _commander : The Address of Owner or Lottery Manager Which are the Only Allowed addresses for Running This Function.
+    * @param _winnerAddress : The Hourly Lottery Winner Wallet Address. 
+    * @param _winnerPrize : The Amount of Hourly Lottery Winner's Prize .
+    * @return LotteryWinnerArray Lengh
+  */
     function setlotteryWinnersArrayMap(address _commander, address _winnerAddress, uint _winnerPrize) external isAllowedOwner(_commander) returns (uint) {
         LotteryWinnersArray.push(_winnerAddress);
         LotteryWinnersArrayPrizes.push(_winnerPrize);
@@ -151,6 +169,14 @@ contract LotteryGenerator is Ownable {
         return LotteryWinnersArray.length ;  // -1
     }
 
+  /**
+    * @notice Save All Weekly Lotteries' Important Data 
+    * @dev Save Weekly Data into Weekly Lottery Array & Weekly Lottery Map.
+    * @param _commander : The Address of Owner or Lottery Manager Which are the Only Allowed addresses for Running This Function.  
+    * @param _winnerAddress : The Weekly Lottery Winner Wallet Address. 
+    * @param _winnerPrize : The Amount of Weekly Lottery Winner's Prize .
+    * @return WeeklyWinnerArray Lengh
+  */
     function setWeeklyWinnersArrayMap(address _commander, address _winnerAddress, uint _winnerPrize) external isAllowedOwner(_commander) returns (uint) {
         WeeklyWinnersArray.push(_winnerAddress);
         WeeklyWinnersArrayPrizes.push(_winnerPrize);
@@ -159,6 +185,14 @@ contract LotteryGenerator is Ownable {
         return WeeklyWinnersArray.length ;  // -1
     }
 
+  /**
+    * @notice Save All Monthly Lotteries' Important Data 
+    * @dev Save Monthly Data into Monthly Lottery Array & Monthly Lottery Map.
+    * @param _commander : The Address of Owner or Lottery Manager Which are the Only Allowed addresses for Running This Function.  
+    * @param _winnerAddress : The Monthly Lottery Winner Wallet Address. 
+    * @param _winnerPrize : The Amount of Monthly Lottery Winner's Prize .
+    * @return MonthlyWinnerArray Lengh
+  */
     function setMonthlyWinnersArrayMap(address _commander, address _winnerAddress, uint _winnerPrize) external isAllowedOwner(_commander) returns (uint) {
         MonthlyWinnersArray.push(_winnerAddress);
         MonthlyWinnersArrayPrizes.push(_winnerPrize);
@@ -167,6 +201,12 @@ contract LotteryGenerator is Ownable {
         return MonthlyWinnersArray.length ;  // -1
     }
 
+  /**
+    * @notice Clear Lottery Winner Array & Map Data 
+    * @dev Clear Lottery Winner Array & Map Data and Releasing the Memory.
+    * @param _commander : The Address of Owner or Lottery Manager Which are the Only Allowed addresses for Running This Function.  
+    * @return True
+  */
     function clearlotteryWinnersArrayMap(address _commander) external isAllowedOwner(_commander) returns (bool) {
         address _lotteryWinAddress;
         for (uint256 index = 0; index < LotteryWinnersArray.length - 1; index++) {
@@ -181,6 +221,12 @@ contract LotteryGenerator is Ownable {
         return true;
     }
 
+  /**
+    * @notice Clear Weekly Lottery Winner Array & Map Data 
+    * @dev Clear Weekly Lottery Winner Array & Map Data and Releasing the Memory.
+    * @param _commander : The Address of Owner or Lottery Manager Which are the Only Allowed addresses for Running This Function.  
+    * @return True
+  */
     function clearWeeklyWinnersArrayMap(address _commander) external isAllowedOwner(_commander) returns (bool) {
         address _lotteryWinAddress;
         for (uint256 index = 0; index < WeeklyWinnersArray.length - 1; index++) {
@@ -195,6 +241,12 @@ contract LotteryGenerator is Ownable {
         return true;
     }
 
+  /**
+    * @notice Clear Monthly Lottery Winner Array & Map Data 
+    * @dev Clear MOnthly Lottery Winner Array & Map Data and Releasing the Memory.
+    * @param _commander : The Address of Owner or Lottery Manager Which are the Only Allowed addresses for Running This Function.  
+    * @return True
+  */
     function clearMonthlyWinnersArrayMap(address _commander) external isAllowedOwner(_commander) returns (bool) {
         address _lotteryWinAddress;
         for (uint256 index = 0; index < MonthlyWinnersArray.length - 1; index++) {

@@ -25,7 +25,7 @@ import "./LotteryInterface.sol";
 
 /**
   * @title Core SmartContract for BNB Game Lottery 
-  * @author Batis (https://github.com/baties)
+  * @author Batis Abhari (https://github.com/baties - ContactMe: abhari_Batis@hotmail.com)
   * @notice This SmartContract is responsible for implimentation of Lottery Core System and communication with the Players 
   * @dev  
 */
@@ -160,8 +160,8 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   }
 
   /**
-    * @notice 
-    * @dev 
+    * @notice Request Random Words From VRF Coordinator
+    * @dev For more Details refer to : https://docs.chain.link/docs/chainlink-vrf-best-practices/#getting-multiple-random-numbers
   */
   function requestRandomWords() public isAllowedManager {    // external   onlyOwner
     // Will revert if subscription is not set and funded.
@@ -174,6 +174,10 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     );
   }
 
+  /**
+    * @notice VRF Coordinator Call Back this Function after generating Random Number
+    * @dev For more Details refer to : https://docs.chain.link/docs/chainlink-vrf-best-practices/#getting-multiple-random-numbers
+  */
   function fulfillRandomWords(
     uint256, /* requestId */
     uint256[] memory randomWords
@@ -183,10 +187,6 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     lWinnerSelected = true;
     emit ReadyForSelectWinner(lWinnerSelected);
   }
-
-  // function getlRandomWords() external view returns (uint256) {
-  //    return s_randomWords[0];
-  // }
 
   /* ToDo : Replace This function with OpenZeppelin SafeMath */
   /**
@@ -203,6 +203,41 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     remainder = numerator - denominator * quotient;
   }
 
+  /**
+    * @notice The Local Random Generator Function.
+    * @dev The Local Random Generator Function for Local Development and Running the Tests.
+    * @return None. 
+  */
+  function randomGenerator() private view returns (uint) {
+    return uint(
+      keccak256(
+        abi.encodePacked(
+          block.difficulty, block.timestamp, potTickets ))) ;
+  }
+  
+  // function getlRandomWords() external view returns (uint256) {
+  //    return s_randomWords[0];
+  // }
+
+  // function lrequestRandomWords(address _VRFv2) public isAllowedManager {
+  //   VRFv2Consumer(_VRFv2).requestRandomWords() ;
+  // }
+
+  // function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
+  //   // uint8 zeroOne = uint8(randomGenerator() % 2);
+  //   // randomWords = randomGenerator();
+  //   randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
+  // }
+
+  // function rRandomValue() public onlyOwner {
+  //   requestRandomWords();
+  // }
+
+  /**
+    * @notice Hourly Lottery Pot Initialization.
+    * @dev AtFirst The Hourly Lottery have been Initialized for Default but after each Pot it Must be Initialized for next Pot .
+    * @return success Flag 
+  */
   function potInitialize() external isAllowedManager returns(bool success) {
     require(lPotActive == false, "The Pot is started before !");
     lPotActive = true ;
@@ -215,6 +250,8 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   /**
     * @notice Players' Operation and Calculation after Sending Transaction to the SmartContract. 
     * @dev Payable Function. 
+    * @dev This Function is resposible for Accepting new Gamers in Hourly Lottery 
+    * @return success Flag
   */
   function play() public payable isGameOn returns(bool success) {
 
@@ -260,30 +297,10 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
 
   }
 
-  function randomGenerator() private view returns (uint) {
-    return uint(
-      keccak256(
-        abi.encodePacked(
-          block.difficulty, block.timestamp, potTickets ))) ;
-  }
-  
-  // function lrequestRandomWords(address _VRFv2) public isAllowedManager {
-  //   VRFv2Consumer(_VRFv2).requestRandomWords() ;
-  // }
-
-  // function getRandomValue(address _VRFv2) public view onlyOwner returns (uint256 randomWords) {
-  //   // uint8 zeroOne = uint8(randomGenerator() % 2);
-  //   // randomWords = randomGenerator();
-  //   randomWords = VRFv2Consumer(_VRFv2).getlRandomWords();
-  // }
-
-  // function rRandomValue() public onlyOwner {
-  //   requestRandomWords();
-  // }
-
   /**
-    * @notice Select The Hourly Winner Function.
-    * @dev Select The Pot Winner.
+    * @notice Hourly Lottery Pot Winner Selection, This Winner is Selected among Hourly Member List.
+    * @dev Hourly Lottery Pot Winner Selection Start Process, This Function Just Called Request Random Number Routine For Communicate with VRF Coordinator.
+    * @return success Flag 
   */
   function select_Winner() public isAllowedManager returns(bool success) {  
 
@@ -295,8 +312,15 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
 
   }
 
+  /**
+    * @notice Hourly Lottery Pot Winner Selection Continue, This Function Selects The Winner With Random Number Generated.
+    * @dev Hourly Lottery Pot Winner Selection Continue, This Function Only Call after fulfillRandomWords is Called. 
+    * @dev This Function is responsible for Updating Lottery Data, Pay the Winner Prize & then clear and Release the Memory
+    * @return success Flag 
+  */
   function select_Winner_Continue() public isAllowedManager returns(bool success) {  
     
+    require( lReadySelectWinner == true, "The Pot is not ready for Select the Winner" );
     require(lWinnerSelected == true, "The Winner has Not been Selected Yet !");
 
     uint winnerIndex = s_randomWords[0] % potTickets.length;    // l_randomWords
@@ -321,6 +345,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   /**
     * @notice Release Smart Contract Memory .
     * @dev Clear All Storages .
+    * @return True
   */
   function ClearDataBase() private returns (bool) {
     /* ToDo : Clear The Map Data and RElease the Memory */  
@@ -344,7 +369,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
 
   /**
     * @notice Calculation of Pot Winner Prize.
-    * @dev Findout the 50% of the Total Pot and The Winner payment.
+    * @dev Findout the 50% of the Total Pot and The Winner payment and Calculation of Weekly & Monthly Pot Prizes.
   */
   function Calculation(uint _winnerIndex) private view returns (uint winnerPrize, uint weeklyPot, uint monthlyPot, uint liquidityAmount){
 
@@ -380,7 +405,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
 
   /**
     * @notice Remaining Pot Money Transfer.
-    * @dev Transfer remaining Money to the Liquidity Pool.
+    * @dev Transfer remaining Money to the Weekly Pot, Monthly Pot & Liquidity Pool.
   */
   function FinalPayment(uint weeklyPot, uint monthlyPot, uint liquidityAmount) private {   // onlyOwner 
 
