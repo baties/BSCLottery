@@ -26,6 +26,10 @@ contract LotteryGenerator is Ownable {
         Monthly
     }
 
+    address private HourlyPotAddress;
+    address private WeeklyPotAddress;
+    address private MonthlyPotAddress;   
+
     address[] public lotteries;
     struct lottery{
         uint index;
@@ -84,6 +88,11 @@ contract LotteryGenerator is Ownable {
 
     modifier isAllowedOwner(address _caller) {
         require( _caller == potDirector || _caller == LotteryOwner , "(Owner) Permission Denied !!" );
+        _;
+    }
+
+    modifier isAllowedCaller(address _caller){
+        require( (_caller == HourlyPotAddress) || (_caller == WeeklyPotAddress) || (_caller == MonthlyPotAddress) );
         _;
     }
 
@@ -146,7 +155,7 @@ contract LotteryGenerator is Ownable {
     * @param _lotteryType : Type of Lottery (Hourly - Daily - Weekly - Monthly)
     * @return True
   */
-    function setlotteryStructs(address _lotteryAddress, address _commander, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external isAllowedOwner(_commander) returns (bool) {
+    function setlotteryStructs(address _lotteryAddress, address _commander, uint _totalBalance, address _winnerAddress, uint8 _lotteryType) external isAllowedOwner(_commander) isAllowedCaller(msg.sender) returns (bool) {
         lotteryStructs[_lotteryAddress].totalBalance = _totalBalance;
         lotteryStructs[_lotteryAddress].winnerAddress = _winnerAddress;
         lotteryStructs[_lotteryAddress].lotteryType = LType(_lotteryType);
@@ -161,7 +170,7 @@ contract LotteryGenerator is Ownable {
     * @param _winnerPrize : The Amount of Hourly Lottery Winner's Prize .
     * @return LotteryWinnerArray Lengh
   */
-    function setlotteryWinnersArrayMap(address _commander, address _winnerAddress, uint _winnerPrize) external isAllowedOwner(_commander) returns (uint) {
+    function setlotteryWinnersArrayMap(address _commander, address _winnerAddress, uint _winnerPrize) external isAllowedOwner(_commander) isAllowedCaller(msg.sender) returns (uint) {
         LotteryWinnersArray.push(_winnerAddress);
         LotteryWinnersArrayPrizes.push(_winnerPrize);
         LotteryWinnersMap[_winnerAddress].playersId = LotteryWinnersArray.length;  // -1
@@ -177,7 +186,7 @@ contract LotteryGenerator is Ownable {
     * @param _winnerPrize : The Amount of Weekly Lottery Winner's Prize .
     * @return WeeklyWinnerArray Lengh
   */
-    function setWeeklyWinnersArrayMap(address _commander, address _winnerAddress, uint _winnerPrize) external isAllowedOwner(_commander) returns (uint) {
+    function setWeeklyWinnersArrayMap(address _commander, address _winnerAddress, uint _winnerPrize) external isAllowedOwner(_commander) isAllowedCaller(msg.sender) returns (uint) {
         WeeklyWinnersArray.push(_winnerAddress);
         WeeklyWinnersArrayPrizes.push(_winnerPrize);
         WeeklyWinnersMap[_winnerAddress].playersId = WeeklyWinnersArray.length;  // -1
@@ -193,7 +202,7 @@ contract LotteryGenerator is Ownable {
     * @param _winnerPrize : The Amount of Monthly Lottery Winner's Prize .
     * @return MonthlyWinnerArray Lengh
   */
-    function setMonthlyWinnersArrayMap(address _commander, address _winnerAddress, uint _winnerPrize) external isAllowedOwner(_commander) returns (uint) {
+    function setMonthlyWinnersArrayMap(address _commander, address _winnerAddress, uint _winnerPrize) external isAllowedOwner(_commander) isAllowedCaller(msg.sender) returns (uint) {
         MonthlyWinnersArray.push(_winnerAddress);
         MonthlyWinnersArrayPrizes.push(_winnerPrize);
         MonthlyWinnersMap[_winnerAddress].playersId = MonthlyWinnersArray.length;  // -1
@@ -207,7 +216,7 @@ contract LotteryGenerator is Ownable {
     * @param _commander : The Address of Owner or Lottery Manager Which are the Only Allowed addresses for Running This Function.  
     * @return True
   */
-    function clearlotteryWinnersArrayMap(address _commander) external isAllowedOwner(_commander) returns (bool) {
+    function clearlotteryWinnersArrayMap(address _commander) external isAllowedOwner(_commander) isAllowedCaller(msg.sender) returns (bool) {
         address _lotteryWinAddress;
         for (uint256 index = 0; index <= LotteryWinnersArray.length - 1; index++) {
             _lotteryWinAddress = LotteryWinnersArray[index];
@@ -227,7 +236,7 @@ contract LotteryGenerator is Ownable {
     * @param _commander : The Address of Owner or Lottery Manager Which are the Only Allowed addresses for Running This Function.  
     * @return True
   */
-    function clearWeeklyWinnersArrayMap(address _commander) external isAllowedOwner(_commander) returns (bool) {
+    function clearWeeklyWinnersArrayMap(address _commander) external isAllowedOwner(_commander) isAllowedCaller(msg.sender) returns (bool) {
         address _lotteryWinAddress;
         for (uint256 index = 0; index <= WeeklyWinnersArray.length - 1; index++) {
             _lotteryWinAddress = WeeklyWinnersArray[index];
@@ -247,7 +256,7 @@ contract LotteryGenerator is Ownable {
     * @param _commander : The Address of Owner or Lottery Manager Which are the Only Allowed addresses for Running This Function.  
     * @return True
   */
-    function clearMonthlyWinnersArrayMap(address _commander) external isAllowedOwner(_commander) returns (bool) {
+    function clearMonthlyWinnersArrayMap(address _commander) external isAllowedOwner(_commander) isAllowedCaller(msg.sender) returns (bool) {
         address _lotteryWinAddress;
         for (uint256 index = 0; index <= MonthlyWinnersArray.length - 1; index++) {
             _lotteryWinAddress = MonthlyWinnersArray[index];
@@ -261,6 +270,27 @@ contract LotteryGenerator is Ownable {
         return true;
     }
 
+    function getAllContractAddresses() public view returns(address hAddress, address wAddress, address mAddress) {
+        hAddress = HourlyPotAddress ;
+        wAddress = WeeklyPotAddress ;
+        mAddress = MonthlyPotAddress ;
+        return (hAddress, wAddress, mAddress); 
+    }
+
+    function set_HourlyPotAddress(address _HourlyPotAddress) external onlyOwner {
+        require(_HourlyPotAddress != address(0) );
+        HourlyPotAddress = _HourlyPotAddress;
+    }
+
+    function set_WeeklyPotAddress(address _WeeklyPotAddress) external onlyOwner {
+        require(_WeeklyPotAddress != address(0) );
+        WeeklyPotAddress = _WeeklyPotAddress;
+    }
+
+    function set_MonthlyPotAddress(address _MonthlyPotAddress) external onlyOwner {
+        require(_MonthlyPotAddress != address(0) );
+        MonthlyPotAddress = _MonthlyPotAddress;
+    }
 
     /*
     function createLottery(address _VRF, address weeklyAddr, address monthlyAddr, address liquidityAddr) public onlyOwner {
