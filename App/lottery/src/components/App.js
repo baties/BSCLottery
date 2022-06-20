@@ -239,7 +239,7 @@ function App() {
     }
 
     const setAddress = async(potDirector)=>{
-      if(account == null || account == '') {
+      if(account == null || account === '') {
         handleShow();
         return;
       }
@@ -257,7 +257,7 @@ function App() {
     }
 
     const setAddressG = async(potDirector)=>{
-      if(account == null || account == '') {
+      if(account == null || account === '') {
         handleShow();
         return;
       }
@@ -275,7 +275,7 @@ function App() {
     }
 
     const setAddressW = async(potDirector)=>{
-      if(account == null || account == '') {
+      if(account == null || account === '') {
         handleShow();
         return;
       }
@@ -293,7 +293,7 @@ function App() {
     }
 
     const setAddressM = async(potDirector)=>{
-      if(account == null || account == '') {
+      if(account == null || account === '') {
         handleShow();
         return;
       }
@@ -311,7 +311,7 @@ function App() {
     }
 
     const buyTicket = async(amount, price)=>{
-      if(account == null || account == '') {
+      if(account == null || account === '') {
         handleShow();
         return;
       }
@@ -345,7 +345,7 @@ function App() {
   
     const SelectWinner = async()=>{
       console.log("Winner Selection Process");
-      if(account == null || account == '') {
+      if(account == null || account === '') {
         handleShow();
         return;
       }
@@ -378,7 +378,7 @@ function App() {
   
     const SelectWinnerContinue = async()=>{
       console.log("Winner Selection Process Continue");
-      if(account == null || account == '') {
+      if(account == null || account === '') {
         handleShow();
         return;
       }
@@ -418,7 +418,7 @@ function App() {
   
     const potInitialize = async()=>{
       console.log("Pot Initialization Process");
-      if(account == null || account == '') {
+      if(account == null || account === '') {
         handleShow();
         return;
       }
@@ -449,7 +449,7 @@ function App() {
     }
   
     const createLottery = async (amount, price) => {
-      if(account == null || account == '') {
+      if(account == null || account === '') {
         handleShow();
         return;
       }

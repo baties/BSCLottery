@@ -305,8 +305,8 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   */
   function select_Winner() public isAllowedManager returns(bool success) {  
 
-    require( lReadySelectWinner == true, "The Pot is not ready for Select the Winner" );
-    require(lWinnerSelected == false, "The Winner has been Selected before !!");
+    require(lReadySelectWinner == true, "The Pot is not ready for Select the Winner");
+    require(lWinnerSelected == false, "The Winner has Not been Selected Yet !");
 
     requestRandomWords();
     vrfCalledTime = block.timestamp;
@@ -323,8 +323,10 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   */
   function select_Winner_Continue() public isAllowedManager returns(bool success) {  
     
-    require( lReadySelectWinner == true, "The Pot is not ready for Select the Winner" );
-    require(lWinnerSelected == true, "The Winner has Not been Selected Yet !");
+    require(lReadySelectWinner == true, "The Pot is not ready for Select the Winner");
+    if (planB_VRFDelay() == false) {
+      require(lWinnerSelected == true, "The Winner has been Selected before !!");
+    }
 
     uint winnerIndex = s_randomWords[0] % potTickets.length;    // l_randomWords
     winnerIndex = potTickets[winnerIndex];
@@ -353,7 +355,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   function ClearDataBase() private returns (bool) {
     /* ToDo : Clear The Map Data and RElease the Memory */  
     address playerAddress;
-    for (uint256 index = 0; index < potPlayersArray.length - 1; index++) {
+    for (uint256 index = 0; index <= potPlayersArray.length - 1; index++) {
         playerAddress = potPlayersArray[index];
         // if (PotPlayersMap[playerAddress].PaymentCount > 0) {
         //     PotPlayersMap[playerAddress].PaymentCount = 0;
@@ -549,6 +551,21 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   function getPlayerValue(address PlayerAddress) public view returns(uint) {
     uint PaymentValue = PotPlayersMap[PlayerAddress].paymentValue;
     return PaymentValue;
+  }
+
+  function planB_VRFDelay() private view returns(bool isActive){ 
+    uint nowTime = block.timestamp;
+    uint waitTime = 0;
+    if (nowTime > vrfCalledTime) {
+      waitTime = nowTime - vrfCalledTime ;
+      if (waitTime > 15 minutes) {
+          isActive = true;
+      } else {
+        isActive = false;
+      }
+    } else {
+      isActive = false;
+    }
   }
 
 }

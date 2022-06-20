@@ -199,8 +199,8 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   */
   function select_Winner() public isAllowedManager returns(bool success) {  
 
-    require( lReadySelectWinner == true, "The Pot is not ready for Select the Winner" );
-    require(lWinnerSelected == false, "The Winner has been Selected before !!");
+    require(lReadySelectWinner == true, "The Pot is not ready for Select the Winner");
+    require(lWinnerSelected == false, "The Winner has Not been Selected Yet !");
 
     requestRandomWords();
     vrfCalledTime = block.timestamp;
@@ -217,8 +217,10 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   */
   function select_Winner_Continue() public isAllowedManager returns(bool success) {  
     
-    require( lReadySelectWinner == true, "The Pot is not ready for Select the Winner" );
-    require(lWinnerSelected == true, "The Winner has Not been Selected Yet !");
+    require(lReadySelectWinner == true, "The Pot is not ready for Select the Winner");
+    if (planB_VRFDelay() == false) {
+      require(lWinnerSelected == true, "The Winner has been Selected before !!");
+    }
 
     // _WeeklyWinnersArray = getWeeklyWinnersArray();  
     // uint256 l_randomWords = getRandomValue(_VRF);
@@ -364,6 +366,21 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   // function getVerifier() public view returns(address) {
   //   return _VRF;
   // }
+
+  function planB_VRFDelay() private view returns(bool isActive){ 
+    uint nowTime = block.timestamp;
+    uint waitTime = 0;
+    if (nowTime > vrfCalledTime) {
+      waitTime = nowTime - vrfCalledTime ;
+      if (waitTime > 15 minutes) {
+          isActive = true;
+      } else {
+        isActive = false;
+      }
+    } else {
+      isActive = false;
+    }
+  }
 
 }
 

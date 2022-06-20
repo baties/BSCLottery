@@ -209,7 +209,7 @@ contract LotteryGenerator is Ownable {
   */
     function clearlotteryWinnersArrayMap(address _commander) external isAllowedOwner(_commander) returns (bool) {
         address _lotteryWinAddress;
-        for (uint256 index = 0; index < LotteryWinnersArray.length - 1; index++) {
+        for (uint256 index = 0; index <= LotteryWinnersArray.length - 1; index++) {
             _lotteryWinAddress = LotteryWinnersArray[index];
             // if (LotteryWinnersMap[_lotteryWinAddress].playersId > 0) {
             //     LotteryWinnersMap[_lotteryWinAddress].playersId = 0;
@@ -229,7 +229,7 @@ contract LotteryGenerator is Ownable {
   */
     function clearWeeklyWinnersArrayMap(address _commander) external isAllowedOwner(_commander) returns (bool) {
         address _lotteryWinAddress;
-        for (uint256 index = 0; index < WeeklyWinnersArray.length - 1; index++) {
+        for (uint256 index = 0; index <= WeeklyWinnersArray.length - 1; index++) {
             _lotteryWinAddress = WeeklyWinnersArray[index];
             // if (WeeklyWinnersMap[_lotteryWinAddress].playersId > 0) {
             //     WeeklyWinnersMap[_lotteryWinAddress].playersId = 0;
@@ -249,7 +249,7 @@ contract LotteryGenerator is Ownable {
   */
     function clearMonthlyWinnersArrayMap(address _commander) external isAllowedOwner(_commander) returns (bool) {
         address _lotteryWinAddress;
-        for (uint256 index = 0; index < MonthlyWinnersArray.length - 1; index++) {
+        for (uint256 index = 0; index <= MonthlyWinnersArray.length - 1; index++) {
             _lotteryWinAddress = MonthlyWinnersArray[index];
             // if (MonthlyWinnersMap[_lotteryWinAddress].playersId > 0) {
             //     MonthlyWinnersMap[_lotteryWinAddress].playersId = 0;
