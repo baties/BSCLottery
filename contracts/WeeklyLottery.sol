@@ -78,6 +78,7 @@ contract WeeklyLottery is Ownable, VRFConsumerBaseV2 {
 
   address[] private _LotteryWinnersArray;
   bool private lPotActive;  
+  uint private vrfCalledTime = 0;
   bool private lReadySelectWinner; 
   address private potDirector;  
   address private potWinnerAddress;
@@ -212,6 +213,8 @@ contract WeeklyLottery is Ownable, VRFConsumerBaseV2 {
     require(lWinnerSelected == false, "The Winner has been Selected before !!");
 
     requestRandomWords();
+    vrfCalledTime = block.timestamp;
+
     success = true;
 
   }

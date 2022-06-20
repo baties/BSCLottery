@@ -664,7 +664,7 @@ function App() {
                           onChange={handlePotDirectorChange}
                           required />
                       </div>
-                      <Button variant="warning" type="submit">SetAddress</Button>
+                      <Button variant="success" type="submit">SetAddress</Button>
                     </div>
                   </form>
                 </Card.Body>

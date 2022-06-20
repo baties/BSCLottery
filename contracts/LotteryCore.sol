@@ -73,6 +73,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   bool private lPotActive;  
   bool private lReadySelectWinner; 
   uint public potStartTime = 0;
+  uint private vrfCalledTime = 0;
   uint public realPLayerCount = 0;
   uint public potWinnerPrize = 0;
   bool private lWinnerSelected;
@@ -308,6 +309,8 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     require(lWinnerSelected == false, "The Winner has been Selected before !!");
 
     requestRandomWords();
+    vrfCalledTime = block.timestamp;
+
     success = true;
 
   }
