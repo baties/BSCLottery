@@ -367,12 +367,13 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   //   return _VRF;
   // }
 
-  function planB_VRFDelay() private view returns(bool isActive){ 
+  function planB_VRFDelay() private returns(bool isActive){ 
     uint nowTime = block.timestamp;
     uint waitTime = 0;
     if (nowTime > vrfCalledTime) {
       waitTime = nowTime - vrfCalledTime ;
       if (waitTime > 15 minutes) {
+          lWinnerSelected = true;
           isActive = true;
       } else {
         isActive = false;
