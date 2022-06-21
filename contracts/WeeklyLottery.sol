@@ -384,6 +384,11 @@ contract WeeklyLottery is Ownable, VRFConsumerBaseV2 {
   //   return _VRF;
   // }
 
+  /**
+    * @notice This Function is Only a PLan B for When The VRF Coordinator does not respond in a short time .
+    * @dev Only If after 10 min the VRF Coordinator does not respond This function Change the lWinnerSelected to True so the Last Random Word used instead of a new one .
+    * @return isActive Flag 
+  */
   function planB_VRFDelay() private returns(bool isActive){ 
     require(lReadySelectWinner == true, "The Pot is not ready for Selecting the Winner");
     require(lWinnerSelected == false, "The Winner has been Selected before !!");
