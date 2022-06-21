@@ -78,6 +78,7 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   event SelectWinnerAddress(address potWinner, uint winnerPrize);
   event TotalPayment(address receiver, uint TrxValue);
   event ReadyForSelectWinner(bool isReadySelectWinner);
+  event StartSelectngWinner(uint vrfCalledTime);
 
   // constructor(address VRF, address generatorLotteryAddress) {  
   constructor(uint64 subscriptionId, address generatorLotteryAddress) VRFConsumerBaseV2(vrfCoordinator) {
@@ -199,11 +200,12 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   */
   function select_Winner() public isAllowedManager returns(bool success) {  
 
-    require(lReadySelectWinner == true, "The Pot is not ready for Select the Winner");
+    require(lReadySelectWinner == true, "The Pot is not ready for Selecting the Winner");
     require(lWinnerSelected == false, "The Winner has Not been Selected Yet !");
 
-    requestRandomWords();
     vrfCalledTime = block.timestamp;
+    emit StartSelectngWinner(vrfCalledTime);
+    requestRandomWords();
 
     success = true;
 
@@ -217,10 +219,10 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   */
   function select_Winner_Continue() public isAllowedManager returns(bool success) {  
     
-    require(lReadySelectWinner == true, "The Pot is not ready for Select the Winner");
-    if (planB_VRFDelay() == false) {
+    require(lReadySelectWinner == true, "The Pot is not ready for Selecting the Winner");
+    // if (planB_VRFDelay() == false) {
       require(lWinnerSelected == true, "The Winner has been Selected before !!");
-    }
+    // }
 
     // _WeeklyWinnersArray = getWeeklyWinnersArray();  
     // uint256 l_randomWords = getRandomValue(_VRF);
@@ -368,11 +370,13 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   // }
 
   function planB_VRFDelay() private returns(bool isActive){ 
+    require(lReadySelectWinner == true, "The Pot is not ready for Selecting the Winner");
+    require(lWinnerSelected == false, "The Winner has been Selected before !!");
     uint nowTime = block.timestamp;
     uint waitTime = 0;
     if (nowTime > vrfCalledTime) {
       waitTime = nowTime - vrfCalledTime ;
-      if (waitTime > 15 minutes) {
+      if (waitTime > 10 minutes) {
           lWinnerSelected = true;
           isActive = true;
       } else {

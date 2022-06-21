@@ -108,6 +108,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   event PlayerTotalValue(address potPlayer, uint[] playerId, uint playCount, uint playerValue, uint ticketNumber);
   event TotalPayment(address receiver, uint TrxValue);
   event ReadyForSelectWinner(bool isReadySelectWinner);
+  event StartSelectngWinner(uint vrfCalledTime);
 
   // constructor(address VRF, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr) {
   constructor(uint64 subscriptionId, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr) VRFConsumerBaseV2(vrfCoordinator) {
@@ -255,7 +256,6 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     * @return success Flag
   */
   function play() public payable isGameOn returns(bool success) {
-
     require(msg.value >= 0.01 ether && msg.value < 100 ether, "Value should be between 0.01 & 100 BNB");
 
     uint userPotAmount = PotPlayersMap[msg.sender].paymentValue;
@@ -295,7 +295,6 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     }    
 
     return success;
-
   }
 
   /**
@@ -305,11 +304,12 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   */
   function select_Winner() public isAllowedManager returns(bool success) {  
 
-    require(lReadySelectWinner == true, "The Pot is not ready for Select the Winner");
+    require(lReadySelectWinner == true, "The Pot is not ready for Selecting the Winner");
     require(lWinnerSelected == false, "The Winner has Not been Selected Yet !");
 
-    requestRandomWords();
     vrfCalledTime = block.timestamp;
+    emit StartSelectngWinner(vrfCalledTime);
+    requestRandomWords();
 
     success = true;
 
@@ -323,10 +323,10 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   */
   function select_Winner_Continue() public isAllowedManager returns(bool success) {  
     
-    require(lReadySelectWinner == true, "The Pot is not ready for Select the Winner");
-    if (planB_VRFDelay() == false) {
+    require(lReadySelectWinner == true, "The Pot is not ready for Selecting the Winner");
+    // if (planB_VRFDelay() == false) {
       require(lWinnerSelected == true, "The Winner has been Selected before !!");
-    }
+    // }
 
     uint winnerIndex = s_randomWords[0] % potTickets.length;    // l_randomWords
     winnerIndex = potTickets[winnerIndex];
@@ -554,11 +554,13 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   }
 
   function planB_VRFDelay() private returns(bool isActive){ 
+    require(lReadySelectWinner == true, "The Pot is not ready for Selecting the Winner");
+    require(lWinnerSelected == false, "The Winner has been Selected before !!");
     uint nowTime = block.timestamp;
     uint waitTime = 0;
     if (nowTime > vrfCalledTime) {
       waitTime = nowTime - vrfCalledTime ;
-      if (waitTime > 15 minutes) {
+      if (waitTime > 10 minutes) {
           lWinnerSelected = true;
           isActive = true;
       } else {
