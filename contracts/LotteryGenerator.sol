@@ -13,7 +13,7 @@ import "./LotteryCore.sol";
   * @title Lottery Generator Smart Contract.
   * @author Batis Abhari (https://github.com/baties - ContactMe: abhari_Batis@hotmail.com)
   * @notice This SmartContract will be responsible for Lottery Generation in next Versions.
-  * @dev Lottery Generator SmartContract - Parent of All Lottery MOdules
+  * @dev Lottery Generator SmartContract - Parent of All Lottery MOdules - Also The Lottery DataBase is Here !
 */
 contract LotteryGenerator is Ownable {
 

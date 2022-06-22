@@ -116,7 +116,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     LINKTOKEN = LinkTokenInterface(link);
     s_subscriptionId = subscriptionId;
     LotteryOwner = msg.sender;
-    lPotActive = true;
+    lPotActive = false;
     lReadySelectWinner = false;
     lWinnerSelected = false;
     potStartTime = block.timestamp;
@@ -165,7 +165,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     * @notice Request Random Words From VRF Coordinator
     * @dev For more Details refer to : https://docs.chain.link/docs/chainlink-vrf-best-practices/#getting-multiple-random-numbers
   */
-  function requestRandomWords() public isAllowedManager {    // external   onlyOwner
+  function requestRandomWords() internal isAllowedManager {    
     // Will revert if subscription is not set and funded.
     s_requestId = COORDINATOR.requestRandomWords(
       keyHash,
@@ -198,7 +198,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     * @param denominator : The Integer Number which another Int NUmber is devided by this.  
     * @return quotient and remainder of the Devision, Both are Integer Numbers. 
   */
-  function getDivided(uint numerator, uint denominator) public pure returns(uint quotient, uint remainder) {
+  function getDivided(uint numerator, uint denominator) private pure returns(uint quotient, uint remainder) {
     require( denominator >= 0, "Division is Not Possible , Bug in Numbers !");
     require( numerator > 0, "Division is Not Possible , Bug in Numbers !");
     quotient  = numerator / denominator; 
@@ -245,6 +245,18 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     lPotActive = true ;
     lReadySelectWinner = false;
     potStartTime = block.timestamp;
+    lWinnerSelected = false;
+    success = true;
+  }
+
+  /**
+    * @notice Hourly Lottery Pot is Pausable, This is the Trigger.
+    * @dev THis Function just Pauses the current Pot Play and Select Winner Routines and Use only for Emergency .
+    * @return success Flag 
+  */
+  function potPause() external onlyOwner returns(bool success) {
+    lPotActive = false ;
+    lReadySelectWinner = false;
     lWinnerSelected = false;
     success = true;
   }
@@ -449,6 +461,29 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     return true;
   }
 
+  /**
+    * @notice This Function is Only a PLan B for When The VRF Coordinator does not respond in a short time .
+    * @dev Only If after 10 min the VRF Coordinator does not respond This function Change the lWinnerSelected to True so the Last Random Word used instead of a new one .
+    * @return isActive Flag 
+  */
+  function planB_VRFDelay() public isAllowedManager returns(bool isActive){ 
+    require(lReadySelectWinner == true, "The Pot is not ready for Selecting the Winner");
+    require(lWinnerSelected == false, "The Winner has been Selected before !!");
+    uint nowTime = block.timestamp;
+    uint waitTime = 0;
+    if (nowTime > vrfCalledTime) {
+      waitTime = nowTime - vrfCalledTime ;
+      if (waitTime > 10 minutes) {
+          lWinnerSelected = true;
+          isActive = true;
+      } else {
+        isActive = false;
+      }
+    } else {
+      isActive = false;
+    }
+  }
+
   function set_WeeklyPotAddress(address _WeeklyPotAddress) external onlyOwner {
     require(_WeeklyPotAddress != address(0) );
     WeeklyPotAddress = _WeeklyPotAddress;
@@ -551,29 +586,6 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   function getPlayerValue(address PlayerAddress) public view returns(uint) {
     uint PaymentValue = PotPlayersMap[PlayerAddress].paymentValue;
     return PaymentValue;
-  }
-
-  /**
-    * @notice This Function is Only a PLan B for When The VRF Coordinator does not respond in a short time .
-    * @dev Only If after 10 min the VRF Coordinator does not respond This function Change the lWinnerSelected to True so the Last Random Word used instead of a new one .
-    * @return isActive Flag 
-  */
-  function planB_VRFDelay() private returns(bool isActive){ 
-    require(lReadySelectWinner == true, "The Pot is not ready for Selecting the Winner");
-    require(lWinnerSelected == false, "The Winner has been Selected before !!");
-    uint nowTime = block.timestamp;
-    uint waitTime = 0;
-    if (nowTime > vrfCalledTime) {
-      waitTime = nowTime - vrfCalledTime ;
-      if (waitTime > 10 minutes) {
-          lWinnerSelected = true;
-          isActive = true;
-      } else {
-        isActive = false;
-      }
-    } else {
-      isActive = false;
-    }
   }
 
 }
