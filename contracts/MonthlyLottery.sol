@@ -198,7 +198,7 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
     * @dev THis Function just Pauses the current Pot Play and Select Winner Routines and Use only for Emergency .
     * @return success Flag 
   */
-  function potPause() external onlyOwner returns(bool success) {
+  function potPause() external isAllowedManager returns(bool success) {
     lPotActive = false ;
     lReadySelectWinner = false;
     lWinnerSelected = false;
@@ -215,6 +215,7 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
     require(lReadySelectWinner == true, "The Pot is not ready for Selecting the Winner");
     require(lWinnerSelected == false, "The Winner has Not been Selected Yet !");
 
+    lPotActive = false;
     vrfCalledTime = block.timestamp;
     emit StartSelectngWinner(vrfCalledTime);
     requestRandomWords();

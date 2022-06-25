@@ -716,7 +716,7 @@ function App() {
               <Card.Text>
                   Account : { account }
               </Card.Text> */}
-              { owner === account ? 
+              { (owner === account || potDirector === account) ? 
                   (isPotActive && selectReady) ?
                       <Button variant="warning" onClick={SelectWinner}>Select a Winner</Button>
                   : ! isPotActive ?
@@ -725,7 +725,7 @@ function App() {
                 : <></>
               }
               &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  
-              { owner === account ? 
+              { (owner === account || potDirector === account) ? 
                   (isPotActive && selectReady) ?
                       <Button variant="danger" onClick={SelectWinnerContinue}>Select a Winner Continue</Button>
                   : <></> 
