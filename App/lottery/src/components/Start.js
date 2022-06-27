@@ -19,6 +19,7 @@ export default function Header(props) {
                     </a>
                     {
                         props.account != null && props.account !== '' ?
+                        // <><span style={{color: '#fff'}}> <a href={"https://rinkeby.etherscan.io/address/"+props.account}> {props.account} </a></span>
                         <><span style={{color: '#fff'}}>{props.account}</span>
                         <Button variant="danger" onClick={onDisconnectButton}>Disconnect wallet</Button>
                         </>

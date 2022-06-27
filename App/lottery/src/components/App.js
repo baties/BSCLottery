@@ -32,6 +32,8 @@ const METAMAST_BASE64_URL = "data:image/svg+xml;utf8;base64,PHN2ZyB4bWxucz0iaHR0
 
 function App() {
 
+    const currentNetwork = "https://rinkeby.etherscan.io/address/";
+  
     // const fs = require('fs');
     // const LotteryCoreX = require("./contractx/LotteryCore.json");
     // const abiX = LotteryCoreX["abi"];
@@ -86,7 +88,7 @@ function App() {
   
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-  
+
     useEffect( ()  => {
       
       const loadBlockchainData = async() => {
@@ -447,7 +449,39 @@ function App() {
         alert("contract has not deployed yet.")
       }
     }
+
+    const potPause = async()=>{
+      console.log("Pot Pause Process");
+      if(account == null || account === '') {
+        handleShow();
+        return;
+      }
   
+      if(lottery && lottery !== 'undefined') {
+        if(isPotActive) {
+          try {
+            console.log("Pot Must be Stopped !")
+            // const gas = 0;
+            // web3.eth.getGasPrice().then((result) => {
+            //   console.log(web3.utils.fromWei(result, 'ether'));
+            //   gas = result;
+            //   });
+            const gas = await lottery.methods.potPause().estimateGas({from: account})
+            // console.log(gas);
+            await lottery.methods.potPause().send({from: account, gas:gas}); 
+            await loadContractData()
+            console.log("Pot Paused")
+          } catch (e) {
+            console.log('Error, Pot Pausing : ', e)
+          }
+        } else {
+          console.log("Pot is not Active !")
+        }
+      } else {
+        alert("contract has not deployed yet.")
+      }
+    }
+    
     const createLottery = async (amount, price) => {
       if(account == null || account === '') {
         handleShow();
@@ -555,7 +589,7 @@ function App() {
             <br></br>
             <i>Owner : <b style={{color: "#4682B4"}}> {owner} </b> </i> 
             <i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> 
-            <i>Account : <b style={{color: "#4682B4"}}> {account} </b> </i> <br></br>
+            <i>Account : <b style={{color: "#4682B4"}}> <a href={currentNetwork+account}> {account} </a> </b> </i> <br></br>
             <i>Director : <b style={{color: "#4682B4"}}> {potDirector} </b> </i> 
             {/* <i>Verifier : <card style={{color: "#4682B4"}}> {verifier} </card> </i> <p></p> */}
           </div>
@@ -675,7 +709,8 @@ function App() {
           {/* <ProgressBar max={100} now={progress} label={`${progress}%`} animated srOnly/> */}
           <Card>
             <Card.Body className="row">
-              <Card.Title style={{color: "#C70039"}}>Current Lottery Room : {lotteryAddress}</Card.Title>
+              <Card.Title style={{color: "#C70039"}}>Current Lottery Room : <a href={currentNetwork+lotteryAddress}>{lotteryAddress}</a></Card.Title>
+              {/* <Card.Title style={{color: "#C70039"}}>Current Lottery Room : {lotteryAddress}</Card.Title> */}
               <div className="col-md-7">
               {
                   isPotActive ?
@@ -717,17 +752,20 @@ function App() {
                   Account : { account }
               </Card.Text> */}
               { (owner === account || potDirector === account) ? 
-                  (isPotActive && selectReady) ?
-                      <Button variant="warning" onClick={SelectWinner}>Select a Winner</Button>
+                  (isPotActive) ?
+                      <Button variant="danger" onClick={potPause}>Stop the Pot</Button> 
                   : ! isPotActive ?
-                      <Button variant="danger" onClick={potInitialize}>Start New POT</Button>
+                      <Button variant="warning" onClick={potInitialize}>Start New POT</Button>
                   : <></> 
                 : <></>
               }
               &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  
               { (owner === account || potDirector === account) ? 
                   (isPotActive && selectReady) ?
-                      <Button variant="danger" onClick={SelectWinnerContinue}>Select a Winner Continue</Button>
+                      (! winnerSelected) ?
+                          <Button variant="warning" onClick={SelectWinner}>Select a Winner</Button>
+                      : 
+                          <Button variant="danger" onClick={SelectWinnerContinue}>Select a Winner Continue</Button>
                   : <></> 
                 : <></>
               }
