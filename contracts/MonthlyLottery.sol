@@ -188,10 +188,15 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
     require(lPotActive == false, "The Monthly Pot is started before !");
     _WeeklyWinnersArray = getWeeklyWinnersArray();  
     lPotActive = true ;
-    lReadySelectWinner = true;
     lWinnerSelected = false;
-    success = true;
-  }
+    if (_WeeklyWinnersArray.length > 0) {
+        lReadySelectWinner = true;
+        success = true;
+    } else {
+        lReadySelectWinner = true;
+        success = false;
+    }
+}
 
   /**
     * @notice Hourly Lottery Pot is Pausable, This is the Trigger.

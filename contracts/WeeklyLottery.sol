@@ -198,9 +198,14 @@ contract WeeklyLottery is Ownable, VRFConsumerBaseV2 {
     require(lPotActive == false, "The Weekly Pot is started before !");
     _LotteryWinnersArray = getLotteryWinnersArray();  
     lPotActive = true ;
-    lReadySelectWinner = true;
     lWinnerSelected = false;
-    success = true;
+    if (_LotteryWinnersArray.length > 0) {
+        lReadySelectWinner = true;
+        success = true;
+    } else {
+        lReadySelectWinner = true;
+        success = false;
+    }
   }
 
   /**
