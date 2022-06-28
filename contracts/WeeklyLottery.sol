@@ -131,7 +131,7 @@ contract WeeklyLottery is Ownable, VRFConsumerBaseV2 {
     * @notice Request Random Words From VRF Coordinator
     * @dev For more Details refer to : https://docs.chain.link/docs/chainlink-vrf-best-practices/#getting-multiple-random-numbers
   */
-  function requestRandomWords() external isAllowedManager {    
+  function requestRandomWords() internal isAllowedManager {    
     // Will revert if subscription is not set and funded.
     s_requestId = COORDINATOR.requestRandomWords(
       keyHash,
