@@ -20326,8 +20326,8 @@
         }
       },
       "links": {},
-      "address": "0x22e295b1D584bf547b4955e5a1016840B70Ede85",
-      "transactionHash": "0xe2bc055b4ff218be92365fff63c8d60fbbc588e1ae83c9903885b57a6bc8b76a"
+      "address": "0x3DaC091Ab215869Bf94f974A68F2ec866A8b7E91",
+      "transactionHash": "0x01c556bcd537bca549294033c012a37d6ed99e06a3d5204d04e18dd117b4077d"
     },
     "97": {
       "events": {
@@ -20550,7 +20550,7 @@
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-06-28T07:59:48.705Z",
+  "updatedAt": "2022-07-02T07:11:15.290Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Batis Abhari (https://github.com/baties - ContactMe: abhari_Batis@hotmail.com)",
