@@ -72,6 +72,7 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   bool private lReadySelectWinner; 
   address private potDirector;  
   address private potWinnerAddress;
+  uint public potWinnerPrize = 0;
   bool private lWinnerSelected;
 
   event SelectWinnerIndex(uint winnerIndex, uint potBalance, uint winnerPrize);
@@ -246,6 +247,7 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
     // uint256 l_randomWords = getRandomValue(_VRF);
     uint winnerIndex = s_randomWords[0] % _WeeklyWinnersArray.length;   // l_randomWords
     uint winnerPrize = address(this).balance; // Calculation();
+    potWinnerPrize = address(this).balance;
     
     emit SelectWinnerIndex(winnerIndex, address(this).balance, winnerPrize);
     
@@ -391,7 +393,7 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   }
 
   function getWinners() public view returns(address, uint) {
-    return ( potWinnerAddress, address(this).balance );  
+    return ( potWinnerAddress, potWinnerPrize );  
   }  
 
   function isReadySelectWinner() public view returns(bool) {
