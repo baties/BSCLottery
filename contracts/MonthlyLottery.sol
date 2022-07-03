@@ -80,6 +80,7 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   event TotalPayment(address receiver, uint TrxValue);
   event ReadyForSelectWinner(bool isReadySelectWinner);
   event StartSelectngWinner(uint vrfCalledTime);
+  event LogDepositReceived(address sender, uint value);
 
   // constructor(address VRF, address generatorLotteryAddress) {  
   constructor(uint64 subscriptionId, address generatorLotteryAddress) VRFConsumerBaseV2(vrfCoordinator) {
@@ -95,9 +96,18 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   }
 
   /* ToDo : Add & Complete Fallback routine */
-  fallback() external payable {
+  fallback() external payable isGameOn {
+    require(msg.data.length == 0); 
+    if (msg.value > 0) {
+        emit LogDepositReceived(msg.sender,msg.value);
+    }
   }
-  receive() external payable {
+
+  receive() external payable isGameOn {
+    require(msg.value >= 0.01 ether && msg.value < 10 ether, "Value should be between 0.01 & 10 BNB");
+    if (msg.value > 0) {
+        emit LogDepositReceived(msg.sender,msg.value);
+    }
   }
 
   modifier isAllowedManager() {

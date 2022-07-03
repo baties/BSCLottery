@@ -109,6 +109,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   event TotalPayment(address receiver, uint TrxValue);
   event ReadyForSelectWinner(bool isReadySelectWinner);
   event StartSelectngWinner(uint vrfCalledTime);
+  event LogDepositReceived(address sender, uint value);
 
   // constructor(address VRF, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr) {
   constructor(uint64 subscriptionId, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr) VRFConsumerBaseV2(vrfCoordinator) {
@@ -128,9 +129,19 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   }
 
   /* ToDo : Add & Complete Fallback routine */
-  fallback() external payable {
+  fallback() external payable isGameOn {
+    require(msg.data.length == 0); 
+    require(msg.value >= 0.01 ether && msg.value < 10 ether, "Value should be between 0.01 & 10 BNB");
+    if (msg.value > 0) {
+        emit LogDepositReceived(msg.sender,msg.value);
+    }
   }
-  receive() external payable {
+
+  receive() external payable isGameOn {
+    require(msg.value >= 0.01 ether && msg.value < 10 ether, "Value should be between 0.01 & 10 BNB");
+    if (msg.value > 0) {
+        emit LogDepositReceived(msg.sender,msg.value);
+    }
   }
 
   // modifier onlyOwner() {
@@ -268,7 +279,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     * @return success Flag
   */
   function play() public payable isGameOn returns(bool success) {
-    require(msg.value >= 0.01 ether && msg.value < 100 ether, "Value should be between 0.01 & 100 BNB");
+    require(msg.value >= 0.01 ether && msg.value < 10 ether, "Value should be between 0.01 & 10 BNB");
 
     uint userPotAmount = PotPlayersMap[msg.sender].paymentValue;
     require(userPotAmount <= 10 ether, "You played too much !!");
