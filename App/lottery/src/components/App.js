@@ -78,9 +78,17 @@ function App() {
     const [isPotActive, setIsPotActive] = useState(true)
     const [selectReady, setSelectReady] = useState(false)
     const [winnerSelected, setWinnerSelected] = useState(false)
+    const [isPotActiveW, setIsPotActiveW] = useState(true)
+    const [selectReadyW, setSelectReadyW] = useState(false)
+    const [winnerSelectedW, setWinnerSelectedW] = useState(false)
+    const [isPotActiveM, setIsPotActiveM] = useState(true)
+    const [selectReadyM, setSelectReadyM] = useState(false)
+    const [winnerSelectedM, setWinnerSelectedM] = useState(false)
     const [playerCount, setPlayerCount] = useState(0)
     const [players, setPlayers] = useState([])
     const [winners, setWinners] = useState([])
+    const [winnersW, setWinnersW] = useState([])
+    const [winnersM, setWinnersM] = useState([])
     const [startedTime, setStartedTime] = useState(0)
     const [progress, setProgress] = useState(0)
     const [formPrice, setFormPrice] = useState(0.01)
@@ -139,13 +147,21 @@ function App() {
 
             const ticketPrice = await lottery.methods.getTicketPrice().call()
             const isPotActive = await lottery.methods.isPotActive().call()
+            const isPotActiveW = await weeklylottery.methods.isPotActive().call()
+            const isPotActiveM = await monthlylottery.methods.isPotActive().call()
             const ticketAmount = await lottery.methods.getTicketAmount().call()
             const playerCount = await lottery.methods.getPlayersNumber().call()
 
             const players = await lottery.methods.listPlayers().call()
             const winners = await lotteryGenerator.methods.getWinners().call()
+            const winnersW = await lotteryGenerator.methods.getWeeklyWinners().call()
+            const winnersM = await lotteryGenerator.methods.getWeeklyWinners().call()
             const selectReady = await lottery.methods.isReadySelectWinner().call()
             const winnerSelected = await lottery.methods.isWinnerSelected().call()
+            const selectReadyW = await weeklylottery.methods.isReadySelectWinner().call()
+            const winnerSelectedW = await weeklylottery.methods.isWinnerSelected().call()
+            const selectReadyM = await monthlylottery.methods.isReadySelectWinner().call()
+            const winnerSelectedM = await monthlylottery.methods.isWinnerSelected().call()
             // const progress = await lottery.methods.getPercent().call()
             let startedTime = await lottery.methods.getStartedTime().call()
             if(! isPotActive) startedTime = 0  // isGameEnded
@@ -160,13 +176,25 @@ function App() {
             setAccountPotValue(web3.utils.fromWei(accountPotValue))
             setTicketAmount(ticketAmount)
             setIsPotActive(isPotActive)
+            setIsPotActiveW(isPotActiveW)
+            setIsPotActiveM(isPotActiveM)
             setSelectReady(selectReady)
+            setSelectReadyW(selectReadyW)
+            setSelectReadyM(selectReadyM)
             setWinnerSelected(winnerSelected)
+            setWinnerSelectedW(winnerSelectedW)
+            setWinnerSelectedM(winnerSelectedM)
             setPlayers(players)
             setWinners(winners)
+            setWinnersW(winnersW)
+            setWinnersM(winnersM)
             setPlayerCount(playerCount)
             setLottery(lottery)
             setLotteryAddress(lotteryAddress)
+            setLottery(weeklylottery)
+            setLotteryAddress(weeklylotteryAddress)
+            setLottery(monthlylottery)
+            setLotteryAddress(monthlylotteryAddress)
             setOwner(owner)
             // setVerifier(verifier);
             setPotDirector(potDirector)
@@ -195,11 +223,17 @@ function App() {
 
         const ticketPrice = await lottery.methods.ticket_price().call()
         const isPotActive = await lottery.methods.isPotActive().call()
+        const isPotActiveW = await weeklylottery.methods.isPotActive().call()
+        const isPotActiveM = await monthlylottery.methods.isPotActive().call()
         const ticketAmount = await lottery.methods.getTicketAmount().call()
         const playerCount = await lottery.methods.getPlayersNumber().call()
         const players = await lottery.methods.listPlayers().call()
         const selectReady = await lottery.methods.isReadySelectWinner().call()
         const winnerSelected = await lottery.methods.isWinnerSelected().call()
+        const selectReadyW = await weeklylottery.methods.isReadySelectWinner().call()
+        const winnerSelectedW = await weeklylottery.methods.isWinnerSelected().call()
+        const selectReadyM = await monthlylottery.methods.isReadySelectWinner().call()
+        const winnerSelectedM = await monthlylottery.methods.isWinnerSelected().call()
         const startedTime = await lottery.methods.getStartedTime().call()
         // const progress = await lottery.methods.getPercent().call()
   
@@ -213,8 +247,14 @@ function App() {
         setAccountPotValue(web3.utils.fromWei(accountPotValue))
         setTicketAmount(ticketAmount)
         setIsPotActive(isPotActive)
+        setIsPotActiveW(isPotActiveW)
+        setIsPotActiveM(isPotActiveM)
         setSelectReady(selectReady)
+        setSelectReadyW(selectReadyW)
+        setSelectReadyM(selectReadyM)
         setWinnerSelected(winnerSelected)
+        setWinnerSelectedW(winnerSelectedW)
+        setWinnerSelectedM(winnerSelectedM)
         setPlayers(players)
         setPlayerCount(playerCount)
 
@@ -450,6 +490,70 @@ function App() {
       }
     }
 
+    const potInitializeW = async()=>{
+      console.log("Weekly Pot Initialization Process");
+      if(account == null || account === '') {
+        handleShow();
+        return;
+      }
+  
+      if(weeklylottery && weeklylottery !== 'undefined') {
+        if(! isPotActiveW) {
+          try {
+            console.log("Weekly Pot Must be Started again !")
+            // const gas = 0;
+            // web3.eth.getGasPrice().then((result) => {
+            //   console.log(web3.utils.fromWei(result, 'ether'));
+            //   gas = result;
+            //   });
+            const gas = await weeklylottery.methods.potInitialize().estimateGas({from: account})
+            // console.log(gas);
+            await weeklylottery.methods.potInitialize().send({from: account, gas:gas}); 
+            await loadContractData()
+            console.log("Weekly Pot Initialized")
+          } catch (e) {
+            console.log('Error, Weekly Pot Initializing : ', e)
+          }
+        } else {
+          console.log("Weekly Pot is Active !")
+        }
+      } else {
+        alert("contract has not deployed yet.")
+      }
+    }
+
+    const potInitializeM = async()=>{
+      console.log("Monthly Pot Initialization Process");
+      if(account == null || account === '') {
+        handleShow();
+        return;
+      }
+  
+      if(monthlylottery && monthlylottery !== 'undefined') {
+        if(! isPotActiveM) {
+          try {
+            console.log("Monthly Pot Must be Started again !")
+            // const gas = 0;
+            // web3.eth.getGasPrice().then((result) => {
+            //   console.log(web3.utils.fromWei(result, 'ether'));
+            //   gas = result;
+            //   });
+            const gas = await monthlylottery.methods.potInitialize().estimateGas({from: account})
+            // console.log(gas);
+            await monthlylottery.methods.potInitialize().send({from: account, gas:gas}); 
+            await loadContractData()
+            console.log("Monthly Pot Initialized")
+          } catch (e) {
+            console.log('Error, Monthly Pot Initializing : ', e)
+          }
+        } else {
+          console.log("Monthly Pot is Active !")
+        }
+      } else {
+        alert("contract has not deployed yet.")
+      }
+    }
+
     const potPause = async()=>{
       console.log("Pot Pause Process");
       if(account == null || account === '') {
@@ -479,6 +583,70 @@ function App() {
         }
       } else {
         alert("contract has not deployed yet.")
+      }
+    }
+    
+    const potPauseW = async()=>{
+      console.log("Weekly Pot Pause Process");
+      if(account == null || account === '') {
+        handleShow();
+        return;
+      }
+  
+      if(weeklylottery && weeklylottery !== 'undefined') {
+        if(isPotActiveW) {
+          try {
+            console.log("Weekly Pot Must be Stopped !")
+            // const gas = 0;
+            // web3.eth.getGasPrice().then((result) => {
+            //   console.log(web3.utils.fromWei(result, 'ether'));
+            //   gas = result;
+            //   });
+            const gas = await weeklylottery.methods.potPause().estimateGas({from: account})
+            // console.log(gas);
+            await weeklylottery.methods.potPause().send({from: account, gas:gas}); 
+            await loadContractData()
+            console.log("Weekly Pot Paused")
+          } catch (e) {
+            console.log('Error, Weekly Pot Pausing : ', e)
+          }
+        } else {
+          console.log("Weekly Pot is not Active !")
+        }
+      } else {
+        alert("weekly contract has not deployed yet.")
+      }
+    }
+    
+    const potPauseM = async()=>{
+      console.log("monthly Pot Pause Process");
+      if(account == null || account === '') {
+        handleShow();
+        return;
+      }
+  
+      if(monthlylottery && monthlylottery !== 'undefined') {
+        if(isPotActiveM) {
+          try {
+            console.log("Monthly Pot Must be Stopped !")
+            // const gas = 0;
+            // web3.eth.getGasPrice().then((result) => {
+            //   console.log(web3.utils.fromWei(result, 'ether'));
+            //   gas = result;
+            //   });
+            const gas = await monthlylottery.methods.potPause().estimateGas({from: account})
+            // console.log(gas);
+            await monthlylottery.methods.potPause().send({from: account, gas:gas}); 
+            await loadContractData()
+            console.log("Monthly Pot Paused")
+          } catch (e) {
+            console.log('Error, Monthly Pot Pausing : ', e)
+          }
+        } else {
+          console.log("Monthly Pot is not Active !")
+        }
+      } else {
+        alert("Monthly contract has not deployed yet.")
       }
     }
     
@@ -683,12 +851,12 @@ function App() {
                     className="form-inline row" 
                     onSubmit={(e) => {
                       e.preventDefault()
-                      setAddress(potDirector)
+                      setAddressG(potDirector)
                   }                      
                   }>
-                    <div className="col-md-6">
+                    <div className="col-md-8">
                       <div className='form-group mb-2'>
-                        <label htmlFor="potDirector" className="sr-only">Pot Director Address</label>
+                        <label htmlFor="potDirector" className="sr-only">Set Pot Director Address</label>
                         <input
                           id='potDirector'
                           type='string'
@@ -698,7 +866,10 @@ function App() {
                           onChange={handlePotDirectorChange}
                           required />
                       </div>
-                      <Button variant="success" type="submit">SetAddress</Button>
+                      <Button variant="success" type="submit">Set PotGenerator Director</Button> &emsp;
+                      <Button variant="success" onClick={() => setAddress(potDirector)}>Set Hourly Director</Button> &emsp;
+                      <Button variant="success" onClick={() => setAddressW(potDirector)}>Set Weekly Director</Button> &emsp;
+                      <Button variant="success" onClick={() => setAddressM(potDirector)}>Set Monthly Director</Button> 
                     </div>
                   </form>
                 </Card.Body>
@@ -717,12 +888,12 @@ function App() {
                     selectReady ?
                         <Card.Text> 
                             <i><small>Pot is Active and Ready for Select the Winner</small></i> <br></br>
-                            <i><small>Started at : {startedTime === '0'? "0s" : secondsToHms(startedTime)} </small></i>
+                            <i><small>HourlyPot Started at : {startedTime === '0'? "0s" : secondsToHms(startedTime)} </small></i>
                         </Card.Text>
                     :
                         <Card.Text>
                             <i><small>Pot is Active But not fill enough for Selecting the Winner</small></i> <br></br>
-                            <i><small>Started at : {startedTime === '0'? "0s" : secondsToHms(startedTime)} </small></i>
+                            <i><small>HourlyPot Started at : {startedTime === '0'? "0s" : secondsToHms(startedTime)} </small></i>
                         </Card.Text>
                   : 
                     <Card.Text>
@@ -730,7 +901,7 @@ function App() {
                     </Card.Text>
               }
               <Card.Text>
-                Current balance : <b> { lotteryBalance } </b>  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  Total Ticket bought : <b> { ticketAmount } </b> <br></br>
+                Current Pot balance : <b> { lotteryBalance } </b>  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  Total Ticket bought : <b> { ticketAmount } </b> <br></br>
                 Current Weekly Pot balance : <b> { weeklylotteryBalance } </b> &emsp;&emsp; Current Monthly Pot balance : <b> { monthlylotteryBalance } </b> <br></br>
                 Current LiquidityPool balance : <b> { liquidityPoolBalance } </b> <br></br> 
               </Card.Text>
@@ -752,14 +923,32 @@ function App() {
                   Account : { account }
               </Card.Text> */}
               { (owner === account || potDirector === account) ? 
-                  (isPotActive) ?
-                      <Button variant="danger" onClick={potPause}>Stop the Pot</Button> 
+                  (isPotActive) ? 
+                      <Button variant="danger" onClick={potPause}>Stop the HourlyPot</Button> 
                   : ! isPotActive ?
-                      <Button variant="warning" onClick={potInitialize}>Start New POT</Button>
+                      <Button variant="warning" onClick={potInitialize}>Start New HourlyPot</Button>
                   : <></> 
                 : <></>
               }
-              &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  
+              &emsp;&emsp;
+              { (owner === account || potDirector === account) ? 
+                  (isPotActiveW) ? 
+                      <Button variant="danger" onClick={potPauseW}>Stop the WeeklyPot</Button> 
+                  : ! isPotActiveW ?
+                      <Button variant="warning" onClick={potInitializeW}>Start New WeeklyPot</Button>
+                  : <></> 
+                : <></>
+              }
+              &emsp;&emsp; 
+              { (owner === account || potDirector === account) ? 
+                  (isPotActiveM) ? 
+                      <Button variant="danger" onClick={potPauseM}>Stop the MonthlyPot</Button> 
+                  : ! isPotActiveM ?
+                      <Button variant="warning" onClick={potInitializeM}>Start New MonthlyPot</Button>
+                  : <></> 
+                : <></>
+              }
+              <br></br> <br></br>
               { (owner === account || potDirector === account) ? 
                   (isPotActive && selectReady) ?
                       (! winnerSelected) ?
@@ -814,6 +1003,44 @@ function App() {
               </Table>
             </Col>
           </Row>
+
+          <Row style={{marginTop: '50px'}}>
+            <Col md="6">
+              Weekly Winners : 
+              <Table responsive>
+                <tbody>
+                  {
+                    winnersW.map((winner, idx) => {
+                      return (
+                        <tr key={idx}>
+                          <td>{idx+1}</td>
+                          <td style={{color: "#4682B4"}}>{winner}</td>
+                        </tr>
+                      )
+                    })    
+                  }
+                </tbody>
+              </Table>
+            </Col>
+            <Col md="6">
+              Monthly winners
+              <Table responsive>
+                <tbody>
+                  {
+                    winnersM.map((winner, idx) => {
+                      return (
+                        <tr key={idx}>
+                          <td>{idx+1}</td>
+                          <td style={{color: "#4682B4"}}>{winner}</td>
+                        </tr>
+                      )
+                    })    
+                  }
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+
         </Container>
       </>
     );

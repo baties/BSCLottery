@@ -221,7 +221,7 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
     require(lReadySelectWinner == true, "The Pot is not ready for Selecting the Winner");
     require(lWinnerSelected == false, "The Winner has Not been Selected Yet !");
 
-    lPotActive = false;
+    // lPotActive = false;
     vrfCalledTime = block.timestamp;
     emit StartSelectngWinner(vrfCalledTime);
     requestRandomWords();
@@ -331,7 +331,7 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
 
   /**
     * @notice This Function is Only a PLan B for When The VRF Coordinator does not respond in a short time .
-    * @dev Only If after 10 min the VRF Coordinator does not respond This function Change the lWinnerSelected to True so the Last Random Word used instead of a new one .
+    * @dev Only If after 5 min the VRF Coordinator does not respond This function Change the lWinnerSelected to True so the Last Random Word used instead of a new one .
     * @return isActive Flag 
   */
   function planB_VRFDelay() public isAllowedManager returns(bool isActive){ 
@@ -341,7 +341,7 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
     uint waitTime = 0;
     if (nowTime > vrfCalledTime) {
       waitTime = nowTime - vrfCalledTime ;
-      if (waitTime > 10 minutes) {
+      if (waitTime > 5 minutes) {
           lWinnerSelected = true;
           isActive = true;
       } else {
