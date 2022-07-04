@@ -5,6 +5,14 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract LotteryLiquidityPool is Ownable {
 
+  address contractOwner;
+  address multiSigAddr;
+
+  constructor(address MultiSigAddress) {
+    contractOwner = msg.sender;
+    multiSigAddr = MultiSigAddress;
+  }
+
   fallback() external payable {
   }
   receive() external payable {
@@ -18,5 +26,13 @@ contract LotteryLiquidityPool is Ownable {
     payable(msg.sender).transfer(address(this).balance);
   }
 
+  function sendToMultiSig(uint amount) public payable onlyOwner {
+    if (amount == 0) {
+      amount = address(this).balance;
+    }
+    require(amount <= address(this).balance);
+    (bool sent, bytes memory data) = multiSigAddr.call{value: amount}("");
+    require(sent, "Failed to send Ether");
+  }
 
 }

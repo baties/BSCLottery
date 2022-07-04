@@ -155,7 +155,7 @@ function App() {
             const players = await lottery.methods.listPlayers().call()
             const winners = await lotteryGenerator.methods.getWinners().call()
             const winnersW = await lotteryGenerator.methods.getWeeklyWinners().call()
-            const winnersM = await lotteryGenerator.methods.getWeeklyWinners().call()
+            const winnersM = await lotteryGenerator.methods.getMonthlyWinners().call()
             const selectReady = await lottery.methods.isReadySelectWinner().call()
             const winnerSelected = await lottery.methods.isWinnerSelected().call()
             const selectReadyW = await weeklylottery.methods.isReadySelectWinner().call()
