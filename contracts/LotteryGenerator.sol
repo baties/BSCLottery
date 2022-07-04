@@ -78,17 +78,9 @@ contract LotteryGenerator is Ownable {
 
   /* ToDo : Add & Complete Fallback routine */
     fallback() external payable {
-        require(msg.data.length == 0); 
-        if (msg.value > 0) {
-            emit LogDepositReceived(msg.sender,msg.value);
-        }
     }
 
     receive() external payable {
-        require(msg.value >= 0.01 ether && msg.value < 10 ether, "Value should be between 0.01 & 10 BNB");
-        if (msg.value > 0) {
-            emit LogDepositReceived(msg.sender,msg.value);
-        }
     }
 
     modifier isAllowedManager() {

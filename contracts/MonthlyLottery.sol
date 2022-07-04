@@ -96,18 +96,10 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   }
 
   /* ToDo : Add & Complete Fallback routine */
-  fallback() external payable isGameOn {
-    require(msg.data.length == 0); 
-    if (msg.value > 0) {
-        emit LogDepositReceived(msg.sender,msg.value);
-    }
+  fallback() external payable {
   }
 
-  receive() external payable isGameOn {
-    require(msg.value >= 0.01 ether && msg.value < 10 ether, "Value should be between 0.01 & 10 BNB");
-    if (msg.value > 0) {
-        emit LogDepositReceived(msg.sender,msg.value);
-    }
+  receive() external payable {
   }
 
   modifier isAllowedManager() {
