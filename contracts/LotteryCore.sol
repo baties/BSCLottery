@@ -324,7 +324,9 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     // lPotActive = false;
     vrfCalledTime = block.timestamp;
     emit StartSelectngWinner(vrfCalledTime);
-    requestRandomWords();
+    
+    requestRandomWords();  
+    // lWinnerSelected = true;   // For local test with Remix
 
     success = true;
 
@@ -344,6 +346,9 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     // }
 
     uint winnerIndex = s_randomWords[0] % potTickets.length;    // l_randomWords
+    // uint randomWords = randomGenerator();     // For local test with Remix
+    // uint winnerIndex = randomWords % potTickets.length;     // For local test with Remix   
+
     winnerIndex = potTickets[winnerIndex];
     (uint winnerPrize, uint weeklyPot, uint monthlyPot, uint liquidityAmount) = Calculation(winnerIndex);
     

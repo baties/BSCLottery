@@ -226,7 +226,9 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
     // lPotActive = false;
     vrfCalledTime = block.timestamp;
     emit StartSelectngWinner(vrfCalledTime);
-    requestRandomWords();
+    
+    requestRandomWords();  
+    // lWinnerSelected = true;   // For local test with Remix
 
     success = true;
 
@@ -248,6 +250,9 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
     // _WeeklyWinnersArray = getWeeklyWinnersArray();  
     // uint256 l_randomWords = getRandomValue(_VRF);
     uint winnerIndex = s_randomWords[0] % _WeeklyWinnersArray.length;   // l_randomWords
+    // uint randomWords = randomGenerator();     // For local test with Remix
+    // uint winnerIndex = randomWords % _WeeklyWinnersArray.length;     // For local test with Remix   
+
     uint winnerPrize = address(this).balance; // Calculation();
     potWinnerPrize = address(this).balance;
     
