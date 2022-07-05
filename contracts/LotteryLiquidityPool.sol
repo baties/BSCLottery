@@ -31,7 +31,7 @@ contract LotteryLiquidityPool is Ownable {
       amount = address(this).balance;
     }
     require(amount <= address(this).balance);
-    (bool sent, bytes memory data) = multiSigAddr.call{value: amount}("");
+    (bool sent, ) = multiSigAddr.call{value: amount}("");  // bytes memory data
     require(sent, "Failed to send Ether");
   }
 
