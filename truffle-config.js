@@ -12,6 +12,10 @@ const HDWalletProvider = require('@truffle/hdwallet-provider');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
 const mnemonic = process.env.MNEMONIC;
 
+// const privateKey = Buffer.from('PRIVATEKEYFROMMETAMASK', 'hex');
+// const provider = new HDWalletProvider(privateKey, "https://ropsten.infura.io/v3/INFURATOKEN");
+// const web3 = new Web3(provider);
+
 module.exports = {
 
   networks: {
@@ -67,10 +71,11 @@ module.exports = {
       skipDryRun: true
     },
     bsc: {
-      provider: () => new HDWalletProvider(mnemonic, `https://bsc-dataseed1.binance.org`),
+      // provider: () => new HDWalletProvider(mnemonic, `https://bsc-dataseed1.binance.org`),
+      provider: () => new HDWalletProvider(process.env.PRIVATE_KEY, process.env.PROVIDER_ADDRESS),
       network_id: 56,
       confirmations: 10,
-      timeoutBlocks: 200,
+      timeoutBlocks: 500,
       skipDryRun: true
     },
   },

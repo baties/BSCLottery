@@ -23,30 +23,33 @@ var LotteryMultiSigWallet= artifacts.require("./LotteryMultiSigWallet.sol");
 // }
 
 // const SubscriptionID = 706;  // BSC TestNet
-const SubscriptionID = 2181;  // Rinkeby TestNet
+// const SubscriptionID = 2181;  // Rinkeby TestNet
+const SubscriptionID = 263;  // BSC MainNet
 
 module.exports = function (deployer) {
-   deployer.deploy(LotteryMultiSigWallet);
-   deployer.deploy(LotteryLiquidityPool).then(async() => {
-      const cLiquidityInstance = await LotteryLiquidityPool.deployed();
-      console.log("Liquidity Pool: " + cLiquidityInstance.address);
-      await deployer.deploy(LotteryGenerator).then(async() => {
-         const cGeneratorInstance = await LotteryGenerator.deployed();
-         console.log("Lottery Generator: " + cGeneratorInstance.address);
-         await deployer.deploy(MonthlyLottery, SubscriptionID, cGeneratorInstance.address).then(async() => {  // VRFv2ConsumerAddress
-            const cMonthlyInstance = await MonthlyLottery.deployed();
-            console.log("Monthly Lottery: " + cMonthlyInstance.address);
-            await deployer.deploy(WeeklyLottery, SubscriptionID, cGeneratorInstance.address).then(async() => {  // VRFv2ConsumerAddress
-               const cWeeklyInstance = await WeeklyLottery.deployed();
-               console.log("Weekly Lottery: " + cWeeklyInstance.address);
-               await deployer.deploy(LotteryCore, SubscriptionID, cGeneratorInstance.address, cWeeklyInstance.address, cMonthlyInstance.address, cLiquidityInstance.address).then(async() => {  // VRFv2ConsumerAddress
-                  const cHourlyInstance = await LotteryCore.deployed();
-                  console.log("Hourly Lottery: " + cHourlyInstance.address);
-               }) ;  
+   deployer.deploy(LotteryMultiSigWallet).then(async() => { 
+      const cMultiSigWalletInstance = await LotteryMultiSigWallet.deployed();
+      console.log("MultiSig Wallet: " + cMultiSigWalletInstance.address);
+      await deployer.deploy(LotteryLiquidityPool, cMultiSigWalletInstance.address).then(async() => {
+         const cLiquidityInstance = await LotteryLiquidityPool.deployed();
+         console.log("Liquidity Pool: " + cLiquidityInstance.address);
+         await deployer.deploy(LotteryGenerator).then(async() => {
+            const cGeneratorInstance = await LotteryGenerator.deployed();
+            console.log("Lottery Generator: " + cGeneratorInstance.address);
+            await deployer.deploy(MonthlyLottery, SubscriptionID, cGeneratorInstance.address).then(async() => {  // VRFv2ConsumerAddress
+               const cMonthlyInstance = await MonthlyLottery.deployed();
+               console.log("Monthly Lottery: " + cMonthlyInstance.address);
+               await deployer.deploy(WeeklyLottery, SubscriptionID, cGeneratorInstance.address).then(async() => {  // VRFv2ConsumerAddress
+                  const cWeeklyInstance = await WeeklyLottery.deployed();
+                  console.log("Weekly Lottery: " + cWeeklyInstance.address);
+                  await deployer.deploy(LotteryCore, SubscriptionID, cGeneratorInstance.address, cWeeklyInstance.address, cMonthlyInstance.address, cLiquidityInstance.address).then(async() => {  // VRFv2ConsumerAddress
+                     const cHourlyInstance = await LotteryCore.deployed();
+                     console.log("Hourly Lottery: " + cHourlyInstance.address);
+                  }) ;  
+               })
             })
          })
-
-      })
+      }) 
    })
 }
 
