@@ -48304,10 +48304,206 @@
       "transactionHash": "0xb390d23b12ea7e989d3b5b09db654fde8decc83f0926445ea519f46c9fd8fa8d"
     },
     "56": {
-      "events": {},
+      "events": {
+        "0x3916187166447a01764df803fb1147a37c55a4ca1c7271a7a75c0ab1079b2d95": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogDepositReceived",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        "0x8de5754e4ed9d4994bdb4b2b8c12dfcd51b0e994c1d34a7f20fe7f3d3fbb7bc2": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "potPlayer",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "playerId",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "PlayerValue",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "ticketNumber",
+              "type": "uint256"
+            }
+          ],
+          "name": "PlayerRegister",
+          "type": "event"
+        },
+        "0xf0b342fc13c65867c873cfbf6e19b5285bae679018bdf3376a4baca5ff066e0d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "potPlayer",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256[]",
+              "name": "playerId",
+              "type": "uint256[]"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "playCount",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "playerValue",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "ticketNumber",
+              "type": "uint256"
+            }
+          ],
+          "name": "PlayerTotalValue",
+          "type": "event"
+        },
+        "0x320b3a07d7df24a614650bb07173e3a57f3e687cb2e87e07ab99e0854d09493c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "bool",
+              "name": "isReadySelectWinner",
+              "type": "bool"
+            }
+          ],
+          "name": "ReadyForSelectWinner",
+          "type": "event"
+        },
+        "0x9b320e270eb528aa46b3a21b196f1da153ccb2d5637e892594474e969fe6b7a9": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "potWinner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "winnerPrize",
+              "type": "uint256"
+            }
+          ],
+          "name": "SelectWinnerAddress",
+          "type": "event"
+        },
+        "0x274f2e5ea35472f60f411beb007713c0f1c1b574f260789eedee1789cd49d9f5": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "winnerIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "potBalance",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "winnerPrize",
+              "type": "uint256"
+            }
+          ],
+          "name": "SelectWinnerIndex",
+          "type": "event"
+        },
+        "0x3b0b75510568e9c6916c9a7c853a3892b9634e5ca8717abbec6cea1b7f4ac2d7": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "vrfCalledTime",
+              "type": "uint256"
+            }
+          ],
+          "name": "StartSelectngWinner",
+          "type": "event"
+        },
+        "0xd36f5f37e53a101e11e745c4b553773a94d17d9d7cec00640ac8331369a76d11": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "TrxValue",
+              "type": "uint256"
+            }
+          ],
+          "name": "TotalPayment",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0x50fC3eb5FB1D5890a927087CF3a5CaAB9E410F40",
-      "transactionHash": "0x65792210d3686f6f6c29f4c3acad7b49b582626c1ad26062351aaaea1b6f7aaf"
+      "address": "0x9685DFa06dD5828C29981698D2c0266c8ac2fdD1",
+      "transactionHash": "0xc3280333a6fb7185bb3fa7f92297187ec729737fdb8e7d7bec31d46bcca3933d"
     },
     "97": {
       "events": {
@@ -49178,7 +49374,7 @@
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-07-05T19:12:36.692Z",
+  "updatedAt": "2022-07-05T21:26:51.927Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Batis Abhari (https://github.com/baties - ContactMe: abhari_Batis@hotmail.com)",

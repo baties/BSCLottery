@@ -59,7 +59,8 @@
     },
     {
       "stateMutability": "payable",
-      "type": "fallback"
+      "type": "fallback",
+      "payable": true
     },
     {
       "inputs": [
@@ -78,7 +79,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -97,7 +99,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -121,7 +124,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -140,7 +144,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -159,7 +164,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -183,7 +189,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -202,7 +209,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -221,7 +229,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -245,7 +254,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -264,7 +274,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -277,7 +288,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -301,7 +313,8 @@
     },
     {
       "stateMutability": "payable",
-      "type": "receive"
+      "type": "receive",
+      "payable": true
     },
     {
       "inputs": [],
@@ -314,7 +327,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -334,7 +348,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -347,7 +362,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -360,7 +376,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -373,7 +390,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -592,7 +610,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -20494,6 +20513,12 @@
       "address": "0x431C5F98AAfA8F15d8B94e784E655d718dC2F140",
       "transactionHash": "0x923a64d44af3b7c709c5377276f56b7e728fea03198b5ae480984e790c7f90b3"
     },
+    "56": {
+      "events": {},
+      "links": {},
+      "address": "0xC9d01b0e2F9043fb42Fb3EFa03aF328249100b2D",
+      "transactionHash": "0x750192d1d888a2fbcccea2a235ed8128efda7bbcbc43695bdaef0f711970e3c6"
+    },
     "97": {
       "events": {
         "0xe610764cbcba803247df3450b7492f6a0084b7b5b734a7901c13fef8f84ffaf4": {
@@ -20734,7 +20759,7 @@
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-07-05T19:12:36.765Z",
+  "updatedAt": "2022-07-05T21:26:52.015Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Batis Abhari (https://github.com/baties - ContactMe: abhari_Batis@hotmail.com)",
