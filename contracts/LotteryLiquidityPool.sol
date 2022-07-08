@@ -35,4 +35,13 @@ contract LotteryLiquidityPool is Ownable {
     require(sent, "Failed to send Ether");
   }
 
+  function set_MultiSigAddress(address _MultiSigAddress) external onlyOwner {
+    require(_MultiSigAddress != address(0), "Given Address is Empty!");
+    multiSigAddr = _MultiSigAddress;
+  }
+
+  function get_MultiSigAddress() external view returns(address) {
+    return multiSigAddr;
+  }
+
 }

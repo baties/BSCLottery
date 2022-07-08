@@ -32,7 +32,8 @@ const METAMAST_BASE64_URL = "data:image/svg+xml;utf8;base64,PHN2ZyB4bWxucz0iaHR0
 
 function App() {
 
-    const currentNetwork = "https://rinkeby.etherscan.io/address/";
+    // const currentNetwork = "https://rinkeby.etherscan.io/address/";
+    const currentNetwork = "https://bscscan.com/address/";
   
     // const fs = require('fs');
     // const LotteryCoreX = require("./contractx/LotteryCore.json");

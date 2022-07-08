@@ -388,6 +388,7 @@ contract WeeklyLottery is Ownable, VRFConsumerBaseV2 {
   // }
 
   function set_generatorLotteryAddress(address _contractAddr) external onlyOwner {
+    require(_contractAddr != address(0), "Given Address is Empty!");
     generatorLotteryAddr = _contractAddr;
   }
 
@@ -402,7 +403,8 @@ contract WeeklyLottery is Ownable, VRFConsumerBaseV2 {
   // }
 
   function setDirector(address _DirectorAddress) external onlyOwner {
-    require(_DirectorAddress != address(0) );
+    require(_DirectorAddress != address(0), "Given Address is Empty!");
+    require(address(_DirectorAddress).balance > 0, "Given Address Balance is Zero!");
     potDirector = _DirectorAddress;
   }
 

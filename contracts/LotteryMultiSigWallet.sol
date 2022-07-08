@@ -178,4 +178,21 @@ contract MultiSigWallet {
             transaction.numConfirmations
         );
     }
+
+    function isConfirmedByAddress(uint _txIndex, address _owner)
+        public
+        view
+        returns (bool)
+    {
+        // Transaction storage transaction = transactions[_txIndex];
+        return isConfirmed[_txIndex][_owner];
+    }
+
+    function deposit() public payable{
+        require(msg.value != 0);
+        require(msg.sender != address(0));
+        // address(this).balance += msg.value;
+        emit Deposit(msg.sender, msg.value, address(this).balance);
+    }
+
 }

@@ -496,21 +496,22 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   }
 
   function set_WeeklyPotAddress(address _WeeklyPotAddress) external onlyOwner {
-    require(_WeeklyPotAddress != address(0) );
+    require(_WeeklyPotAddress != address(0), "Given Address is Empty!");
     WeeklyPotAddress = _WeeklyPotAddress;
   }
 
   function set_MonthlyPotAddress(address _MonthlyPotAddress) external onlyOwner {
-    require(_MonthlyPotAddress != address(0) );
+    require(_MonthlyPotAddress != address(0), "Given Address is Empty!");
     MonthlyPotAddress = _MonthlyPotAddress;
   }
 
   function set_generatorLotteryAddress(address _contractAddr) external onlyOwner {
+    require(_contractAddr != address(0), "Given Address is Empty!");
     generatorLotteryAddr = _contractAddr;
   }
 
   function set_LiquidityPoolAddress(address _LiquidityPoolAddress) external onlyOwner {
-    require(_LiquidityPoolAddress != address(0) );
+    require(_LiquidityPoolAddress != address(0), "Given Address is Empty!");
     LiquidityPoolAddress = _LiquidityPoolAddress;
   }
 
@@ -520,7 +521,8 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   // }
 
   function setDirector(address _DirectorAddress) external onlyOwner {
-    require(_DirectorAddress != address(0) );
+    require(_DirectorAddress != address(0), "Given Address is Empty!");
+    require(address(_DirectorAddress).balance != 0, "Given Address Balance is Zero!");
     potDirector = _DirectorAddress;
   }
 
