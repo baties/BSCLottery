@@ -66,7 +66,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   // address private _VRF;
   address private generatorLotteryAddr;
   address private LiquidityPoolAddress;
-  // address private MultiSigWalletAddress;
+  address private MultiSigWalletAddress;
   address private WeeklyPotAddress;
   address private MonthlyPotAddress;   
   address private LotteryOwner;
@@ -115,7 +115,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   event LogDepositReceived(address sender, uint value);
 
   // constructor(address VRF, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr) {
-  constructor(uint64 subscriptionId, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr) VRFConsumerBaseV2(vrfCoordinator) {
+  constructor(uint64 subscriptionId, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr, address MultiSigWalletAddr) VRFConsumerBaseV2(vrfCoordinator) {
     COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
     LINKTOKEN = LinkTokenInterface(link);
     s_subscriptionId = subscriptionId;
@@ -128,6 +128,7 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     LiquidityPoolAddress = LiquidityPoolAddr ;
     WeeklyPotAddress = WeeklyLotteryAddress ;
     MonthlyPotAddress = MonthlyLotteryAddress ;   
+    MultiSigWalletAddress = MultiSigWalletAddr ;
     // _VRF = VRF;
   }
 
@@ -353,13 +354,13 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     // uint winnerIndex = randomWords % potTickets.length;     // For local test with Remix   
 
     winnerIndex = potTickets[winnerIndex];
-    (uint winnerPrize, uint weeklyPot, uint monthlyPot, uint liquidityAmount) = Calculation(winnerIndex);
+    (uint winnerPrize, uint weeklyPot, uint monthlyPot, uint liquidityAmount, uint multiSigWalletAmount) = Calculation(winnerIndex);
     
     emit SelectWinnerIndex(winnerIndex, address(this).balance, winnerPrize);
 
     UpdateLotteryData(winnerIndex, address(this).balance, winnerPrize);
     WinnerPrizePayment(winnerIndex, winnerPrize); 
-    FinalPayment(weeklyPot, monthlyPot, liquidityAmount);
+    FinalPayment(weeklyPot, monthlyPot, liquidityAmount, multiSigWalletAmount);
     ClearDataBase();
     // console.log("Select Winner Done !");
 
@@ -399,11 +400,12 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     * @notice Calculation of Pot Winner Prize.
     * @dev Findout the 50% of the Total Pot and The Winner payment and Calculation of Weekly & Monthly Pot Prizes.
   */
-  function Calculation(uint _winnerIndex) private view returns (uint winnerPrize, uint weeklyPot, uint monthlyPot, uint liquidityAmount){
+  function Calculation(uint _winnerIndex) private view returns (uint winnerPrize, uint weeklyPot, uint monthlyPot, uint liquidityAmount, uint multiSigWalletAmount){
 
     uint totalPot = address(this).balance;
     address WinnerAddress = potPlayersArray[_winnerIndex];
     uint WinnerPotAmount = PotPlayersMap[WinnerAddress].paymentValue;
+    uint calcAmount = 0;
 
     winnerPrize = totalPot - WinnerPotAmount;
     /* ToDo : Replace Calculation Parts with OpenZeppelin SafeMath ) */
@@ -414,7 +416,9 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     (otherPots, ) = getDivided(otherPots, 20);
     weeklyPot = otherPots;
     monthlyPot = otherPots;
-    liquidityAmount = totalPot - 2 * otherPots - winnerPrize;
+    calcAmount = totalPot - 2 * otherPots - winnerPrize;
+    (liquidityAmount, ) = getDivided(calcAmount, 5);
+    multiSigWalletAmount = calcAmount - liquidityAmount;
 
   }
 
@@ -433,9 +437,9 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
 
   /**
     * @notice Remaining Pot Money Transfer.
-    * @dev Transfer remaining Money to the Weekly Pot, Monthly Pot & Liquidity Pool.
+    * @dev Transfer remaining Money to the Weekly Pot, Monthly Pot & Liquidity Pool & MultiSigWallet.
   */
-  function FinalPayment(uint weeklyPot, uint monthlyPot, uint liquidityAmount) private {   // onlyOwner 
+  function FinalPayment(uint weeklyPot, uint monthlyPot, uint liquidityAmount, uint multiSigWalletAmount) private {   // onlyOwner 
 
     // uint TrxValue = address(this).balance;
     // address payable receiver = payable(WeeklyPotAddress);
@@ -454,6 +458,10 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     receiver = payable(LiquidityPoolAddress);
     receiver.transfer(liquidityAmount);
     emit TotalPayment(receiver, liquidityAmount);
+
+    receiver = payable(MultiSigWalletAddress);
+    receiver.transfer(multiSigWalletAmount);
+    emit TotalPayment(receiver, multiSigWalletAmount);
 
   }
 
@@ -515,10 +523,10 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
     LiquidityPoolAddress = _LiquidityPoolAddress;
   }
 
-  // function set_MultiSigWalletAddress(address _MultiSigWalletAddress) external onlyOwner {
-  //   require(_MultiSigWalletAddress != address(0) );
-  //   MultiSigWalletAddress = _MultiSigWalletAddress;
-  // }
+  function set_MultiSigWalletAddress(address _MultiSigWalletAddress) external onlyOwner {
+    require(_MultiSigWalletAddress != address(0), "Given Address is Empty!");
+    MultiSigWalletAddress = _MultiSigWalletAddress;
+  }
 
   function setDirector(address _DirectorAddress) external onlyOwner {
     require(_DirectorAddress != address(0), "Given Address is Empty!");
@@ -582,12 +590,13 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   //   contractAddresses[3] = MonthlyPotAddress;
   //   return contractAddresses;
   // }
-  function getAllContractAddresses() public view returns(address gAddress, address lAddress, address wAddress, address mAddress) {
+  function getAllContractAddresses() public view returns(address gAddress, address lAddress, address wAddress, address mAddress, address sAddress) {
     gAddress = generatorLotteryAddr ;
     lAddress = LiquidityPoolAddress ;
     wAddress = WeeklyPotAddress ;
     mAddress = MonthlyPotAddress ;
-    return (gAddress, lAddress, wAddress, mAddress); 
+    sAddress = MultiSigWalletAddress ;
+    return (gAddress, lAddress, wAddress, mAddress, sAddress); 
   }
 
   function getPlayerAmounts(address PlayerAddress) public view returns(uint, uint) {

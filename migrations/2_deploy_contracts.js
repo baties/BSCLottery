@@ -30,7 +30,7 @@ module.exports = function (deployer) {
                await deployer.deploy(WeeklyLottery, SubscriptionID, cGeneratorInstance.address).then(async() => {  // VRFv2ConsumerAddress
                   const cWeeklyInstance = await WeeklyLottery.deployed();
                   console.log("Weekly Lottery: " + cWeeklyInstance.address);
-                  await deployer.deploy(LotteryCore, SubscriptionID, cGeneratorInstance.address, cWeeklyInstance.address, cMonthlyInstance.address, cLiquidityInstance.address).then(async() => {  // VRFv2ConsumerAddress
+                  await deployer.deploy(LotteryCore, SubscriptionID, cGeneratorInstance.address, cWeeklyInstance.address, cMonthlyInstance.address, cLiquidityInstance.address, cMultiSigWalletInstance.address).then(async() => {  // VRFv2ConsumerAddress
                      const cHourlyInstance = await LotteryCore.deployed();
                      console.log("Hourly Lottery: " + cHourlyInstance.address);
                   }) ;  
@@ -58,7 +58,7 @@ module.exports = function (deployer) {
    deployer.deploy(LotteryGenerator);
    deployer.deploy(MonthlyLottery, SubscriptionID, GeneralLotteryAddress);
    deployer.deploy(WeeklyLottery, SubscriptionID, GeneralLotteryAddress);
-   deployer.deploy(LotteryCore, SubscriptionID, GeneralLotteryAddress, WeeklyLotteryAddress, MonthlyLotteryAddress, LiquidityPoolAddress);
+   deployer.deploy(LotteryCore, SubscriptionID, GeneralLotteryAddress, WeeklyLotteryAddress, MonthlyLotteryAddress, LiquidityPoolAddress, LotteryMultiSigWalletAddress);
 }
 */
 
