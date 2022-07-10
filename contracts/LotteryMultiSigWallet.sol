@@ -3,20 +3,16 @@ pragma solidity ^0.8.13;
 
 contract MultiSigWallet {
     event Deposit(address indexed sender, uint amount, uint balance);
-    event SubmitTransaction(
-        address indexed owner,
-        uint indexed txIndex,
-        address indexed to,
-        uint value,
-        bytes data
-    );
+    event SubmitTransaction(address indexed owner, uint indexed txIndex, address indexed to, uint value, bytes data);
     event ConfirmTransaction(address indexed owner, uint indexed txIndex);
     event RevokeConfirmation(address indexed owner, uint indexed txIndex);
     event ExecuteTransaction(address indexed owner, uint indexed txIndex);
 
     address[] public owners;
+    address private firstOwner;
     mapping(address => bool) public isOwner;
     uint public numConfirmationsRequired;
+    //bool private firstOwnerConfirmation;
 
     struct Transaction {
         address to;
@@ -24,6 +20,7 @@ contract MultiSigWallet {
         bytes data;
         bool executed;
         uint numConfirmations;
+        bool firstOwnerConfirm;
     }
 
     // mapping from tx index => owner => bool
@@ -31,8 +28,13 @@ contract MultiSigWallet {
 
     Transaction[] public transactions;
 
+    modifier onlyFirstOwner() {
+        require(msg.sender == firstOwner , "not First Owner");
+        _;
+    }
+
     modifier onlyOwner() {
-        require(isOwner[msg.sender], "not owner");
+        require((isOwner[msg.sender] || msg.sender == firstOwner), "Sender is not an Owner");
         _;
     }
 
@@ -59,11 +61,14 @@ contract MultiSigWallet {
             "invalid number of required confirmations"
         );
 
+        firstOwner =  msg.sender;
+
         for (uint i = 0; i < _owners.length; i++) {
             address owner = _owners[i];
 
             require(owner != address(0), "invalid owner");
             require(!isOwner[owner], "owner not unique");
+            require(owner != firstOwner, "none of the owners can be the same as firstOwner");
 
             isOwner[owner] = true;
             owners.push(owner);
@@ -89,7 +94,8 @@ contract MultiSigWallet {
                 value: _value,
                 data: _data,
                 executed: false,
-                numConfirmations: 0
+                numConfirmations: 0,
+                firstOwnerConfirm: false
             })
         );
 
@@ -104,8 +110,12 @@ contract MultiSigWallet {
         notConfirmed(_txIndex)
     {
         Transaction storage transaction = transactions[_txIndex];
-        transaction.numConfirmations += 1;
-        isConfirmed[_txIndex][msg.sender] = true;
+        if (msg.sender == firstOwner) {
+            transaction.firstOwnerConfirm = true;
+        } else {
+            transaction.numConfirmations += 1;
+            isConfirmed[_txIndex][msg.sender] = true;
+        }
 
         emit ConfirmTransaction(msg.sender, _txIndex);
     }
@@ -118,10 +128,8 @@ contract MultiSigWallet {
     {
         Transaction storage transaction = transactions[_txIndex];
 
-        require(
-            transaction.numConfirmations >= numConfirmationsRequired,
-            "cannot execute tx"
-        );
+        require(transaction.numConfirmations >= numConfirmationsRequired, "cannot execute tx");
+        require(transaction.firstOwnerConfirm == true, "First Owner has not confirmed this TX yet");
 
         transaction.executed = true;
 
@@ -141,16 +149,24 @@ contract MultiSigWallet {
     {
         Transaction storage transaction = transactions[_txIndex];
 
-        require(isConfirmed[_txIndex][msg.sender], "tx not confirmed");
-
-        transaction.numConfirmations -= 1;
-        isConfirmed[_txIndex][msg.sender] = false;
+        if (msg.sender == firstOwner) {
+            require(transaction.firstOwnerConfirm, "tx not confirmed by firstOwner");
+            transaction.firstOwnerConfirm = false;
+        } else {
+            require(isConfirmed[_txIndex][msg.sender], "tx not confirmed");
+            transaction.numConfirmations -= 1;
+            isConfirmed[_txIndex][msg.sender] = false;
+        }
 
         emit RevokeConfirmation(msg.sender, _txIndex);
     }
 
     function getOwners() public view returns (address[] memory) {
         return owners;
+    }
+
+    function getMainOwner() public view returns (address) {
+        return firstOwner;
     }
 
     function getTransactionCount() public view returns (uint) {
@@ -165,7 +181,8 @@ contract MultiSigWallet {
             uint value,
             bytes memory data,
             bool executed,
-            uint numConfirmations
+            uint numConfirmations,
+            bool firstOwnerConfirm
         )
     {
         Transaction storage transaction = transactions[_txIndex];
@@ -175,7 +192,8 @@ contract MultiSigWallet {
             transaction.value,
             transaction.data,
             transaction.executed,
-            transaction.numConfirmations
+            transaction.numConfirmations,
+            transaction.firstOwnerConfirm
         );
     }
 
@@ -184,8 +202,16 @@ contract MultiSigWallet {
         view
         returns (bool)
     {
-        // Transaction storage transaction = transactions[_txIndex];
-        return isConfirmed[_txIndex][_owner];
+        bool returnValue = false;
+        Transaction storage transaction = transactions[_txIndex];
+
+        if (_owner == firstOwner) {
+            returnValue = transaction.firstOwnerConfirm;
+        } else {
+            returnValue = isConfirmed[_txIndex][_owner];
+        }
+
+        return returnValue;
     }
 
     function deposit() public payable{
