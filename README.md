@@ -151,6 +151,6 @@ npm run dev
 * *Contribution :*
     - Any contribution will be accepted so please just send me a contribution request.
 * *ContactMe :*
-    - you can send me any suggestion via this Email Address : **a** 
+    - you can send me any suggestion via this Email Address : **abhari.batis@gmail.com** 
 
 
