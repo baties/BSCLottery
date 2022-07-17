@@ -146,11 +146,11 @@ npm run dev
 
 ## Final word :
 
-* *Supporting :*
-    - If you like this repository and find it useful please give it a **star** and **fork** it if you want to develop your own version.
-* *Contribution :*
+* **Supporting :**
+    - If you like this repository and find it useful please give it a *star* and *fork* it if you want to develop your own version.
+* **Contribution :**
     - Any contribution will be accepted so please just send me a contribution request.
-* *ContactMe :*
+* **ContactMe :**
     - you can send me any suggestion via this Email Address : **abhari.batis@gmail.com** 
 
 
