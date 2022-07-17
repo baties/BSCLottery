@@ -110,7 +110,7 @@ npm run dev
 
 ## Smart Contract Addresses on Rinkeby TestNet :
 
-* *Deployed Final Version with Truffle (Ver 0.52):*
+* *Deployed The fifth Version with Truffle (Ver 0.52):*
     - **LotteryGenerator** : [0x8Ca9997FeeF619f0CcAf311a11A5cD304685709a](https://rinkeby.etherscan.io/address/0x8Ca9997FeeF619f0CcAf311a11A5cD304685709a)
     - **LotteryCore** : [0x61cBF84dA7494c50626DE9c89A65C59f639E8F22](https://rinkeby.etherscan.io/address/0x61cBF84dA7494c50626DE9c89A65C59f639E8F22)
     - **WeeklyLottery** : [0x9a944147a2f241081991C9ba0A7b01977bD4043a](https://rinkeby.etherscan.io/address/0x9a944147a2f241081991C9ba0A7b01977bD4043a)
@@ -118,14 +118,39 @@ npm run dev
     - **LotteryLiquidityPool** : [0x22515475372968c8536A0439885C99F91F30aE43](https://rinkeby.etherscan.io/address/0x22515475372968c8536A0439885C99F91F30aE43)
     - **LOtteryMultiSigWallet** : [0x82B0f049AD24d10bc88d2dDd621fC8b69f55B778](https://rinkeby.etherscan.io/address/0x82B0f049AD24d10bc88d2dDd621fC8b69f55B778)
 
+* *Deployed The last Version with Truffle (Ver 0.67):*
+    - **LotteryGenerator** : [0x431C5F98AAfA8F15d8B94e784E655d718dC2F140](https://rinkeby.etherscan.io/address/0x431C5F98AAfA8F15d8B94e784E655d718dC2F140)
+    - **LotteryCore** : [0xCd428fFa0883A0481DCb2208f70262b5F1d28190](https://rinkeby.etherscan.io/address/0xCd428fFa0883A0481DCb2208f70262b5F1d28190)
+    - **WeeklyLottery** : [0x6C28637Bd295E4B9437046C8999EB6Ab0d0df004](https://rinkeby.etherscan.io/address/0x6C28637Bd295E4B9437046C8999EB6Ab0d0df004)
+    - **MonthlyLottery** : [0xc33050450c9594E66B9Bd9a6a45435377AED3302](https://rinkeby.etherscan.io/address/0xc33050450c9594E66B9Bd9a6a45435377AED3302)
+    - **LotteryLiquidityPool** : [0x8fd14c70FacD0f9AF9EfD5Cfd065262891D2538d](https://rinkeby.etherscan.io/address/0x8fd14c70FacD0f9AF9EfD5Cfd065262891D2538d)
+    - **LOtteryMultiSigWallet** : [0x45a7Ec234473E4e2237808999dfDb9805d976AfE](https://rinkeby.etherscan.io/address/0x45a7Ec234473E4e2237808999dfDb9805d976AfE)
+
 ## Smart Contract Addresses on Binance Smart Chain TestNet :
 
-* *Deployed Final Version with Truffle (Ver 0.41):*
-    - **LotteryGenerator** : [0xf415f0c24cFA775d566De6B8c8Afe7098448FEfa](https://rinkeby.etherscan.io/address/0xf415f0c24cFA775d566De6B8c8Afe7098448FEfa)
-    - **LotteryCore** : [0xc65d246f01EF7c04a95DD8429BbfA126d8272549](https://rinkeby.etherscan.io/address/0xc65d246f01EF7c04a95DD8429BbfA126d8272549)
-    - **WeeklyLottery** : [0xc6e5ba1D46e7f7a1A674AC6979f9228f9CE9AA1D](https://rinkeby.etherscan.io/address/0xc6e5ba1D46e7f7a1A674AC6979f9228f9CE9AA1D)
-    - **MonthlyLottery** : [0xDc458c1968E40361E46E6FAa0f5E83f985058c3b](https://rinkeby.etherscan.io/address/0xDc458c1968E40361E46E6FAa0f5E83f985058c3b)
-    - **LotteryLiquidityPool** : [0xc52E5BC3D189c2f2621A3432e74787202b42D79A](https://rinkeby.etherscan.io/address/0xc52E5BC3D189c2f2621A3432e74787202b42D79A)
-    - **LOtteryMultiSigWallet** : [0x32b02534dbDf25eF66e53C4c1501eF28aa9274a4](https://rinkeby.etherscan.io/address/0x32b02534dbDf25eF66e53C4c1501eF28aa9274a4)
+* *Deployed the fourth Version with Truffle (Ver 0.41):*
+    - **LotteryGenerator** : [0xf415f0c24cFA775d566De6B8c8Afe7098448FEfa](https://testnet.bscscan.com/address/0xf415f0c24cFA775d566De6B8c8Afe7098448FEfa)
+    - **LotteryCore** : [0xc65d246f01EF7c04a95DD8429BbfA126d8272549](https://testnet.bscscan.com/address/0xc65d246f01EF7c04a95DD8429BbfA126d8272549)
+    - **WeeklyLottery** : [0xc6e5ba1D46e7f7a1A674AC6979f9228f9CE9AA1D](https://testnet.bscscan.com/address/0xc6e5ba1D46e7f7a1A674AC6979f9228f9CE9AA1D)
+    - **MonthlyLottery** : [0xDc458c1968E40361E46E6FAa0f5E83f985058c3b](https://testnet.bscscan.com/address/0xDc458c1968E40361E46E6FAa0f5E83f985058c3b)
+    - **LotteryLiquidityPool** : [0xc52E5BC3D189c2f2621A3432e74787202b42D79A](https://testnet.bscscan.com/address/0xc52E5BC3D189c2f2621A3432e74787202b42D79A)
+    - **LOtteryMultiSigWallet** : [0x32b02534dbDf25eF66e53C4c1501eF28aa9274a4](https://testnet.bscscan.com/address/0x32b02534dbDf25eF66e53C4c1501eF28aa9274a4)
+
+* *Deployed the last Version with Truffle (Ver 0.68):*
+    - **LotteryGenerator** : [0x68DbB384580A0690b596D529a110b6eae8849E6a](https://testnet.bscscan.com/address/0x68DbB384580A0690b596D529a110b6eae8849E6a)
+    - **LotteryCore** : [0xe0929aEF517b6E383e14585Ad39d1d94967ED639](https://testnet.bscscan.com/address/0xe0929aEF517b6E383e14585Ad39d1d94967ED639)
+    - **WeeklyLottery** : [0xee9e2cdd2b433B88d6188641C85F87d6D658E794](https://testnet.bscscan.com/address/0xee9e2cdd2b433B88d6188641C85F87d6D658E794)
+    - **MonthlyLottery** : [0xE928D1D1fEb0b6Ac8BC93c21a3a2B0A433F8f4b5](https://testnet.bscscan.com/address/0xE928D1D1fEb0b6Ac8BC93c21a3a2B0A433F8f4b5)
+    - **LotteryLiquidityPool** : [0xAed4A0BF40F525F3Db93FF0cFf389AE293082300](https://testnet.bscscan.com/address/0xAed4A0BF40F525F3Db93FF0cFf389AE293082300)
+    - **LOtteryMultiSigWallet** : [0x7AcA8025E7C6221526f16762eEF147fE79ACb652](https://testnet.bscscan.com/address/0x7AcA8025E7C6221526f16762eEF147fE79ACb652)
+
+## Final word :
+
+* *Supporting :*
+    - If you like this repository and find it useful please give it a **star** and **fork** it if you want to develop your own version.
+* *Contribution :*
+    - Any contribution will be accepted so please just send me a contribution request.
+* *ContactMe :*
+    - you can send me any suggestion via this Email Address : **a** 
 
 
