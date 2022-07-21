@@ -106,6 +106,10 @@ contract LotteryGenerator is Ownable {
         payable(msg.sender).transfer(address(this).balance);
     }
 
+    function close() public onlyOwner { 
+        selfdestruct(owner);  // LotteryOwner 
+    }
+
     /**
         * @notice Get The Total List of Hourly Lottery Winners Wallet Addresses
         * @return Hourly Lottery Winners Array List

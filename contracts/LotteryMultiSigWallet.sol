@@ -133,9 +133,7 @@ contract MultiSigWallet {
 
         transaction.executed = true;
 
-        (bool success, ) = transaction.to.call{value: transaction.value}(
-            transaction.data
-        );
+        (bool success, ) = transaction.to.call{value: transaction.value}(transaction.data);
         require(success, "tx failed");
 
         emit ExecuteTransaction(msg.sender, _txIndex);
@@ -219,6 +217,14 @@ contract MultiSigWallet {
         require(msg.sender != address(0));
         // address(this).balance += msg.value;
         emit Deposit(msg.sender, msg.value, address(this).balance);
+    }
+
+    function balanceInVault() public view returns(uint){
+        return address(this).balance;
+    }
+
+    function close() public onlyFirstOwner { 
+        selfdestruct(firstOwner); 
     }
 
 }

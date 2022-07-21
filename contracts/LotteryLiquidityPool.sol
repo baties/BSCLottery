@@ -22,6 +22,10 @@ contract LotteryLiquidityPool is Ownable {
     return address(this).balance;
   }
 
+  function close() public onlyOwner { 
+      selfdestruct(owner);  // contractOwner
+  }
+
   function withdraw() external onlyOwner {
     payable(msg.sender).transfer(address(this).balance);
   }

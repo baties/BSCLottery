@@ -134,6 +134,10 @@ contract WeeklyLottery is Ownable, VRFConsumerBaseV2 {
     payable(msg.sender).transfer(address(this).balance);
   }
 
+  function close() public onlyOwner { 
+      selfdestruct(owner);   // LotteryOwner
+  }
+
   /**
     * @notice Request Random Words From VRF Coordinator
     * @dev For more Details refer to : https://docs.chain.link/docs/chainlink-vrf-best-practices/#getting-multiple-random-numbers
