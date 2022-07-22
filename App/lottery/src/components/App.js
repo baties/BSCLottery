@@ -881,7 +881,8 @@ function App() {
           {/* <ProgressBar max={100} now={progress} label={`${progress}%`} animated srOnly/> */}
           <Card>
             <Card.Body className="row">
-              <Card.Title style={{color: "#C70039"}}>Current Lottery Room : <a href={currentNetwork+lotteryAddress}>{lotteryAddress}</a></Card.Title>
+              <Card.Title style={{color: "#C70039", fontSize: 20}}> LOTTERY (Hourly-Weekly-Monthly) details
+              </Card.Title>
               {/* <Card.Title style={{color: "#C70039"}}>Current Lottery Room : {lotteryAddress}</Card.Title> */}
               <div className="col-md-7">
               {
@@ -902,6 +903,9 @@ function App() {
                     </Card.Text>
               }
               <Card.Text>
+                Current Lottery Room : <a href={currentNetwork+lotteryAddress}>{lotteryAddress}</a> <br></br>
+                Current Weekly Lottery Room : <a href={currentNetwork+weeklylotteryAddress}>{weeklylotteryAddress}</a> <br></br>
+                Current Monthly Lottery Room : <a href={currentNetwork+monthlylotteryAddress}>{monthlylotteryAddress}</a> <br></br>
                 Current Pot balance : <b> { lotteryBalance } </b>  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  Total Ticket bought : <b> { ticketAmount } </b> <br></br>
                 Current Weekly Pot balance : <b> { weeklylotteryBalance } </b> &emsp;&emsp; Current Monthly Pot balance : <b> { monthlylotteryBalance } </b> <br></br>
                 Current LiquidityPool balance : <b> { liquidityPoolBalance } </b> <br></br> 
