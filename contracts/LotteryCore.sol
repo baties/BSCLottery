@@ -168,7 +168,8 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   }
 
   function close() public onlyOwner { 
-      selfdestruct(owner);   // LotteryOwner
+    address payable addr = payable(address(LotteryOwner));  // owner
+    selfdestruct(addr); 
   }
 
   /**

@@ -224,7 +224,8 @@ contract MultiSigWallet {
     }
 
     function close() public onlyFirstOwner { 
-        selfdestruct(firstOwner); 
+        address payable addr = payable(address(firstOwner));
+        selfdestruct(addr); 
     }
 
 }
