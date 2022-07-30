@@ -1,0 +1,185 @@
+Compiling your contracts...
+===========================
+> Compiling ./contracts/LotteryCore.sol
+> Compiling ./contracts/LotteryGenerator.sol
+> Compiling ./contracts/LotteryMultiSigWallet.sol
+> Compiling ./contracts/MonthlyLottery.sol
+> Compiling ./contracts/WeeklyLottery.sol
+> Artifacts written to /home/batis/SrcCode/myPRJ/SmartContBlockChain/BSCLottery/build/contracts
+> Compiled successfully using:
+   - solc: 0.8.13+commit.abaa5c0e.Emscripten.clang
+
+
+Starting migrations...
+======================
+> Network name:    'rinkeby'
+> Network id:      4
+> Block gas limit: 29970705 (0x1c95111)
+
+
+1_initial_migration.js
+======================
+
+   Replacing 'Migrations'
+   ----------------------
+   > transaction hash:    0x874824ca698dc095b9dbc3dfe0a05e9a16ab0fa1377b530deac61b261df2fa78
+   > Blocks: 1            Seconds: 9
+   > contract address:    0x180Bc67ff12bAaFa5C8d76D0e7D0a8B8bb7de9B8
+   > block number:        11116489
+   > block timestamp:     1659208513
+   > account:             0x893300D805A6dB7d4E691Fa7679dB53C94802cDE
+   > balance:             0.099572644998737464
+   > gas used:            170942 (0x29bbe)
+   > gas price:           2.500000008 gwei
+   > value sent:          0 ETH
+   > total cost:          0.000427355001367536 ETH
+
+   Pausing for 2 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 11116490)
+   > confirmation number: 2 (block: 11116491)
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.000427355001367536 ETH
+
+
+2_deploy_contracts.js
+=====================
+
+   Replacing 'LotteryMultiSigWallet'
+   ---------------------------------
+   > transaction hash:    0x9baa234824dd9bdcd9513ca94c1612eae544aa34d18eadb4c1e7fdd7f2fc62ef
+   > Blocks: 2            Seconds: 40
+   > contract address:    0x19b89C1eB0D0B5F1F9847c244c7ebEB059fA9811
+   > block number:        11116495
+   > block timestamp:     1659208605
+   > account:             0x893300D805A6dB7d4E691Fa7679dB53C94802cDE
+   > balance:             0.098771452496173648
+   > gas used:            274799 (0x4316f)
+   > gas price:           2.500000008 gwei
+   > value sent:          0 ETH
+   > total cost:          0.000686997502198392 ETH
+
+   Pausing for 2 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 11116497)
+   > confirmation number: 2 (block: 11116498)
+MultiSig Wallet: 0x19b89C1eB0D0B5F1F9847c244c7ebEB059fA9811
+
+   Replacing 'LotteryLiquidityPool'
+   --------------------------------
+   > transaction hash:    0x10264fae2d3fc3be8c6cfe412e68afe2dcf75bdf62e4823d2292f5c7ac73478d
+   > Blocks: 2            Seconds: 22
+   > contract address:    0xa47cBA0895334c0A84618729b8b5b18552853dC9
+   > block number:        11116500
+   > block timestamp:     1659208681
+   > account:             0x893300D805A6dB7d4E691Fa7679dB53C94802cDE
+   > balance:             0.097540087491248188
+   > gas used:            492546 (0x78402)
+   > gas price:           2.50000001 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00123136500492546 ETH
+
+   Pausing for 2 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 11116501)
+   > confirmation number: 2 (block: 11116502)
+Liquidity Pool: 0xa47cBA0895334c0A84618729b8b5b18552853dC9
+
+   Replacing 'LotteryGenerator'
+   ----------------------------
+   > transaction hash:    0x8e00aaca526184d88e98a855e5061103b9f931d314ebf577911c6ae932c19cc7
+   > Blocks: 1            Seconds: 11
+   > contract address:    0x533B955db066DB5F279afD6294f3270FE251720d
+   > block number:        11116504
+   > block timestamp:     1659208741
+   > account:             0x893300D805A6dB7d4E691Fa7679dB53C94802cDE
+   > balance:             0.093845287476468988
+   > gas used:            1477920 (0x168d20)
+   > gas price:           2.50000001 gwei
+   > value sent:          0 ETH
+   > total cost:          0.0036948000147792 ETH
+
+   Pausing for 2 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 11116505)
+   > confirmation number: 2 (block: 11116506)
+Lottery Generator: 0x533B955db066DB5F279afD6294f3270FE251720d
+
+   Replacing 'MonthlyLottery'
+   --------------------------
+   > transaction hash:    0xa4e8ef84be17c0f5b01b73d362b4ed9e608db78076073e686e14783d40f0023a
+   > Blocks: 2            Seconds: 22
+   > contract address:    0x01F34675892AA4CE12422dA8EC40D1AB67Ed671D
+   > block number:        11116508
+   > block timestamp:     1659208801
+   > account:             0x893300D805A6dB7d4E691Fa7679dB53C94802cDE
+   > balance:             0.089507509953912545
+   > gas used:            1735111 (0x1a79c7)
+   > gas price:           2.500000013 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004337777522556443 ETH
+
+   Pausing for 2 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 11116510)
+   > confirmation number: 2 (block: 11116511)
+Monthly Lottery: 0x01F34675892AA4CE12422dA8EC40D1AB67Ed671D
+
+   Replacing 'WeeklyLottery'
+   -------------------------
+   > transaction hash:    0xdd2f0d0e324458a39eb657de2f8660752e181b40665d704eda762c94124907a3
+   > Blocks: 1            Seconds: 19
+   > contract address:    0x641359EE070479cdb17e651464796546c3861F33
+   > block number:        11116513
+   > block timestamp:     1659208876
+   > account:             0x893300D805A6dB7d4E691Fa7679dB53C94802cDE
+   > balance:             0.085169732426150769
+   > gas used:            1735111 (0x1a79c7)
+   > gas price:           2.500000016 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004337777527761776 ETH
+
+   Pausing for 2 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 11116514)
+   > confirmation number: 2 (block: 11116515)
+Weekly Lottery: 0x641359EE070479cdb17e651464796546c3861F33
+
+   Replacing 'LotteryCore'
+   -----------------------
+   > transaction hash:    0x0d554eb8be6d22846f4986102b88e889698cb3c117d7f4c1f8feae8053635697
+   > Blocks: 1            Seconds: 10
+   > contract address:    0xDb0f3863e0a0DE52A671C9167743A7EEAfa74fB1
+   > block number:        11116517
+   > block timestamp:     1659208936
+   > account:             0x893300D805A6dB7d4E691Fa7679dB53C94802cDE
+   > balance:             0.078423419885672894
+   > gas used:            2698525 (0x292d1d)
+   > gas price:           2.500000015 gwei
+   > value sent:          0 ETH
+   > total cost:          0.006746312540477875 ETH
+
+   Pausing for 2 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 11116518)
+   > confirmation number: 2 (block: 11116519)
+Hourly Lottery: 0xDb0f3863e0a0DE52A671C9167743A7EEAfa74fB1
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.021035030112699146 ETH
+
+Summary
+=======
+> Total deployments:   7
+> Final cost:          0.021462385114066682 ETH
+

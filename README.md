@@ -52,7 +52,7 @@ ganache-cli
 In a separate terminal window, Compile smart contracts:
 
 ```
-truffle compile
+truffle compile --all
 ```
 
 This will create the smart contract artifacts in folder ```build\contracts```.
@@ -60,10 +60,10 @@ This will create the smart contract artifacts in folder ```build\contracts```.
 Migrate smart contracts to the locally running blockchain, ganache-cli:
 
 ```
-truffle migrate
+truffle migrate --reset
 ```
 
-Test smart contracts:
+Test smart contracts: 
 
 ```
 truffle test
@@ -118,13 +118,13 @@ npm run dev
     - **LotteryLiquidityPool** : [0x22515475372968c8536A0439885C99F91F30aE43](https://rinkeby.etherscan.io/address/0x22515475372968c8536A0439885C99F91F30aE43)
     - **LOtteryMultiSigWallet** : [0x82B0f049AD24d10bc88d2dDd621fC8b69f55B778](https://rinkeby.etherscan.io/address/0x82B0f049AD24d10bc88d2dDd621fC8b69f55B778)
 
-* *Deployed The last Version with Truffle (Ver 0.67):*
-    - **LotteryGenerator** : [0x431C5F98AAfA8F15d8B94e784E655d718dC2F140](https://rinkeby.etherscan.io/address/0x431C5F98AAfA8F15d8B94e784E655d718dC2F140)
-    - **LotteryCore** : [0xCd428fFa0883A0481DCb2208f70262b5F1d28190](https://rinkeby.etherscan.io/address/0xCd428fFa0883A0481DCb2208f70262b5F1d28190)
-    - **WeeklyLottery** : [0x6C28637Bd295E4B9437046C8999EB6Ab0d0df004](https://rinkeby.etherscan.io/address/0x6C28637Bd295E4B9437046C8999EB6Ab0d0df004)
-    - **MonthlyLottery** : [0xc33050450c9594E66B9Bd9a6a45435377AED3302](https://rinkeby.etherscan.io/address/0xc33050450c9594E66B9Bd9a6a45435377AED3302)
-    - **LotteryLiquidityPool** : [0x8fd14c70FacD0f9AF9EfD5Cfd065262891D2538d](https://rinkeby.etherscan.io/address/0x8fd14c70FacD0f9AF9EfD5Cfd065262891D2538d)
-    - **LOtteryMultiSigWallet** : [0x45a7Ec234473E4e2237808999dfDb9805d976AfE](https://rinkeby.etherscan.io/address/0x45a7Ec234473E4e2237808999dfDb9805d976AfE)
+* *Deployed The last Version with Truffle (Ver 0.70):*
+    - **LotteryGenerator** : [0x533B955db066DB5F279afD6294f3270FE251720d](https://rinkeby.etherscan.io/address/0x533B955db066DB5F279afD6294f3270FE251720d)
+    - **LotteryCore** : [0xDb0f3863e0a0DE52A671C9167743A7EEAfa74fB1](https://rinkeby.etherscan.io/address/0xDb0f3863e0a0DE52A671C9167743A7EEAfa74fB1)
+    - **WeeklyLottery** : [0x641359EE070479cdb17e651464796546c3861F33](https://rinkeby.etherscan.io/address/0x641359EE070479cdb17e651464796546c3861F33)
+    - **MonthlyLottery** : [0x01F34675892AA4CE12422dA8EC40D1AB67Ed671D](https://rinkeby.etherscan.io/address/0x01F34675892AA4CE12422dA8EC40D1AB67Ed671D)
+    - **LotteryLiquidityPool** : [0xa47cBA0895334c0A84618729b8b5b18552853dC9](https://rinkeby.etherscan.io/address/0xa47cBA0895334c0A84618729b8b5b18552853dC9)
+    - **LOtteryMultiSigWallet** : [0x19b89C1eB0D0B5F1F9847c244c7ebEB059fA9811](https://rinkeby.etherscan.io/address/0x19b89C1eB0D0B5F1F9847c244c7ebEB059fA9811)
 
 ## Smart Contract Addresses on Binance Smart Chain TestNet :
 

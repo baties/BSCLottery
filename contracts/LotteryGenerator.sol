@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 // import "truffle/Console.sol";
-// import "hardhat/console.sol";
+// import "hardhat/console.sol";  // Work in Local-Test in Remix
 
 import "./LotteryCore.sol";
 
@@ -41,7 +41,7 @@ contract LotteryGenerator is Ownable {
     mapping(address => lottery) lotteryStructs;
 
     address private LotteryOwner;
-    address private potDirector;  
+    address private potDirector=0x893300D805A6dB7d4E691Fa7679dB53C94802cDE;  
 
     address[] public LotteryWinnersArray;
     uint[] public LotteryWinnersArrayPrizes;

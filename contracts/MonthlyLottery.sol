@@ -2,7 +2,6 @@
 pragma solidity ^0.8.0;
 // pragma experimental ABIEncoderV2;
 
-/* ToDo : Use Ownable OpenZeppelin */
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
@@ -19,7 +18,7 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "./LotteryCore.sol";
 
 // import "truffle/Console.sol";
-// import "hardhat/console.sol";
+// import "hardhat/console.sol";  // Work in Local-Test in Remix
 
 import "./LotteryInterface.sol";
 
@@ -38,23 +37,23 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
 
   // Rinkeby coordinator. For other networks,
   // see https://docs.chain.link/docs/vrf-contracts/#configurations
-  // address vrfCoordinator = 0x6168499c0cFfCaCD319c818142124B7A15E857ab;  // Rinkeby
+  address vrfCoordinator = 0x6168499c0cFfCaCD319c818142124B7A15E857ab;  // Rinkeby
   // address vrfCoordinator = 0x6A2AAd07396B36Fe02a22b33cf443582f682c82f;  // BSC TestNet coordinator
-  address vrfCoordinator = 0xc587d9053cd1118f25F645F9E08BB98c9712A4EE;  // BSC MainNet coordinator
+  // address vrfCoordinator = 0xc587d9053cd1118f25F645F9E08BB98c9712A4EE;  // BSC MainNet coordinator
 
 
   // Rinkeby LINK token contract. For other networks,
   // see https://docs.chain.link/docs/vrf-contracts/#configurations
-  // address link = 0x01BE23585060835E02B77ef475b0Cc51aA1e0709;  // Rinkeby
+  address link = 0x01BE23585060835E02B77ef475b0Cc51aA1e0709;  // Rinkeby
   // address link = 0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06;  //  BSC TestNet LINK token
-  address link = 0x404460C6A5EdE2D891e8297795264fDe62ADBB75;  // BSC MainNet LINK token
+  // address link = 0x404460C6A5EdE2D891e8297795264fDe62ADBB75;  // BSC MainNet LINK token
 
   // The gas lane to use, which specifies the maximum gas price to bump to.
   // For a list of available gas lanes on each network,
   // see https://docs.chain.link/docs/vrf-contracts/#configurations
-  // bytes32 keyHash = 0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc;  // Rinkeby
+  bytes32 keyHash = 0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc;  // Rinkeby
   // bytes32 keyHash = 0xd4bb89654db74673a187bd804519e65e3f71a52bc55f11da7601a13dcf505314;  //  BSC TestNet keyhash
-  bytes32 keyHash = 0x114f3da0a805b6a67d6e9cd2ec746f7028f1b7376365af575cfea3550dd1aa04;  //  BSC MAinNet keyhash
+  // bytes32 keyHash = 0x114f3da0a805b6a67d6e9cd2ec746f7028f1b7376365af575cfea3550dd1aa04;  //  BSC MAinNet keyhash
 
   uint32 callbackGasLimit = 100000;
   uint16 requestConfirmations = 3;
@@ -74,7 +73,7 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
   bool private lPotActive;  
   uint private vrfCalledTime = 0;
   bool private lReadySelectWinner; 
-  address private potDirector;  
+  address private potDirector=0x893300D805A6dB7d4E691Fa7679dB53C94802cDE;  
   address private potWinnerAddress;
   uint public potWinnerPrize = 0;
   bool private lWinnerSelected;
@@ -236,8 +235,8 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
     vrfCalledTime = block.timestamp;
     emit StartSelectngWinner(vrfCalledTime);
     
-    requestRandomWords();  
-    // lWinnerSelected = true;   // For local test with Remix
+    requestRandomWords();  // Comment For Local-Test in Remix  
+    // lWinnerSelected = true;  // UnComment For Local-Test in Remix
 
     success = true;
 
@@ -258,9 +257,9 @@ contract MonthlyLottery is Ownable, VRFConsumerBaseV2 {
 
     // _WeeklyWinnersArray = getWeeklyWinnersArray();  
     // uint256 l_randomWords = getRandomValue(_VRF);
-    uint winnerIndex = s_randomWords[0] % _WeeklyWinnersArray.length;   // l_randomWords
-    // uint randomWords = randomGenerator();     // For local test with Remix
-    // uint winnerIndex = randomWords % _WeeklyWinnersArray.length;     // For local test with Remix   
+    uint winnerIndex = s_randomWords[0] % _WeeklyWinnersArray.length;   // l_randomWords   // Comment For Local-Test in Remix
+    // uint randomWords = randomGenerator();  // UnComment For Local-Test in Remix
+    // uint winnerIndex = randomWords % _WeeklyWinnersArray.length;  // UnComment For Local-Test in Remix   
 
     uint winnerPrize = address(this).balance; // Calculation();
     potWinnerPrize = address(this).balance;

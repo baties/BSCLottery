@@ -32,8 +32,9 @@ const METAMASK_BASE64_URL = "data:image/svg+xml;utf8;base64,PHN2ZyB4bWxucz0iaHR0
 
 function App() {
 
-    // const currentNetwork = "https://rinkeby.etherscan.io/address/";
-    const currentNetwork = "https://bscscan.com/address/";
+    const currentNetwork = "https://rinkeby.etherscan.io/address/";  // Rinkeby Testnet Scanner 
+    // const currentNetwork = "https://testnet.bscscan.com/address/";  // BSC Testnet Scanner
+    // const currentNetwork = "https://bscscan.com/address/";  // BSC Scanner
   
     // const fs = require('fs');
     // const LotteryCoreX = require("./contractx/LotteryCore.json");
