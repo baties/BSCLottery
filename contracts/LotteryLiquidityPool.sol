@@ -25,7 +25,7 @@ contract LotteryLiquidityPool is Ownable {
   function close() public onlyOwner { 
     address payable addr = payable(address(contractOwner));  // owner
     selfdestruct(addr); 
-}
+  }
 
   function withdraw() external onlyOwner {
     payable(msg.sender).transfer(address(this).balance);
