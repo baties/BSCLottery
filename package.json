@@ -45,5 +45,8 @@
     "truffle": "^5.5.19",
     "web-vitals": "^1.0.1",
     "web3": "^1.7.4"
+  },
+  "devDependencies": {
+    "truffle-plugin-verify": "^0.5.28"
   }
 }

@@ -11,6 +11,9 @@ const HDWalletProvider = require('@truffle/hdwallet-provider');
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
 const mnemonic = process.env.MNEMONIC;
+const etherScanApiKey = process.env.EtherScanApiKey;
+const bscScanApiKey = process.env.BscScanApiKey;
+// const { infuraProjectId, mnemonic, EtherScanApiKey } = require('./secrets.json');
 
 // const privateKey = Buffer.from('PRIVATEKEYFROMMETAMASK', 'hex');
 // const provider = new HDWalletProvider(privateKey, "https://ropsten.infura.io/v3/INFURATOKEN");
@@ -103,6 +106,15 @@ module.exports = {
     }
   },
 
+  plugins: [
+    'truffle-plugin-verify'
+  ],
+
+  api_keys: {
+    etherscan: etherScanApiKey,
+    bscscan: bscScanApiKey
+  },
+  
   dashboard: {
     port: 25012,
     host: "localhost"
