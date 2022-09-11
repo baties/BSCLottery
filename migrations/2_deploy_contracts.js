@@ -17,8 +17,8 @@ const OwnerNoThree = "0x5d86E2609d5f41227846BC838B0D571FbaBab182" ;
 const OwnerNoFour = "0xc6A0C1C4b860ddfe653CA59bF814a3061dE876C0" ; 
 
 
-// const SubscriptionID = 707;  // BSC TestNet
-   const SubscriptionID = 6885;  // Rinkeby TestNet
+// const SubscriptionID = 707;  // BSC TestNet  705 - 706
+   const SubscriptionID = 6885; // Rinkeby TestNet  1907 - 2181
 // const SubscriptionID = 350;  // BSC MainNet
 // const SubscriptionID = 264;  // Ethereum Mainnet   
 

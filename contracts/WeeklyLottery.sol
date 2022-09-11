@@ -89,11 +89,11 @@ contract WeeklyLottery is Ownable, VRFConsumerBaseV2 {
   bool private lWinnerSelected;
 
   event SelectWinnerIndex(uint winnerIndex, uint potBalance, uint winnerPrize);
-  event SelectWinnerAddress(address potWinner, uint winnerPrize);
-  event TotalPayment(address receiver, uint TrxValue);
+  event SelectWinnerAddress(address indexed potWinner, uint winnerPrize);
+  event TotalPayment(address indexed receiver, uint TrxValue);
   event ReadyForSelectWinner(bool isReadySelectWinner);
   event StartSelectngWinner(uint vrfCalledTime);
-  event LogDepositReceived(address sender, uint value);
+  event LogDepositReceived(address indexed sender, uint value);
 
   // constructor(address VRF, address generatorLotteryAddress) {  
   constructor(uint64 subscriptionId, address generatorLotteryAddress) VRFConsumerBaseV2(vrfCoordinator) {

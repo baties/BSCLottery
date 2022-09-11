@@ -68,8 +68,8 @@ contract LotteryGenerator is Ownable {
     mapping (address => MonthlyWinnerStr) public MonthlyWinnersMap;
 
     // event
-    event LotteryCreated(address newLottery);
-    event LogDepositReceived(address sender, uint value);
+    event LotteryCreated(address indexed newLottery);
+    event LogDepositReceived(address indexed sender, uint value);
 
     constructor() {   
         LotteryOwner = msg.sender;

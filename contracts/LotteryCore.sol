@@ -106,13 +106,13 @@ contract LotteryCore is Ownable, VRFConsumerBaseV2 {
   // }
 
   event SelectWinnerIndex(uint winnerIndex, uint potBalance, uint winnerPrize);
-  event SelectWinnerAddress(address potWinner, uint winnerPrize);
-  event PlayerRegister(address potPlayer, uint playerId, uint PlayerValue, uint ticketNumber);
-  event PlayerTotalValue(address potPlayer, uint[] playerId, uint playCount, uint playerValue, uint ticketNumber);
-  event TotalPayment(address receiver, uint TrxValue);
+  event SelectWinnerAddress(address indexed potWinner, uint winnerPrize);
+  event PlayerRegister(address indexed potPlayer, uint playerId, uint PlayerValue, uint ticketNumber);
+  event PlayerTotalValue(address indexed potPlayer, uint[] playerId, uint playCount, uint playerValue, uint ticketNumber);
+  event TotalPayment(address indexed receiver, uint TrxValue);
   event ReadyForSelectWinner(bool isReadySelectWinner);
   event StartSelectngWinner(uint vrfCalledTime);
-  event LogDepositReceived(address sender, uint value);
+  event LogDepositReceived(address indexed sender, uint value);
 
   // constructor(address VRF, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr) {
   constructor(uint64 subscriptionId, address generatorLotteryAddress, address WeeklyLotteryAddress, address MonthlyLotteryAddress, address LiquidityPoolAddr, address MultiSigWalletAddr) VRFConsumerBaseV2(vrfCoordinator) {
